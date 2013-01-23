@@ -79,15 +79,16 @@ createAccessToken = (user, done) ->
    # Create new access_token and store
    access_token = crypt.generateAccessToken()
    redis.setnx access_token, JSON.stringify(user), (err, result) ->
-      if err then done err
+      return done(err) if err
 
-      # Set expiration
-      redis.expire access_token, 1800
-
-      # If access_token already exsits then try again
       if result == 0
          createAccessToken(user, done)
-      else done null, access_token
+      else
+         # Set expiration
+         redis.expire access_token, 1800
+
+         # If access_token already exsits then try again
+         done null, access_token
 
 
 
