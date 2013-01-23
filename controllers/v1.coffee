@@ -1,12 +1,10 @@
 express = require "express"
-
-app = module.exports = express()
-
-express = require "express"
 mongoose = require "mongoose"
 User = require "../models/User"
 crypt = require "../utils/crypt"
 redis = require("../utils/redis").client
+InvalidArgumentError = require("../errors/InvalidArgumentError")
+NotAuthorizedError = require("../errors/NotAuthorizedError")
 
 app = module.exports = express()
 
@@ -14,7 +12,7 @@ app = module.exports = express()
 app.post "/v1/token", (req, res, next) ->
    # Validate before querying
    if not req.body?.email or not req.body?.password
-      next("Required: email, password")
+      next(new InvalidArgumentError("Required: email, password"))
    
    email = req.body.email?.toLowerCase()
    password = crypt.hashPassword(req.body.password)
@@ -24,7 +22,7 @@ app.post "/v1/token", (req, res, next) ->
    .select("_id email first_name last_name refresh_token birth gender")
    .exec (err, user) ->
       return next(err) if err
-      return next("Invalid credentials") if not user
+      return next(new NotAuthorizedError("Invalid credentials")) if not user
       
       user = user.toObject()
 
@@ -37,7 +35,7 @@ app.post "/v1/token", (req, res, next) ->
 
 # Refresh access_token with refresh_token
 app.put "/v1/token", (req, res, next) ->
-   if not req.body?.refresh_token then next("Required: refresh_token")
+   if not req.body?.refresh_token then next(new InvalidArgumentError("Required: refresh_token"))
    
    User
    .findOne({ "refresh_token": req.body.refresh_token })
@@ -53,7 +51,7 @@ app.put "/v1/token", (req, res, next) ->
             access_token: access_token
          
 app.post "/v1/users", (req, res, next) ->
-   if not body = req.body then next(new Error("Missing body"))
+   if not body = req.body then next(new InvalidArgumentError("Missing body"))
 
    User.create
       email: body.email
