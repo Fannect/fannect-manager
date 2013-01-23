@@ -21,19 +21,19 @@ app.post "/v1/token", (req, res, next) ->
 
    User
    .findOne({ "email": email, "password", password })
+   .select("_id email first_name last_name refresh_token birth gender")
    .exec (err, user) ->
       return next(err) if err
       return next("Invalid credentials") if not user
       
+      user = user.toObject()
+
       refresh_token = user.refresh_token
       createAccessToken user, (err, access_token) ->
          return next(err) if err
-   
-         res.json
-            user: user
-            auth: 
-               access_token: access_token
-               refresh_token: refresh_token
+         
+         user.access_token = access_token
+         res.json user
 
 # Refresh access_token with refresh_token
 app.put "/v1/token", (req, res, next) ->
@@ -41,6 +41,7 @@ app.put "/v1/token", (req, res, next) ->
    
    User
    .findOne({ "refresh_token": req.body.refresh_token })
+   .select("_id email first_name last_name refresh_token birth gender")
    .exec (err, user) ->
       return next(err) if err
       return next("Invalid access_token") if not user
@@ -63,21 +64,18 @@ app.post "/v1/users", (req, res, next) ->
    , (err, user) ->
       return next(err) if err
 
+      user = user.toObject()
+      delete user.password
+      delete user.__v
+
       refresh_token = user.refresh_token
       createAccessToken user, (err, access_token) ->
          return next(err) if err
-   
-         res.json
-            user: user
-            auth: 
-               access_token: access_token
-               refresh_token: refresh_token
+         
+         user.access_token = access_token
+         res.json user
 
 createAccessToken = (user, done) ->
-   # Clean user object
-   delete user.password
-   delete user.refresh_token
-
    # Create new access_token and store
    access_token = crypt.generateAccessToken()
    redis.set access_token, JSON.stringify(user), (err) ->

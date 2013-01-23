@@ -7,4 +7,4 @@ crypt = module.exports =
       return hash.digest "hex"
 
    generateAccessToken: (done) -> return crypto.randomBytes(16).toString("hex")
-   generateRefreshToken: (done) -> return crypto.randomBytes(64).toString("hex")
+   generateRefreshToken: (done) -> return crypto.randomBytes(32).toString("hex")

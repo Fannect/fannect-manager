@@ -9,3 +9,6 @@ This is based on [this video](http://blog.apigee.com/detail/restful_api_design) 
 ### `/v1/token`
 * POST - retrieve `access_token` and `refresh_token` with user credentials
 * PUT - retrieve fresh `access_token`  with valid `refresh_token`
+
+### `/v1/users`
+* POST - create new user

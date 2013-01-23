@@ -2,7 +2,7 @@ express = require "express"
 path = require "path"
 mongoose = require "mongoose"
 mongooseTypes = require "mongoose-types"
-redis = (require "../utils/redis")(process.env.REDIS_URL or "redis://none:625147d76e1a1383ee5410886458e5c6dcf55705@ec2-107-21-80-75.compute-1.amazonaws.com:2014")
+redis = (require "../utils/redis")(process.env.REDIS_URL or "redis://redistogo:f74caf74a1f7df625aa879bf817be6d1@perch.redistogo.com:9203")
 
 app = module.exports = express()
 
