@@ -1,10 +1,10 @@
 express = require "express"
 mongoose = require "mongoose"
-User = require "../models/User"
-crypt = require "../utils/crypt"
-redis = require("../utils/redis").client
-InvalidArgumentError = require("../errors/InvalidArgumentError")
-NotAuthorizedError = require("../errors/NotAuthorizedError")
+User = require "../common/models/User"
+crypt = require "../common/utils/crypt"
+redis = require("../common/utils/redis").client
+InvalidArgumentError = require("../common/errors/InvalidArgumentError")
+NotAuthorizedError = require("../common/errors/NotAuthorizedError")
 
 app = module.exports = express()
 
