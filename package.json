@@ -22,8 +22,7 @@
    },
    "devDependencies": {
       "mocha": "1.7.4",
-      "should": "1.2.1",
-      "fs-extra": "0.3.2"
+      "should": "1.2.1"
    },
    "scripts": {
       "test": "mocha --compilers coffee:coffee-script --reporter spec -t 6500 -s 150"
