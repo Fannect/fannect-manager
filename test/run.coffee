@@ -44,7 +44,6 @@ describe "Fannect Login", () ->
             , (err, resp, body) ->
                return done(err) if err
                context.body = body
-               console.log body
                done() 
 
          it "should retrieve access_token and refresh_token", () ->
@@ -63,10 +62,32 @@ describe "Fannect Login", () ->
                should.not.exist(user.password)
                done()
 
-
-
       describe "PUT", () ->
-         it "should retrieve fresh access_token with refresh_token"
+         before (done) ->
+            context = @
+            request
+               url: "#{context.host}/v1/token"
+               method: "PUT"
+               json: refresh_token: "hereisatoken"
+            , (err, resp, body) ->
+               return done(err) if err
+               context.body = body
+               done() 
+
+         it "should retrieve fresh access_token with refresh_token", () ->
+            context = @
+            context.body.access_token.should.be.ok
+
+         it "should access_token to redis", (done) ->
+            context = @
+            redis.get context.body.access_token, (err, user) ->
+               return done(err) if err
+               user = JSON.parse(user)
+               user.email.should.equal("testingmctester@fannect.me")
+               user.first_name.should.equal("Mc")
+               user.last_name.should.equal("Tester")
+               should.not.exist(user.password)
+               done()
 
    describe "/v1/users", () ->
       describe "POST", () ->
@@ -114,7 +135,6 @@ describe "Fannect Login", () ->
                user.last_name.should.equal("Tester")
                should.not.exist(user.password)
                done()
-
 
    # describe "/v1/users/[user_id]/password", () ->
    #    describe "POST"

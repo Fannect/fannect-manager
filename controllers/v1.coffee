@@ -3,8 +3,9 @@ mongoose = require "mongoose"
 User = require "../common/models/User"
 crypt = require "../common/utils/crypt"
 redis = require("../common/utils/redis").client
-InvalidArgumentError = require("../common/errors/InvalidArgumentError")
-NotAuthorizedError = require("../common/errors/NotAuthorizedError")
+InvalidArgumentError = require "../common/errors/InvalidArgumentError"
+NotAuthorizedError = require "../common/errors/NotAuthorizedError"
+MongoError = require "../common/errors/MongoError"
 
 app = module.exports = express()
 
@@ -21,7 +22,7 @@ app.post "/v1/token", (req, res, next) ->
    .findOne({ "email": email, "password", password })
    .select("_id email first_name last_name refresh_token birth gender")
    .exec (err, user) ->
-      return next(err) if err
+      return next(new MongoError(err)) if err
       return next(new NotAuthorizedError("Invalid credentials")) if not user
       
       user = user.toObject()
@@ -42,7 +43,7 @@ app.put "/v1/token", (req, res, next) ->
    .select("_id email first_name last_name refresh_token birth gender")
    .exec (err, user) ->
       return next(err) if err
-      return next("Invalid access_token") if not user
+      return next(new InvalidArgumentError("Invalid access_token")) if not user
       
       createAccessToken user, (err, access_token) ->
          return next(err) if err
