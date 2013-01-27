@@ -18,14 +18,14 @@ This is based on [this video](http://blog.apigee.com/detail/restful_api_design) 
   access_token: '5426ccdbff12ab5eb4f8fdf1f6808d36' }
 ```
 
-* PUT - retrieve fresh `access_token`  with valid `refresh_token`
+**PUT** - retrieve fresh `access_token`  with valid `refresh_token`
 
 ```javascript
 { access_token: '4b82a568d889f717a1addaa38052747f' }
 ```
 
 ## `/v1/users`
-* POST - create new user
+**POST** - create new user
 
 ```javascript
 {
