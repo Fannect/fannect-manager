@@ -42,7 +42,7 @@ app.put "/v1/token", (req, res, next) ->
    .findOne({ "refresh_token": req.body.refresh_token })
    .select("_id email first_name last_name refresh_token birth gender")
    .exec (err, user) ->
-      return next(err) if err
+      return next(new MongoError(err)) if err
       return next(new InvalidArgumentError("Invalid refresh_token")) if not user
       
       createAccessToken user, (err, access_token) ->
@@ -62,7 +62,7 @@ app.post "/v1/users", (req, res, next) ->
       refresh_token: crypt.generateRefreshToken()
       profile_image_url: ""
    , (err, user) ->
-      return next(err) if err
+      return next(new MongoError(err)) if err
 
       user = user.toObject()
       delete user.password
@@ -70,7 +70,7 @@ app.post "/v1/users", (req, res, next) ->
 
       refresh_token = user.refresh_token
       createAccessToken user, (err, access_token) ->
-         return next(err) if err
+         return next(new MongoError(err)) if err
          
          user.access_token = access_token
          res.json user
@@ -79,8 +79,8 @@ createAccessToken = (user, done) ->
    # Create new access_token and store
    access_token = crypt.generateAccessToken()
    redis.setnx access_token, JSON.stringify(user), (err, result) ->
-      return done(err) if err
-
+      return next(new RedisError(err)) if err
+      
       if result == 0
          createAccessToken(user, done)
       else
