@@ -43,7 +43,7 @@ app.put "/v1/token", (req, res, next) ->
    .select("_id email first_name last_name refresh_token birth gender")
    .exec (err, user) ->
       return next(err) if err
-      return next(new InvalidArgumentError("Invalid access_token")) if not user
+      return next(new InvalidArgumentError("Invalid refresh_token")) if not user
       
       createAccessToken user, (err, access_token) ->
          return next(err) if err
@@ -60,6 +60,7 @@ app.post "/v1/users", (req, res, next) ->
       first_name: body.first_name
       last_name: body.last_name
       refresh_token: crypt.generateRefreshToken()
+      profile_image_url: ""
    , (err, user) ->
       return next(err) if err
 
