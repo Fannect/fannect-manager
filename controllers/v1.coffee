@@ -39,7 +39,7 @@ app.post "/v1/token", (req, res, next) ->
 
 # Refresh access_token with refresh_token
 app.put "/v1/token", (req, res, next) ->
-   if not req.body?.refresh_token then next(new InvalidArgumentError("Required: refresh_token"))
+   next(new InvalidArgumentError("Required: refresh_token")) unless req.body.refresh_token
    
    User
    .findOne({ "refresh_token": req.body.refresh_token })
@@ -85,16 +85,16 @@ app.post "/v1/users", (req, res, next) ->
          user.access_token = access_token
          res.json user
 
-app.post "/v1/users/reset", (req, res, next) ->
-   email = req.body.email
+app.post "/v1/reset", (req, res, next) ->
+   email = req.body.email?.trim()
    return next(new InvalidArgumentError("Required: email")) unless email
 
    token = crypt.generateRefreshToken()
-   pw = crypt.hashPassword(crypt.generateResetToken())
-   
+   reset = crypt.generateResetToken()
+   pw = crypt.hashPassword(reset)
+
    User.update { email: email }, { password: pw, refresh_token: token }, (err, data) ->
       return next(new MongoError(err)) if err
-
       if data == 0
          next(new InvalidArgumentError("Invalid: email"))
       else
@@ -102,7 +102,7 @@ app.post "/v1/users/reset", (req, res, next) ->
             to: email
             from: "admin@fannect.me"
             subject: "Password Reset"
-            html: "Your password has been reset! Please copy the following temporary password into the app.\n\n#{pw}"
+            html: "Your password has been reset! Please copy the following temporary password into the app:\n\n<strong style='font:2em'>#{reset}</strong>"
          , (err) ->
             if err
                next(new InvalidArgumentError("Failed to send email"))
@@ -112,8 +112,8 @@ app.post "/v1/users/reset", (req, res, next) ->
 
 app.put "/v1/users/:user_id", auth.rookieStatus, (req, res, next) ->
    user_id = req.params.user_id
-   email = req.body.email
-   pw = req.body.password
+   email = req.body.email?.trim()
+   pw = req.body.password?.trim()
 
    next(new InvalidArgumentError("Required: email and/or password")) unless (email or pw)
 

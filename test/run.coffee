@@ -191,7 +191,7 @@ describe "Fannect Login", () ->
                   user.password.should.equal(crypt.hashPassword(pw))
                   done()
 
-   describe "/v1/users/reset", () ->
+   describe "/v1/reset", () ->
       before (done) ->
           dbSetup.unload () -> dbSetup.load data_standard, done
       after (done) -> dbSetup.unload done
@@ -201,7 +201,7 @@ describe "Fannect Login", () ->
             context = @
             pw = "hi"
             request
-               url: "#{context.host}/v1/users/reset"
+               url: "#{context.host}/v1/reset"
                method: "POST"
                json:
                   email: "testingmctester@fannect.me"
@@ -213,7 +213,7 @@ describe "Fannect Login", () ->
          it "should fail with 400 if invalid email", (done) ->
             context = @
             request
-               url: "#{context.host}/v1/users/reset"
+               url: "#{context.host}/v1/reset"
                method: "POST"
                json:
                   email: "immafailure@fannect.me"
@@ -221,9 +221,5 @@ describe "Fannect Login", () ->
                return done(err) if err
                body.status.should.equal("fail")
                done()
-
-   # describe "/v1/users/[user_id]/password", () ->
-   #    describe "POST"
-   #       it ""
 
 
