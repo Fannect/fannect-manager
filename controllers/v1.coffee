@@ -6,6 +6,7 @@ redis = require("../common/utils/redis").client
 InvalidArgumentError = require "../common/errors/InvalidArgumentError"
 NotAuthorizedError = require "../common/errors/NotAuthorizedError"
 MongoError = require "../common/errors/MongoError"
+RedisError = require "../common/errors/RedisError"
 sendgrid = new (require("sendgrid-web"))({ user: "fannect", key: "1Billion!" })
 auth = require "../common/middleware/authenticate"
 
@@ -45,7 +46,7 @@ app.put "/v1/token", (req, res, next) ->
    .select("_id email first_name last_name refresh_token birth gender")
    .exec (err, user) ->
       return next(new MongoError(err)) if err
-      return next(new InvalidArgumentError("Invalid refresh_token")) if not user
+      return next(new NotAuthorizedError("Invalid refresh_token")) if not user
       
       createAccessToken user, (err, access_token) ->
          return next(err) if err
@@ -74,13 +75,6 @@ app.post "/v1/users", (req, res, next) ->
       createAccessToken user, (err, access_token) ->
          return next(new MongoError(err)) if err
       
-         # sendgrid.send
-         #    to: "will@fannect.me"
-         #    from: "legal@fannect.com"
-         #    subject: "Infringement on the Usage of 'Fannect'"
-         #    html: "Mr. Coatney, \n\nWe are notifying you in regards to your company's usage of the term 'Fannect' in the digital space. \n\n We have secured the rights to the term 'fannect' when registered our .com domanin name. \n\n We hereby inform you of your IP infringement and insist you stop using 'Fannect' immediately. \n\n Thank you, \n Fannect's Legal Department "
-         # , (err) ->
-
          user.access_token = access_token
          res.json user
 
@@ -135,7 +129,7 @@ createAccessToken = (user, done) ->
    # Create new access_token and store
    access_token = crypt.generateAccessToken()
    redis.setnx access_token, JSON.stringify(user), (err, result) ->
-      return next(new RedisError(err)) if err
+      return done(new RedisError(err)) if err
       
       if result == 0
          createAccessToken(user, done)
