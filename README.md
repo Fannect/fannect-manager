@@ -6,6 +6,8 @@ This is the source for the Fannect login API.
 # Environmental Variables
 * MONGO_URL
 * REDIS_URL
+* SENDGRID_USERNAME
+* SENDGRID_PASSWORD
 
 # REST Schema
 This is based on [this video](http://blog.apigee.com/detail/restful_api_design) by apigee
