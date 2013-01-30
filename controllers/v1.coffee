@@ -6,7 +6,6 @@ redis = require("../common/utils/redis").client
 InvalidArgumentError = require "../common/errors/InvalidArgumentError"
 NotAuthorizedError = require "../common/errors/NotAuthorizedError"
 MongoError = require "../common/errors/MongoError"
-mailer = require "mailer"
 sendgrid = new (require("sendgrid-web"))({ user: "fannect", key: "1Billion!" })
 auth = require "../common/middleware/authenticate"
 
