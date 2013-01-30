@@ -18,7 +18,6 @@ app.configure "production", () ->
 # Middleware
 app.use express.query()
 app.use express.bodyParser()
-app.use express.cookieParser process.env.COOKIE_SECRET or "super duper secret"
 app.use express.static path.join __dirname, "../public"
 
 # Set up mongoose
