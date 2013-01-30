@@ -111,6 +111,7 @@ app.post "/v1/users/reset", (req, res, next) ->
                   status: "success"
 
 app.put "/v1/users/:user_id", auth.rookieStatus, (req, res, next) ->
+   user_id = req.params.user_id
    email = req.body.email
    pw = req.body.password
 
@@ -119,9 +120,9 @@ app.put "/v1/users/:user_id", auth.rookieStatus, (req, res, next) ->
    update = {}
    update.refresh_token = crypt.generateRefreshToken()
    update.email = email if email
-   update.password = pw if pw
+   update.password = crypt.hashPassword(pw) if pw
 
-   User.update { _id: user_id }, { password: pw, refresh_token: token }, (err, data) ->
+   User.update { _id: user_id }, update, (err, data) ->
       return next(new MongoError(err)) if err
 
       if data == 0

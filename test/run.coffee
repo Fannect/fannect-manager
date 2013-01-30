@@ -4,6 +4,8 @@ http = require "http"
 request = require "request"
 mongoose = require "mongoose"
 async = require "async"
+crypt = require "../common/utils/crypt"
+mockAuth = require "./utils/mockAuthenticate"
 
 # Have to do this because mongoose is initialized later
 redis = null
@@ -134,6 +136,90 @@ describe "Fannect Login", () ->
                user.first_name.should.equal("Bill")
                user.last_name.should.equal("Tester")
                should.not.exist(user.password)
+               done()
+
+   describe "/v1/users/:user_id", () ->
+      describe "PUT", () ->
+         it "should update email if email", (done) ->
+            context = @
+            user_id = "5102b17168a0c8f70c000102"
+            request
+               url: "#{context.host}/v1/users/#{user_id}"
+               method: "PUT"
+               json: { email: "hithere@fannect.me" }
+            , (err, resp, body) ->
+               return done(err) if err
+               body.status.should.equal("success")
+               body.refresh_token.should.be.ok
+               User.findById user_id, "email", (err, user) ->
+                  return done(err) if err
+                  user.email.should.equal("hithere@fannect.me")
+                  done()
+
+         it "should update password if password", (done) ->
+            context = @
+            user_id = "5102b17168a0c8f70c000102"
+            pw = "newpassword"
+            request
+               url: "#{context.host}/v1/users/#{user_id}"
+               method: "PUT"
+               json: { password: pw }
+            , (err, resp, body) ->
+               return done(err) if err
+               body.status.should.equal("success")
+               body.refresh_token.should.be.ok
+               User.findById user_id, "password", (err, user) ->
+                  return done(err) if err
+                  user.password.should.equal(crypt.hashPassword(pw))
+                  done()
+
+         it "should update both if both", (done) ->
+            context = @
+            user_id = "5102b17168a0c8f70c000102"
+            pw = "newpassword2"
+            request
+               url: "#{context.host}/v1/users/#{user_id}"
+               method: "PUT"
+               json: { email: "hithere2@fannect.me", password: pw  }
+            , (err, resp, body) ->
+               return done(err) if err
+               body.status.should.equal("success")
+               body.refresh_token.should.be.ok
+               User.findById user_id, "email password", (err, user) ->
+                  return done(err) if err
+                  user.email.should.equal("hithere2@fannect.me")
+                  user.password.should.equal(crypt.hashPassword(pw))
+                  done()
+
+   describe "/v1/users/reset", () ->
+      before (done) ->
+          dbSetup.unload () -> dbSetup.load data_standard, done
+      after (done) -> dbSetup.unload done
+
+      describe "POST", () ->
+         it "should set to new password", (done) ->
+            context = @
+            pw = "hi"
+            request
+               url: "#{context.host}/v1/users/reset"
+               method: "POST"
+               json:
+                  email: "testingmctester@fannect.me"
+            , (err, resp, body) ->
+               return done(err) if err
+               body.status.should.equal("success")
+               done()
+
+         it "should fail with 400 if invalid email", (done) ->
+            context = @
+            request
+               url: "#{context.host}/v1/users/reset"
+               method: "POST"
+               json:
+                  email: "immafailure@fannect.me"
+            , (err, resp, body) ->
+               return done(err) if err
+               body.status.should.equal("fail")
                done()
 
    # describe "/v1/users/[user_id]/password", () ->
