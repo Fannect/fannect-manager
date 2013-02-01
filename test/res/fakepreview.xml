@@ -1,0 +1,153 @@
+<xts:sports-content-set xmlns:xts="http://www.xmlteam.com">
+<sports-content xmlns:xts="http://www.xmlteam.com" xmlns:str="java.lang.String" xmlns:dt="http://xsltsl.org/date-time" xmlns:exsl="http://exslt.org/common" path-id="basketball/l.nba.com/event-summary/xt.17588894-preview" xts:systemid="nbapreviewxml" xts:tsnid="17588894">
+  <sports-metadata xmlns:fs="java.io.File" date-time="20130131T103300-0500" doc-id="xt.17588894-preview" xts:tsnslug="ACV!PREVIEW-MEM-OKC" language="en-US" revision-id="l.nba.com-2012-e.17856-pre-event-coverage-sportsnetwork.com" fixture-key="pre-event-coverage" document-class="event-summary" fixture-name="Game Preview">
+    <sports-title>Preview: 
+Memphis Grizzlies (29-15) at Oklahoma City Thunder (34-11), 8 p.m. (ET)</sports-title>
+    <sports-content-codes>
+      <sports-content-code code-name="The Sports Network" code-key="sportsnetwork.com" code-type="publisher"/>
+      <sports-content-code code-name="XML Team Solutions, Inc." code-key="xmlteam.com" code-type="distributor"/>
+      <sports-content-code code-type="sport" code-key="15008000" code-name="Basketball"/>
+      <sports-content-code code-type="league" code-key="l.nba.com" code-name="National Basketball Association"/>
+      <sports-content-code code-type="priority" code-key="normal"/>
+      <sports-content-code code-type="conference" code-key="c.western" code-name="Western"/>
+      <sports-content-code code-type="team" code-key="l.nba.com-t.29" code-name="Oklahoma City Thunder"/>
+      <sports-content-code code-type="team" code-key="l.nba.com-t.19" code-name="Memphis Grizzlies"/>
+    </sports-content-codes>
+  </sports-metadata>
+  <sports-event>
+    <event-metadata xmlns:fs="java.io.File" xmlns:xte="www.xmlteam.com/xte" date-coverage-type="event" event-key="l.nba.com-2012-e.17856" date-coverage-value="l.nba.com-2012-e.17856" event-status="pre-event" start-date-time="20130131T200000-0500">
+      <sports-content-codes/>
+      <event-metadata-basketball/>
+      <site>
+        <site-metadata>
+          <home-location/>
+        </site-metadata>
+        <site-stats/>
+      </site>
+    </event-metadata>
+    <team>
+      <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.19" alignment="away">
+        <name first="Memphis" last="Grizzlies"/>
+      </team-metadata>
+    </team>
+    <team>
+      <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.29" alignment="home">
+        <name first="Oklahoma City" last="Thunder"/>
+      </team-metadata>
+    </team>
+  </sports-event>
+  <article format="nitf">
+    <nitf>
+      <head>
+        <docdata/>
+      </head>
+      <body>
+        <body.head>
+          <hedline>
+            <hl1>Memphis Grizzlies (29-15) at Oklahoma City Thunder (34-11), 8 p.m. (ET)</hl1>
+          </hedline>
+          <byline>
+            <byttl>Sports Network</byttl>
+          </byline>
+          <abstract>
+            <p>The Memphis Grizzlies will have a new look when they invade Oklahoma City Thursday to take on Kevin Durant and the Thunder.</p>
+          </abstract>
+        </body.head>
+        <body.content>
+          <p>(Sports Network) - The Memphis Grizzlies will have a new look when they invade Oklahoma City Thursday to take on Kevin Durant and the Thunder.</p>
+          <p>The Grizzlies shipped leading scorer Rudy Gay and center Hamed Haddadi to the Toronto Raptors Wednesday in exchange for point guard Jose Calderon, forward Ed Davis and a second round draft pick in the 2013 NBA Draft. Additionally, the Grizzlies sent Calderon to the Detroit Pistons for forwards Tayshaun Prince and Austin Daye.</p>
+          <p>"We are excited to add three players who bring with them a tremendous amount of value to our team and have achieved incredible success on the pro, college and Olympic levels," Grizzlies vice president of basketball operations Chris Wallace said. "In these players, we welcome NBA Champion and Olympic gold medalist Tayshaun Prince, as well as up-and-coming athletic forwards Ed Davis, who won an NCAA title at North Carolina, and Austin Daye.</p>
+          <p>"On behalf of the Memphis Grizzlies, we especially would like to thank Rudy Gay for his contributions to the Grizzlies and the City of Memphis both on and off the court. We wish him and Hamed the very best."</p>
+          <p>Over 42 games this season, Gay has averaged a team-best 17.2 points, 5.9 rebounds and 2.6 assists. The 26-year-old, who was the eighth overall pick in the 2006 NBA Draft, has produced career averages of 17.9 points, 5.8 rebounds and 2.0 assists per contest.</p>
+          <p>It is unknown if the Grizzlies' new pieces will debut Thursday.</p>
+          <p>Double-double machine Zach Randolph now leads the team with 15.8 ppg, while Marc Gasol and Mike Conley have added pressure to step it up. Memphis is fourth in the Western Conference standings and has won five of seven games, including Monday's come-from-behind 103-100 win at Philadelphia. Gay provided the go-ahead basket with 13.3 seconds left and finished with 26 points.</p>
+          <p>Gasol had 27 points and Jerryd Bayless added 21 for the Grizzlies, who rallied from a 17-point deficit in the first quarter and are 12-8 as the visitor this season. The Grizzlies are undefeated this season (14-0) when scoring 100 points and posted season highs in field goal percentage (.548) and three-point field goal percentage (.615).</p>
+          <p>In injury news for Memphis, Conley is questionable for Thursday's game with a sprained left ankle.</p>
+          <p>Oklahoma City has alternated wins and losses over its last five games since a six-game winning streak and is back home after going 3-3 on a recent road trip.</p>
+          <p>The well-rested Thunder closed the trip with Sunday's 105-96 setback against the Los Angeles Lakers as Durant led the way with a game-high 35 points and Russell Westbrook contributed 17 points with 13 assists. Durant leads the NBA with 29.6 ppg. Kobe Bryant had 21 points and 14 assists for L.A.</p>
+          <p>"They're a physical team, Kobe picked us apart," said Thunder coach Scott Brooks. "14 assists in back-to-back games, he can do it all. We didn't shoot the way we wanted to. They just beat us."</p>
+          <p>Serge Ibaka and Kendrick Perkins scored 10 points apiece in defeat.</p>
+          <p>The Thunder will try to extend their home winning streak to four games and are 19-3 in the OKC this season. They sport a 13-1 home mark against teams from the Western Conference.</p>
+          <p>Westbrook has 27 assists in his last two games and leads the team with 17 double-doubles on the season. Oklahoma City is 9-1 in games following a loss and went 15-3 in those games a season ago.</p>
+          <p>Oklahoma City dropped a 107-97 decision to the Grizzlies at home back on Nov. 14 this season. Memphis has won two in a row and three of four as the visitor in this series. The Thunder will visit Memphis March 20.</p>
+        </body.content>
+      </body>
+    </nitf>
+  </article>
+</sports-content>
+<sports-content xmlns:xts="http://www.xmlteam.com" xmlns:str="java.lang.String" xmlns:dt="http://xsltsl.org/date-time" xmlns:exsl="http://exslt.org/common" path-id="basketball/l.nba.com/event-summary/xt.17588885-preview" xts:systemid="nbapreviewxml" xts:tsnid="17588885">
+  <sports-metadata xmlns:fs="java.io.File" date-time="20130131T103100-0500" doc-id="xt.17588885-preview" xts:tsnslug="ACV!PREVIEW-DAL-GSW" language="en-US" revision-id="l.nba.com-2012-e.17858-pre-event-coverage-sportsnetwork.com" fixture-key="pre-event-coverage" document-class="event-summary" fixture-name="Game Preview">
+    <sports-title>Preview: 
+Dallas Mavericks (19-26) at Golden State Warriors (28-17), 10:30 p.m. (ET)</sports-title>
+    <sports-content-codes>
+      <sports-content-code code-name="The Sports Network" code-key="sportsnetwork.com" code-type="publisher"/>
+      <sports-content-code code-name="XML Team Solutions, Inc." code-key="xmlteam.com" code-type="distributor"/>
+      <sports-content-code code-type="sport" code-key="15008000" code-name="Basketball"/>
+      <sports-content-code code-type="league" code-key="l.nba.com" code-name="National Basketball Association"/>
+      <sports-content-code code-type="priority" code-key="normal"/>
+      <sports-content-code code-type="conference" code-key="c.western" code-name="Western"/>
+      <sports-content-code code-type="team" code-key="l.nba.com-t.23" code-name="Golden State Warriors"/>
+      <sports-content-code code-type="team" code-key="l.nba.com-t.16" code-name="Dallas Mavericks"/>
+    </sports-content-codes>
+  </sports-metadata>
+  <sports-event>
+    <event-metadata xmlns:fs="java.io.File" xmlns:xte="www.xmlteam.com/xte" date-coverage-type="event" event-key="l.nba.com-2012-e.17858" date-coverage-value="l.nba.com-2012-e.17858" event-status="pre-event" start-date-time="20130131T223000-0500">
+      <sports-content-codes/>
+      <event-metadata-basketball/>
+      <site>
+        <site-metadata>
+          <home-location/>
+        </site-metadata>
+        <site-stats/>
+      </site>
+    </event-metadata>
+    <team>
+      <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.16" alignment="away">
+        <name first="Dallas" last="Mavericks"/>
+      </team-metadata>
+    </team>
+    <team>
+      <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.23" alignment="home">
+        <name first="Golden State" last="Warriors"/>
+      </team-metadata>
+    </team>
+  </sports-event>
+  <article format="nitf">
+    <nitf>
+      <head>
+        <docdata/>
+      </head>
+      <body>
+        <body.head>
+          <hedline>
+            <hl1>Dallas Mavericks (19-26) at Golden State Warriors (28-17), 10:30 p.m. (ET)</hl1>
+          </hedline>
+          <byline>
+            <byttl>Sports Network</byttl>
+          </byline>
+          <abstract>
+            <p>The Dallas Mavericks will continue a four-game road trip Thursday night against the Golden State Warriors at Oracle Arena.</p>
+          </abstract>
+        </body.head>
+        <body.content>
+          <p>(Sports Network) - The Dallas Mavericks will continue a four-game road trip Thursday night against the Golden State Warriors at Oracle Arena.</p>
+          <p>The Mavericks have alternated wins and losses over their last six games, and opened the road trip with a 106-104 loss at Portland on Tuesday. Dirk Nowitzki scored a season-high 26 points, Darren Collison had 17 and O.J. Mayo finished with 15 points for Dallas, which was outscored by a 32-24 margin in the fourth quarter and fell to 7-17 away from Big D.</p>
+          <p>"The difference between a good team and a bad team is a couple possessions down the stretch. For some reason, we haven't found a way to win those games consistently," said Nowitzki, who has scored 18-plus points in four of the past six contests.</p>
+          <p>Blazers All-Star forward LaMarcus Aldridge buried the game-winning shot as time expired.</p>
+          <p>Shawn Marion finished with 12 points in the setback. Mavs head coach Rick Carlisle is still two wins shy of 500 in his career (498-351).</p>
+          <p>Dallas will also visit Phoenix and Oklahoma City on the swing. It has scored 100 or more points in each of the last nine games, going 6-3 and averaging 109.4 ppg in that stretch.</p>
+          <p>The Warriors hope to get some players back Thursday when they open a brief homestand versus Dallas and Phoenix.</p>
+          <p>Point guard Stephen Curry did not play in Tuesday's 108-95 win at Cleveland because of a sprained right ankle and is questionable this evening. Curry is averaging 21.0 points and 6.4 assists and has undergone surgery on his right ankle in each of the last two offseasons.</p>
+          <p>Center Andrew Bogut (ankle) made his season debut Monday at Toronto and did not play against the Cavs to rest. He is listed as doubtful versus Dallas.</p>
+          <p>In the recent triumph over Cleveland, Klay Thompson posted a career-high 32 points and All-Star David Lee registered 20 points, 13 rebounds and eight assists. Jarrett Jack ended with 26 points and 12 assists for Golden State, winners in five of its last seven games.</p>
+          <p>"No matter who is out there, we're still going to play Warriors basketball," Lee told NBA.com. "We could have mailed it in on the last game of a road trip tonight, but everybody stepped up with a bunch of guys out."</p>
+          <p>Golden State shot 53.6 for the game and made a season-high 11-of-16 3- pointers, six of which were drained by Thompson. Jack was 3-for-4 from downtown and Golden State hit its first nine 3-pointers.</p>
+          <p>In milestone news for the Warriors, Lee needs 14 points to reach 8,000 for his career and will become the sixth youngest active player with at least 8,000 points and 5,000 rebounds, joining Chris Bosh, LeBron James, Al Jefferson, Dwight Howard and Josh Smith.</p>
+          <p>Lee is the only player in the league averaging at least 19 points, 10 rebounds and three assists this season.</p>
+          <p>The Warriors won the first meeting with Dallas by a 105-101 score in overtime back on Nov. 19, when Curry scored 20 of his 31 points in the fourth quarter and overtime. Mayo dropped in 27 points and Lee tallied 17 points and a season-best 19 rebounds in that one to pace Dallas, which has won 13 of the last 19 matchups in this series.</p>
+        </body.content>
+      </body>
+    </nitf>
+  </article>
+</sports-content>
+</xts:sports-content-set>

@@ -1,0 +1,471 @@
+<xts:sports-content-set xmlns:xts="http://www.xmlteam.com">
+<sports-content xmlns:xts="http://www.xmlteam.com" xmlns:str="java.lang.String" xmlns:dt="http://xsltsl.org/date-time" xmlns:exsl="http://exslt.org/common" path-id="basketball/l.nba.com/event-summary/xt.R39843-box" xts:systemid="NBA_Boxscore_XML" xts:tsnid="R39843">
+  <sports-metadata xmlns:fs="java.io.File" date-time="20130131T095200-0500" doc-id="xt.R39843-box" xts:tsnslug="ACX%BOX-SAC-BOS" language="en-US" revision-id="l.nba.com-2012-e.17838-event-stats-sportsnetwork.com" fixture-key="event-stats" document-class="event-summary" fixture-name="Box Score">
+    <sports-title>Boxscore: Boston vs. Sacramento</sports-title>
+    <sports-content-codes>
+      <sports-content-code code-name="The Sports Network" code-key="sportsnetwork.com" code-type="publisher"/>
+      <sports-content-code code-name="XML Team Solutions, Inc." code-key="xmlteam.com" code-type="distributor"/>
+      <sports-content-code code-type="sport" code-key="15008000" code-name="Basketball"/>
+      <sports-content-code code-type="league" code-key="l.nba.com" code-name="National Basketball Association"/>
+      <sports-content-code code-type="season-type" code-key="regular"/>
+      <sports-content-code code-type="season" code-key="2012"/>
+      <sports-content-code code-type="priority" code-key="normal"/>
+      <sports-content-code code-type="conference" code-key="c.western" code-name="Western"/>
+      <sports-content-code code-type="conference" code-key="c.eastern" code-name="Eastern"/>
+      <sports-content-code code-type="team" code-key="l.nba.com-t.1" code-name="Boston Celtics"/>
+      <sports-content-code code-type="team" code-key="l.nba.com-t.28" code-name="Sacramento Kings"/>
+      <sports-content-code code-type="action-listing" code-key="complete"/>
+    </sports-content-codes>
+  </sports-metadata>
+  <sports-event>
+    <event-metadata xmlns:fs="java.io.File" xmlns:xte="www.xmlteam.com/xte" date-coverage-type="event" event-key="l.nba.com-2012-e.17838" date-coverage-value="l.nba.com-2012-e.17838" event-status="post-event" duration=" 2:10 " start-date-time="20130130T193000-0500">
+      <sports-content-codes/>
+      <event-metadata-basketball/>
+      <site>
+        <site-metadata site-key="TD_Garden">
+          <name full="TD Garden"/>
+          <home-location/>
+        </site-metadata>
+        <site-stats attendance="18624"/>
+      </site>
+    </event-metadata>
+    <team>
+      <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.28" alignment="away">
+        <name first="Sacramento" last="Kings"/>
+      </team-metadata>
+      <team-stats score="81" score-opposing="99" event-outcome="loss" time-played-total="240">
+        <sub-score period-value="1" score="24"/>
+        <sub-score period-value="2" score="14"/>
+        <sub-score period-value="3" score="22"/>
+        <sub-score period-value="4" score="21"/>
+        <penalty-stats count="0" type="illegal defense"/>
+        <penalty-stats count="0" type="technical fouls"/>
+        <penalty-stats count="19" type="personal fouls"/>
+        <team-stats-basketball>
+          <stats-basketball-offensive field-goals-made="29" field-goals-attempted="74" field-goals-percentage=".392" three-pointers-made="6" three-pointers-attempted="17" three-pointers-percentage=".353" free-throws-made="17" free-throws-attempted="26" free-throws-percentage=".654" assists-total="13" points-scored-total="81" turnovers-total="18" xts:team-turnovers-total="1" team-turnovers-total="1" points-scored-off-turnovers="16"/>
+          <stats-basketball-rebounding rebounds-offensive="12" rebounds-defensive="27" rebounds-total="39" team-rebounds-total="9"/>
+          <stats-basketball-defensive steals-total="10" blocks-total="1"/>
+        </team-stats-basketball>
+      </team-stats>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.1025" status="starter">
+          <name first="Francisco" last="Garcia"/>
+        </player-metadata>
+        <player-stats time-played-total="21">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="6"/>
+          <player-stats-basketball minutes-played="21:10">
+            <stats-basketball-offensive field-goals-made="2" field-goals-attempted="6" three-pointers-made="2" three-pointers-attempted="4" free-throws-made="0" free-throws-attempted="0" assists-total="0" points-scored-total="6" turnovers-total="3"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="2" rebounds-total="2"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.1496" status="starter">
+          <name first="Jason" last="Thompson"/>
+        </player-metadata>
+        <player-stats time-played-total="20">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="2" type="personal fouls"/>
+          <outcome-totals points-scored-for="9"/>
+          <player-stats-basketball minutes-played="20:59">
+            <stats-basketball-offensive field-goals-made="4" field-goals-attempted="7" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="1" free-throws-attempted="2" assists-total="0" points-scored-total="9" turnovers-total="1"/>
+            <stats-basketball-rebounding rebounds-offensive="1" rebounds-defensive="2" rebounds-total="3"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="center" player-key="l.nba.com-p.1900" status="starter">
+          <name first="DeMarcus" last="Cousins"/>
+        </player-metadata>
+        <player-stats time-played-total="32">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="4" type="personal fouls"/>
+          <outcome-totals points-scored-for="13"/>
+          <player-stats-basketball minutes-played="32:53">
+            <stats-basketball-offensive field-goals-made="4" field-goals-attempted="12" three-pointers-made="0" three-pointers-attempted="1" free-throws-made="5" free-throws-attempted="8" assists-total="4" points-scored-total="13" turnovers-total="5"/>
+            <stats-basketball-rebounding rebounds-offensive="2" rebounds-defensive="4" rebounds-total="6"/>
+            <stats-basketball-defensive steals-total="1" blocks-total="1"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.1653" status="starter">
+          <name first="Tyreke" last="Evans"/>
+        </player-metadata>
+        <player-stats time-played-total="41">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="3" type="personal fouls"/>
+          <outcome-totals points-scored-for="19"/>
+          <player-stats-basketball minutes-played="41:26">
+            <stats-basketball-offensive field-goals-made="7" field-goals-attempted="15" three-pointers-made="1" three-pointers-attempted="2" free-throws-made="4" free-throws-attempted="4" assists-total="2" points-scored-total="19" turnovers-total="4"/>
+            <stats-basketball-rebounding rebounds-offensive="3" rebounds-defensive="8" rebounds-total="11"/>
+            <stats-basketball-defensive steals-total="3" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.2179" status="starter">
+          <name first="Isaiah" last="Thomas"/>
+        </player-metadata>
+        <player-stats time-played-total="23">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="8"/>
+          <player-stats-basketball minutes-played="23:30">
+            <stats-basketball-offensive field-goals-made="2" field-goals-attempted="10" three-pointers-made="1" three-pointers-attempted="4" free-throws-made="3" free-throws-attempted="4" assists-total="1" points-scored-total="8" turnovers-total="0"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="3" rebounds-total="3"/>
+            <stats-basketball-defensive steals-total="3" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.2298" status="bench">
+          <name first="Thomas" last="Robinson"/>
+        </player-metadata>
+        <player-stats time-played-total="20">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="4" type="personal fouls"/>
+          <outcome-totals points-scored-for="11"/>
+          <player-stats-basketball minutes-played="20:48">
+            <stats-basketball-offensive field-goals-made="4" field-goals-attempted="5" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="3" free-throws-attempted="6" assists-total="1" points-scored-total="11" turnovers-total="2"/>
+            <stats-basketball-rebounding rebounds-offensive="1" rebounds-defensive="3" rebounds-total="4"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.1044" status="bench">
+          <name first="Chuck" last="Hayes"/>
+        </player-metadata>
+        <player-stats time-played-total="21">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="2" type="personal fouls"/>
+          <outcome-totals points-scored-for="2"/>
+          <player-stats-basketball minutes-played="21:20">
+            <stats-basketball-offensive field-goals-made="1" field-goals-attempted="3" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="0" free-throws-attempted="0" assists-total="2" points-scored-total="2" turnovers-total="0"/>
+            <stats-basketball-rebounding rebounds-offensive="4" rebounds-defensive="2" rebounds-total="6"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.1646" status="bench">
+          <name first="Marcus" last="Thornton"/>
+        </player-metadata>
+        <player-stats time-played-total="27">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="4" type="personal fouls"/>
+          <outcome-totals points-scored-for="7"/>
+          <player-stats-basketball minutes-played="27:01">
+            <stats-basketball-offensive field-goals-made="3" field-goals-attempted="7" three-pointers-made="1" three-pointers-attempted="3" free-throws-made="0" free-throws-attempted="0" assists-total="1" points-scored-total="7" turnovers-total="0"/>
+            <stats-basketball-rebounding rebounds-offensive="1" rebounds-defensive="2" rebounds-total="3"/>
+            <stats-basketball-defensive steals-total="3" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.1362" status="bench">
+          <name first="Aaron" last="Brooks"/>
+        </player-metadata>
+        <player-stats time-played-total="6">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="1"/>
+          <player-stats-basketball minutes-played="6:15">
+            <stats-basketball-offensive field-goals-made="0" field-goals-attempted="0" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="1" free-throws-attempted="2" assists-total="0" points-scored-total="1" turnovers-total="1"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="0" rebounds-total="0"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.759" status="bench">
+          <name first="Travis" last="Outlaw"/>
+        </player-metadata>
+        <player-stats time-played-total="4">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="3"/>
+          <player-stats-basketball minutes-played="4:04">
+            <stats-basketball-offensive field-goals-made="1" field-goals-attempted="3" three-pointers-made="1" three-pointers-attempted="2" free-throws-made="0" free-throws-attempted="0" assists-total="0" points-scored-total="3" turnovers-total="1"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="0" rebounds-total="0"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.1565" status="bench">
+          <name first="James" last="Johnson"/>
+        </player-metadata>
+        <player-stats time-played-total="1">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="0"/>
+          <player-stats-basketball minutes-played="1:20">
+            <stats-basketball-offensive field-goals-made="0" field-goals-attempted="2" three-pointers-made="0" three-pointers-attempted="1" free-throws-made="0" free-throws-attempted="0" assists-total="0" points-scored-total="0" turnovers-total="0"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="0" rebounds-total="0"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.2111" status="bench">
+          <name first="Jimmer" last="Fredette"/>
+        </player-metadata>
+        <player-stats time-played-total="18">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="2"/>
+          <player-stats-basketball minutes-played="18:15">
+            <stats-basketball-offensive field-goals-made="1" field-goals-attempted="4" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="0" free-throws-attempted="0" assists-total="2" points-scored-total="2" turnovers-total="1"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="1" rebounds-total="1"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.2126" status="bench">
+          <name first="Tyler" last="Honeycutt"/>
+        </player-metadata>
+        <player-stats time-played-total="0">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="0"/>
+          <player-stats-basketball minutes-played="0:59">
+            <stats-basketball-offensive field-goals-made="0" field-goals-attempted="0" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="0" free-throws-attempted="0" assists-total="0" points-scored-total="0" turnovers-total="0"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="0" rebounds-total="0"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata player-key="l.nba.com-p.537" status="scratched">
+          <name first="John" last="Salmons"/>
+          <player-metadata-basketball xts:reason-for-not-playing="Injured"/>
+        </player-metadata>
+        <player-stats>
+          <outcome-totals/>
+        </player-stats>
+      </player>
+    </team>
+    <team>
+      <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.1" alignment="home">
+        <name first="Boston" last="Celtics"/>
+      </team-metadata>
+      <team-stats score="99" score-opposing="81" event-outcome="win" time-played-total="240">
+        <sub-score period-value="1" score="22"/>
+        <sub-score period-value="2" score="37"/>
+        <sub-score period-value="3" score="21"/>
+        <sub-score period-value="4" score="19"/>
+        <penalty-stats count="0" type="illegal defense"/>
+        <penalty-stats count="0" type="technical fouls"/>
+        <penalty-stats count="22" type="personal fouls"/>
+        <team-stats-basketball>
+          <stats-basketball-offensive field-goals-made="39" field-goals-attempted="73" field-goals-percentage=".534" three-pointers-made="5" three-pointers-attempted="16" three-pointers-percentage=".313" free-throws-made="16" free-throws-attempted="20" free-throws-percentage=".800" assists-total="22" points-scored-total="99" turnovers-total="16" xts:team-turnovers-total="2" team-turnovers-total="2" points-scored-off-turnovers="27"/>
+          <stats-basketball-rebounding rebounds-offensive="6" rebounds-defensive="32" rebounds-total="38" team-rebounds-total="6"/>
+          <stats-basketball-defensive steals-total="10" blocks-total="4"/>
+        </team-stats-basketball>
+      </team-stats>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.220" status="starter">
+          <name first="Paul" last="Pierce"/>
+        </player-metadata>
+        <player-stats time-played-total="30">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="3" type="personal fouls"/>
+          <outcome-totals points-scored-for="16"/>
+          <player-stats-basketball minutes-played="30:39">
+            <stats-basketball-offensive field-goals-made="5" field-goals-attempted="9" three-pointers-made="0" three-pointers-attempted="2" free-throws-made="6" free-throws-attempted="7" assists-total="4" points-scored-total="16" turnovers-total="3"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="10" rebounds-total="10"/>
+            <stats-basketball-defensive steals-total="1" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.2318" status="starter">
+          <name first="Jared" last="Sullinger"/>
+        </player-metadata>
+        <player-stats time-played-total="4">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="0"/>
+          <player-stats-basketball minutes-played="4:08">
+            <stats-basketball-offensive field-goals-made="0" field-goals-attempted="0" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="0" free-throws-attempted="0" assists-total="0" points-scored-total="0" turnovers-total="0"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="1" rebounds-total="1"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="center" player-key="l.nba.com-p.339" status="starter">
+          <name first="Kevin" last="Garnett"/>
+        </player-metadata>
+        <player-stats time-played-total="28">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="13"/>
+          <player-stats-basketball minutes-played="28:15">
+            <stats-basketball-offensive field-goals-made="6" field-goals-attempted="10" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="1" free-throws-attempted="1" assists-total="5" points-scored-total="13" turnovers-total="1"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="9" rebounds-total="9"/>
+            <stats-basketball-defensive steals-total="1" blocks-total="2"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.1889" status="starter">
+          <name first="Avery" last="Bradley"/>
+        </player-metadata>
+        <player-stats time-played-total="29">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="2" type="personal fouls"/>
+          <outcome-totals points-scored-for="11"/>
+          <player-stats-basketball minutes-played="29:13">
+            <stats-basketball-offensive field-goals-made="4" field-goals-attempted="11" three-pointers-made="1" three-pointers-attempted="5" free-throws-made="2" free-throws-attempted="2" assists-total="2" points-scored-total="11" turnovers-total="2"/>
+            <stats-basketball-rebounding rebounds-offensive="3" rebounds-defensive="2" rebounds-total="5"/>
+            <stats-basketball-defensive steals-total="3" blocks-total="1"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.1456" status="starter">
+          <name first="Courtney" last="Lee"/>
+        </player-metadata>
+        <player-stats time-played-total="26">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="0" type="personal fouls"/>
+          <outcome-totals points-scored-for="9"/>
+          <player-stats-basketball minutes-played="26:16">
+            <stats-basketball-offensive field-goals-made="3" field-goals-attempted="8" three-pointers-made="1" three-pointers-attempted="2" free-throws-made="2" free-throws-attempted="2" assists-total="3" points-scored-total="9" turnovers-total="2"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="0" rebounds-total="0"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.1007" status="bench">
+          <name first="Brandon" last="Bass"/>
+        </player-metadata>
+        <player-stats time-played-total="37">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="3" type="personal fouls"/>
+          <outcome-totals points-scored-for="12"/>
+          <player-stats-basketball minutes-played="37:36">
+            <stats-basketball-offensive field-goals-made="4" field-goals-attempted="7" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="4" free-throws-attempted="5" assists-total="2" points-scored-total="12" turnovers-total="1"/>
+            <stats-basketball-rebounding rebounds-offensive="1" rebounds-defensive="3" rebounds-total="4"/>
+            <stats-basketball-defensive steals-total="3" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="center" player-key="l.nba.com-p.355" status="bench">
+          <name first="Jason" last="Collins"/>
+        </player-metadata>
+        <player-stats time-played-total="8">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="4" type="personal fouls"/>
+          <outcome-totals points-scored-for="1"/>
+          <player-stats-basketball minutes-played="8:53">
+            <stats-basketball-offensive field-goals-made="0" field-goals-attempted="0" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="1" free-throws-attempted="2" assists-total="0" points-scored-total="1" turnovers-total="0"/>
+            <stats-basketball-rebounding rebounds-offensive="1" rebounds-defensive="0" rebounds-total="1"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="forward" player-key="l.nba.com-p.1296" status="bench">
+          <name first="Jeff" last="Green"/>
+        </player-metadata>
+        <player-stats time-played-total="20">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="5" type="personal fouls"/>
+          <outcome-totals points-scored-for="12"/>
+          <player-stats-basketball minutes-played="20:30">
+            <stats-basketball-offensive field-goals-made="6" field-goals-attempted="11" three-pointers-made="0" three-pointers-attempted="2" free-throws-made="0" free-throws-attempted="0" assists-total="0" points-scored-total="12" turnovers-total="3"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="1" rebounds-total="1"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="center" player-key="l.nba.com-p.278" status="bench">
+          <name first="Chris" last="Wilcox"/>
+        </player-metadata>
+        <player-stats time-played-total="17">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="3" type="personal fouls"/>
+          <outcome-totals points-scored-for="6"/>
+          <player-stats-basketball minutes-played="17:08">
+            <stats-basketball-offensive field-goals-made="3" field-goals-attempted="4" three-pointers-made="0" three-pointers-attempted="0" free-throws-made="0" free-throws-attempted="0" assists-total="0" points-scored-total="6" turnovers-total="0"/>
+            <stats-basketball-rebounding rebounds-offensive="1" rebounds-defensive="4" rebounds-total="5"/>
+            <stats-basketball-defensive steals-total="2" blocks-total="1"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.111" status="bench">
+          <name first="Jason" last="Terry"/>
+        </player-metadata>
+        <player-stats time-played-total="22">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="1" type="personal fouls"/>
+          <outcome-totals points-scored-for="12"/>
+          <player-stats-basketball minutes-played="22:15">
+            <stats-basketball-offensive field-goals-made="5" field-goals-attempted="7" three-pointers-made="2" three-pointers-attempted="3" free-throws-made="0" free-throws-attempted="0" assists-total="4" points-scored-total="12" turnovers-total="1"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="2" rebounds-total="2"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata position-event="guard" player-key="l.nba.com-p.805" status="bench">
+          <name first="Leandro" last="Barbosa"/>
+        </player-metadata>
+        <player-stats time-played-total="15">
+          <penalty-stats count="0" type="technical fouls"/>
+          <penalty-stats count="1" type="personal fouls"/>
+          <outcome-totals points-scored-for="7"/>
+          <player-stats-basketball minutes-played="15:07">
+            <stats-basketball-offensive field-goals-made="3" field-goals-attempted="6" three-pointers-made="1" three-pointers-attempted="2" free-throws-made="0" free-throws-attempted="1" assists-total="2" points-scored-total="7" turnovers-total="3"/>
+            <stats-basketball-rebounding rebounds-offensive="0" rebounds-defensive="0" rebounds-total="0"/>
+            <stats-basketball-defensive steals-total="0" blocks-total="0"/>
+          </player-stats-basketball>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata player-key="l.nba.com-p.1085" status="scratched">
+          <name first="Rajon" last="Rondo"/>
+          <player-metadata-basketball xts:reason-for-not-playing="Coach's Decision"/>
+        </player-metadata>
+        <player-stats>
+          <outcome-totals/>
+        </player-stats>
+      </player>
+      <player>
+        <player-metadata player-key="l.nba.com-p.2268" status="scratched">
+          <name first="Fab" last="Melo"/>
+          <player-metadata-basketball xts:reason-for-not-playing="Injured"/>
+        </player-metadata>
+        <player-stats>
+          <outcome-totals/>
+        </player-stats>
+      </player>
+    </team>
+    <officials>
+      <official>
+        <official-metadata>
+          <name full=" Bennett Salvatore, Violet Palmer, Derek Richardson "/>
+        </official-metadata>
+      </official>
+    </officials>
+    <event-actions>
+      <event-actions-basketball/>
+    </event-actions>
+    <highlight class="non-player technicals"/>
+    <highlight class="non-player technicals"/>
+  </sports-event>
+</sports-content>
+</xts:sports-content-set>

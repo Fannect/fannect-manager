@@ -9,17 +9,12 @@
    "private": true,
    "dependencies": {
       "coffee-script": "1.4.0",
-      "express": "3.0.1",
+      "commander": "1.1.1",
       "request": "2.12.0",
-      "mime": "1.2.2",
-      "underscore": "1.1.7",
       "async": "0.1.22",
-      "qs": "0.5.3",
-      "cloudinary": "1.0.1",
       "mongoose": "3.5.4",
       "mongoose-types": "1.0.3",
-      "redis": "0.8.2",
-      "sendgrid-web": "0.0.4"
+      "xml2js": "0.2.3"
    },
    "devDependencies": {
       "mocha": "1.7.4",
