@@ -1,12 +1,58 @@
-[
-    {
-        "_id": "5102b17168a0c8f70c000102",
-        "email": "testingmctester@fannect.me",
-        "password": "150a14ed5bea6cc731cf86c41566ac427a8db48ef1b9fd626664b3bfbb99071fa4c922f33dde38719b8c8354e2b7ab9d77e0e67fc12843920a712e73d558e197",
-        "first_name": "Mc",
-        "last_name": "Tester",
-        "refresh_token": "hereisatoken",
-        "friends": [],
-        "invites": []
-    }
-]
+{
+    "teams": [
+        {
+            "_id": "51084c08f71f44551a7b1ef6",
+            "team_key": "l.nba.com-t.1",   
+            "mascot": "Celtics",
+            "location_name": "Boston",
+            "full_name": "Boston  Celtics",
+            "stadium": {
+                "stadium_id": "51084b38f71f54551a8b1d95",
+                "name": "TD Garden",
+                "location": "Boston, MA",
+                "coords": [ -71.06222, 42.366289 ]
+            },
+            "sport_key": "15008000",
+            "sport_name": "Basketball",
+            "league_key": "l.nba.com",
+            "league_name": "National Basketball Association",
+            "conference_key": "c.eastern",
+            "conference_name": "Eastern",
+            "is_college": false
+        }, {
+            "_id": "51084c08f71f44551a7b1ef7",
+            "team_key": "l.nba.com-t.14",   
+            "mascot": "Bucks",
+            "location_name": "Milwaukee",
+            "full_name": "Milwaukee Bucks",
+            "stadium": {
+                "stadium_id": "51084b38f71f54551a8b1d55",
+                "name": "BMO Harris Bradley Center",
+                "location": "Milwaukee, WI",
+                "coords": [ -87.917216, 43.043661 ]
+            },
+            "sport_key": "15008000",
+            "sport_name": "Basketball",
+            "league_key": "l.nba.com",
+            "league_name": "National Basketball Association",
+            "conference_key": "c.eastern",
+            "conference_name": "Eastern",
+            "is_college": false
+        }
+    ],
+    "stadiums": [
+         {
+            "_id": "51084b38f71f54551a8b1d95",
+            "key": "TD_Garden",
+            "name": "TD Garden",
+            "location": "Boston, MA",
+            "coords": [ -71.06222, 42.366289 ]
+        }, {
+            "_id": "51084b38f71f54551a8b1d55",
+            "key": "BMO_Harris_Bradley_Center",
+            "name": "BMO Harris Bradley Center",
+            "location": "Milwaukee, WI",
+            "coords": [ -87.917216, 43.043661 ]
+        }  
+    ]
+}

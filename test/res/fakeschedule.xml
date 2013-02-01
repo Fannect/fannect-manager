@@ -46,7 +46,7 @@
       <highlight class="series-status"/>
     </sports-event>
     <sports-event>
-      <event-metadata xmlns:fs="java.io.File" xmlns:xte="www.xmlteam.com/xte" date-coverage-type="event" event-key="l.nba.com-2012-e.16907" date-coverage-value="l.nba.com-2012-e.16907" event-status="post-event" xts:tsn-event-status-string="7:30 PM" event-name="" event-number="0" start-date-time="20121102T193000-0400" xts:time-certainty="certain" time-certainty="certain" xts:broadcast-listing="FSN-WI, CSN-NE">
+      <event-metadata xmlns:fs="java.io.File" xmlns:xte="www.xmlteam.com/xte" date-coverage-type="event" event-key="l.nba.com-2012-e.16907" date-coverage-value="l.nba.com-2012-e.16907" event-status="pre-event" xts:tsn-event-status-string="7:30 PM" event-name="" event-number="0" start-date-time="20121102T193000-0400" xts:time-certainty="certain" time-certainty="certain" xts:broadcast-listing="FSN-WI, CSN-NE">
         <sports-content-codes>
           <sports-content-code code-type="season-type" code-key="regular"/>
         </sports-content-codes>
