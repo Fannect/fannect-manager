@@ -3,11 +3,26 @@ parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
 
-url = process.env.XMLTEAM_URL or "http://sportscaster.xmlteam.com/gateway/php_ci"
-username = process.env.XMLTEAM_USERNAME or "fannect"
-password = process.env.XMLTEAM_PASSWORD or "k4ns4s"
+url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
 previewer = module.exports =
+   
+   updateAll: (cb) ->
+      Team
+      .aggregate { $group: { _id: "$league_key" }}
+      , (err, leagues) ->
+         return cb(err) if err
+
+         errors = []
+         count = 0
+         for l in leagues
+            do (league = l) ->
+               count++
+               previewer.update league._id, (err) -> 
+                  errors.push(err) if err
+
+                  if --count <= 0
+                     cb(if errors.length > 0 then errors else null)
 
    update: (league_key, cb) ->
       request.get
@@ -17,10 +32,6 @@ previewer = module.exports =
             "fixture-keys": "pre-event-coverage"
             "max-result-count": 40
             "content-returned": "all-content"
-         auth:
-            user: username
-            pass: password
-            sendImmediately: true
       , (err, resp, body) ->
          return cb(err) if err   
          parser.parse body, (err, doc) ->

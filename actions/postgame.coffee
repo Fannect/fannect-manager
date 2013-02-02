@@ -3,9 +3,7 @@ parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
 
-url = process.env.XMLTEAM_URL or "http://sportscaster.xmlteam.com/gateway/php_ci"
-username = process.env.XMLTEAM_USERNAME or "fannect"
-password = process.env.XMLTEAM_PASSWORD or "k4ns4s"
+url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
 postgame = module.exports =
 
@@ -30,10 +28,6 @@ postgame = module.exports =
                      "fixture-keys": "event-stats"
                      "max-result-count": 1
                      "content-returned": "all-content"
-                  auth:
-                     user: username
-                     pass: password
-                     sendImmediately: true
                , (err, resp, body) ->
                   return cb(err) if err   
 
@@ -41,8 +35,6 @@ postgame = module.exports =
                      return cb(err) if err
 
                      outcome = parser.boxScores.parseBoxScoreToJson(doc)
-
-                     # { attendance: '18624', won: false, score: 81, opponent_score: 99 }
 
                      # Return if no real data
                      if not (outcome.opponent_score and outcome.score)
@@ -68,6 +60,3 @@ postgame = module.exports =
                      team.save (err) ->
                         return cb(err) if err   
                         if --count <= 0 then cb() 
-
-
-
