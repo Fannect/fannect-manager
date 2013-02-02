@@ -1,57 +1,6 @@
 {
     "teams": [
         {
-            "_id": "51084c08f71f44551a7b1ef6",
-            "team_key": "l.nba.com-t.1",   
-            "mascot": "Celtics",
-            "location_name": "Boston",
-            "full_name": "Boston Celtics",
-            "stadium": {
-                "stadium_id": "51084b38f71f54551a8b1d95",
-                "name": "TD Garden",
-                "location": "Boston, MA",
-                "coords": [ -71.06222, 42.366289 ]
-            },
-            "sport_key": "15008000",
-            "sport_name": "Basketball",
-            "league_key": "l.test.nba.com",
-            "league_name": "National Basketball Association",
-            "conference_key": "c.eastern",
-            "conference_name": "Eastern",
-            "is_college": false,
-            "schedule": {
-                "pregame": {
-                    "event_key": "l.nba.com-2012-e.17856",
-                    "game_time": "2013-02-02T01:55:15.638Z",
-                    "opponent": "Fannect a Squad",
-                    "opponent_id": "51084c08f71f44551a7b3ef7",
-                    "stadium_id": "51084c08f71f34551a7b1ef6", 
-                    "stadium_name": "Some Stadium",
-                    "stadium_coords": [32,32],
-                    "is_home": false,
-                    "coverage": "ESPN"
-                }
-            }
-        }, {
-            "_id": "51084c08f71f44551a7b1ef7",
-            "team_key": "l.nba.com-t.14",   
-            "mascot": "Bucks",
-            "location_name": "Milwaukee",
-            "full_name": "Milwaukee Bucks",
-            "stadium": {
-                "stadium_id": "51084b38f71f54551a8b1d55",
-                "name": "BMO Harris Bradley Center",
-                "location": "Milwaukee, WI",
-                "coords": [ -87.917216, 43.043661 ]
-            },
-            "sport_key": "15008000",
-            "sport_name": "Basketball",
-            "league_key": "l.test2.nba.com",
-            "league_name": "National Basketball Association",
-            "conference_key": "c.eastern",
-            "conference_name": "Eastern",
-            "is_college": false
-        }, {
             "_id": "51084c08f71f55551a7b1ef6",
             "team_key": "l.nba.com-t.19",   
             "mascot": "Fannect",
@@ -74,7 +23,7 @@
                 "season": [{
                     "event_key": "l.nba.com-2012-e.17838",
                     "game_time": "2013-01-01T01:55:15.638Z",
-                    "opponent": "Fannect a Squad",
+                    "opponent": "Fannect A Squad",
                     "opponent_id": "51084c08f71f44551a7b3ef7",
                     "stadium_id": "51084c08f71f34551a7b1ef6", 
                     "stadium_name": "Some Stadium",
@@ -82,14 +31,14 @@
                     "is_home": false,
                     "coverage": "ESPN"
                 }, {
-                    "event_key": "l.nba.com-2012-e.17838",
+                    "event_key": "l.nba.com-2012-e.17839",
                     "game_time": "2013-02-02T01:55:15.638Z",
-                    "opponent": "Fannect a Squad",
+                    "opponent": "Fannect B Squad",
                     "opponent_id": "51084c08f71f44551a7b3ef7",
                     "stadium_id": "51084c08f71f34551a7b1ef6", 
                     "stadium_name": "Some Stadium",
                     "stadium_coords": [32,32],
-                    "is_home": false,
+                    "is_home": true,
                     "coverage": "ESPN"
                 }],
                 "pregame": {

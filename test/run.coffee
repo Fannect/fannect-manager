@@ -11,19 +11,20 @@ mongoose = require "mongoose"
 mongooseTypes = require "mongoose-types"
 mongoose.connect "mongodb://admin:testing@linus.mongohq.com:10064/fannect"
 mongooseTypes.loadTypes mongoose
+request = require "request"
 
+Team = require "../common/models/Team"
 
-# Have to do this because mongoose is initialized later
 data_standard = require "./res/standard"
+data_postgame = require "./res/postgametest"
 dbSetup = require "./utils/dbSetup"
 
+scheduler = require "../actions/scheduler"
+previewer = require "../actions/previewer"
+postgame = require "../actions/postgame"
+
+prepMongo = (done) -> dbSetup.load data_standard, done
 emptyMongo = (done) -> dbSetup.unload data_standard, done
-prepMongo = (done) ->
-   context = @
-   dbSetup.load data_standard, (err, data) ->
-      return done(err) if err
-      context.db = data
-   done()
 
 process.env.REDIS_URL = "redis://redistogo:f74caf74a1f7df625aa879bf817be6d1@perch.redistogo.com:9203"
 process.env.NODE_ENV = "production"
@@ -70,9 +71,80 @@ describe "Fannect Manager", () ->
                outcome.score.should.equal(81)
                done()
 
-   describe.only "Scheduler", () ->
-      before emptyMongo
-      after prepMongo
+   describe "Scheduler", () ->
+      before (done) ->
+         request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeschedule.xml", "utf8", (err, xml) -> done null, null, xml
+         prepMongo(done)
+      after emptyMongo
 
-      it "should"
-         
+      it "should update schedules from fake schedule", (done) ->
+         scheduler.update "l.test.nba.com", (err) ->
+            return done(err) if err
+            Team
+            .findById("51084c08f71f44551a7b1ef6")
+            .select("schedule")
+            .lean()
+            .exec (err, team) ->
+               # console.log team.schedule
+               team.schedule.season.length.should.equal(1)
+               game = team.schedule.season[0]
+               game.is_home.should.be.true
+               game.opponent.should.equal("Milwaukee  Bucks")
+               game.opponent_id.toString().should.equal("51084c08f71f44551a7b1f0d")
+               game.stadium_name.should.equal("TD Garden")
+               done()
+
+   describe "Previewer", () ->
+      before (done) ->
+         request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakepreview.xml", "utf8", (err, xml) -> done null, null, xml
+         prepMongo(done)
+      after emptyMongo
+
+      it "should update previews from fake preview", (done) ->
+         previewer.update "l.test.nba.com", (err) ->
+            Team
+            .findById("51084c08f71f44551a7b1ef6")
+            .select("schedule.pregame")
+            .exec (err, team) ->
+               return done(err) if err
+               team.schedule.pregame.preview.length.should.equal(16)
+               done()
+
+   describe "Postgame", () ->
+      before (done) ->
+         request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeboxscores.xml", "utf8", (err, xml) -> done null, null, xml
+         async.series
+            setup: (done) -> dbSetup.load data_postgame, done
+            update: postgame.update
+         , (err) =>
+            Team
+            .findById("51084c08f71f55551a7b1ef6")
+            .select("schedule")
+            .exec (err, team) =>
+               @team = team
+               done(err)
+
+      after (done) ->
+         dbSetup.unload data_postgame, done
+
+      it "should remove next game from season", () ->
+         team = @team
+         # console.log team
+         team.schedule.season.length.should.equal(1)
+
+      it "should update pregame", () ->
+         team = @team
+         team.schedule.pregame.event_key.should.equal("l.nba.com-2012-e.17838")
+         team.schedule.pregame.is_home.should.be.false
+
+      it "should update box scores", () ->
+         team = @team
+         team.schedule.postgame.attendance.should.equal(18624)
+         team.schedule.postgame.won.should.be.false
+         team.schedule.postgame.score.should.equal(81)
+         team.schedule.postgame.opponent_score.should.equal(99)
+
+
+
+
+
