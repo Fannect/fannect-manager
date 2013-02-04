@@ -42,7 +42,9 @@ postgame = module.exports =
                      if not (outcome.opponent_score and outcome.score)
                         return cb(null, "No outcome")
 
-                     nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
+                     if team.schedule.season?.length > 0
+                        nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
+
                      oldpregame = team.schedule.pregame
                      
                      # Handle pregame move to postgame

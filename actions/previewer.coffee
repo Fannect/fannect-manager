@@ -5,6 +5,12 @@ async = require "async"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
+# Colors
+red = "\u001b[31m"
+green = "\u001b[32m"
+white = "\u001b[37m"
+reset = "\u001b[0m"
+
 previewer = module.exports =
    
    updateAll: (cb) ->
@@ -25,6 +31,8 @@ previewer = module.exports =
                      cb(if errors.length > 0 then errors else null)
 
    update: (league_key, cb) ->
+      errors = []
+
       request.get
          url: "#{url}/searchDocuments.php"            
          qs:
@@ -39,27 +47,38 @@ previewer = module.exports =
             return cb(err) if err
 
             if parser.isEmpty(doc)
-               return cb(new Error("No XML Data"))       
+               console.log("#{white}No articles: #{league_key}#{reset} (league_key)")
+               return cb()   
 
             articles = parser.preview.parseArticles(doc)
 
-            return cb(null, "No articles") unless (articles?.length > 0)
+            unless (articles?.length > 0)
+               console.log("#{white}No articles: #{league_key}#{reset} (league_key)")
+               return cb() 
+
             count = 0
 
-            for article in articles
-               count++
+            for a in articles
+               do (article = a) ->
+                  count++
 
-               articleObj = parser.preview.parseArticleToJson(article)
-               if not (articleObj.preview and articleObj.event_key)
-                  return cb(new Error("Unable to parse for league: #{league_key}")) unless articleObj
-               
-               Team.update {
-                  league_key: league_key
-                  "schedule.pregame.event_key": articleObj.event_key 
-               }
-               , { $set: {"schedule.pregame.preview": articleObj.preview }}
-               , (err, data) ->
-                  return cb(err) if err
-                  if --count <= 0
-                     cb()
+                  articleObj = parser.preview.parseArticleToJson(article)
+                  if not (articleObj.preview and articleObj.event_key)
+                     return cb(new Error("#{red}Error: Unable to parse for league: #{league_key}#{reset}")) unless articleObj
+                  
+                  preview = "<p>" + Array.prototype.join.call(articleObj.preview, "</p><p>") + "</p>"
+
+                  Team.update {
+                     league_key: league_key
+                     "schedule.pregame.event_key": articleObj.event_key 
+                  }
+                  , { "schedule.pregame.preview": preview }
+                  , { multi: true }
+                  , (err, data) ->
+                     if err then errors.push(data)
+                     else console.log("#{white}Finished: #{articleObj.event_key} #{reset}(event_key)")
+
+                     if --count <= 0
+                        return cb(errors) if errors.length > 0
+                        cb()
 

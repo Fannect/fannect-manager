@@ -7,6 +7,12 @@ _ = require "underscore"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
+# Colors
+red = "\u001b[31m"
+green = "\u001b[32m"
+white = "\u001b[37m"
+reset = "\u001b[0m"
+
 scheduler = module.exports =
 
    update: (league_key, cb) ->
@@ -17,19 +23,20 @@ scheduler = module.exports =
       .lean()
       .exec (err, teams) ->
          return cb(err) if err
-         return cb(new Error("No teams found")) if teams?.length == 0
+         return cb(new Error("#{white}No teams found.#{reset}")) if teams?.length == 0
          
          teamsRunning = 0
          teamErrors = []
 
-         for team in teams
-            teamsRunning++
-            scheduler.updateTeam team, (err) ->
-               teamErrors.push(err) if err
+         for t in teams
+            do (team = t) -> 
+               teamsRunning++
+               scheduler.updateTeam team, (err) ->
+                  teamErrors.push(err) if err
 
-               console.log "Finished: #{team.team_key} (#{teamsRunning - 1} left)"
-               if --teamsRunning <= 0 
-                  cb() 
+                  console.log "#{white}Finished: #{team.team_key} (#{green}#{teamsRunning - 1} left#{white})#{reset}"
+                  if --teamsRunning <= 0 
+                     cb() 
 
    updateTeam: (team, cb) ->
       team.schedule = {} unless team.schedule
@@ -50,12 +57,12 @@ scheduler = module.exports =
             return cb(err) if err
 
             if parser.isEmpty(doc)
-               return cb("No XML Team results for: #{team.team_key}")      
+               return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")      
             
             games = parser.schedule.parseGames(doc)
 
             if not games
-               return cb("No XML Team results for: #{team.team_key}")  
+               return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")  
 
             gamesRunning = 0
             gameErrors = []
@@ -71,7 +78,6 @@ scheduler = module.exports =
                scheduler.addGame game, (err, gameObj) ->
                   if err then gameErrors.push(err)
                   else team.schedule.season.push(gameObj)
-
 
                   if --gamesRunning <= 0
                      # Remove id to allow updating
@@ -89,7 +95,6 @@ scheduler = module.exports =
                         cb()
 
    addGame: (game, cb) ->
-
       async.parallel 
          opponent: (done) ->
             if game.is_home
@@ -102,7 +107,10 @@ scheduler = module.exports =
          return cb(err) if err
 
          if not results.opponent
-            console.log "Unable to find opponent team: #{if game.is_home then game.away_key else game.home_key}"
+            if game.is_home
+               console.log "#{red}Fail: #{game.home_key}, can't find opponent: #{game.away_key}#{reset}"
+            else
+               console.log "#{red}Fail: #{game.away_key}, can't find opponent: #{game.home_key}#{reset}"
 
          game.opponent = results.opponent?.full_name
          game.opponent_id = results.opponent?._id
