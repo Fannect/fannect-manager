@@ -56,11 +56,11 @@ scheduler = module.exports =
                               Stadium.findOne { stadium_key: game.stadium_key }, done
                         , (err, results) ->
                            return cb(err) if err
-                           game.opponent = results.opponent.full_name
-                           game.opponent_id = results.opponent._id
-                           game.stadium_name = results.stadium.name
-                           game.stadium_location = results.stadium.location
-                           game.stadium_coords = results.stadium.coords
+                           game.opponent = results.opponent?.full_name
+                           game.opponent_id = results.opponent?._id
+                           game.stadium_name = results.stadium?.name
+                           game.stadium_location = results.stadium?.location
+                           game.stadium_coords = results.stadium?.coords
                            delete game.home_key
                            delete game.away_key
                            delete game.stadium_key

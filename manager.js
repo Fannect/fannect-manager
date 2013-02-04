@@ -61,7 +61,7 @@ program
       } else {
          previewer.updateAll(function (errs) {
             end = (((new Date() / 1) - start) / 1000.0)
-            if (err) {
+            if (errs) {
                console.error("Completed (" + end + ") with errors");
                for (var i = errs.length - 1; i >= 0; i--) {
                   console.error(errs[i].stack);

@@ -38,7 +38,7 @@ previewer = module.exports =
             return cb(err) if err
             articles = parser.preview.parseArticles(doc)
 
-            return cb(null ,"No articles") unless (articles?.length > 0)
+            return cb(null, "No articles") unless (articles?.length > 0)
             count = 0
 
             for article in articles
