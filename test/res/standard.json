@@ -109,19 +109,19 @@
     "stadiums": [
          {
             "_id": "51084b38f71f54551a8b1d95",
-            "key": "TD_Garden",
+            "stadium_key": "TD_Garden",
             "name": "TD Garden",
             "location": "Boston, MA",
             "coords": [ -71.06222, 42.366289 ]
         }, {
             "_id": "51084b38f71f54551a8b1d55",
-            "key": "BMO_Harris_Bradley_Center",
+            "stadium_key": "BMO_Harris_Bradley_Center",
             "name": "BMO Harris Bradley Center",
             "location": "Milwaukee, WI",
             "coords": [ -87.917216, 43.043661 ]
         }, {
             "_id": "51084b38f71f54551a8b1d67",
-            "key": "AmericanAirlines_Arena",
+            "stadium_key": "AmericanAirlines_Arena",
             "name": "AmericanAirlines Arena",
             "location": "Miami, FL",
             "coords": [ -87.917216, 43.043661 ]

@@ -53,7 +53,7 @@ scheduler = module.exports =
                               else
                                  Team.findOne { team_key: game.home_key }, "full_name", done
                            stadium: (done) ->
-                              Stadium.findOne { key: game.stadium_key }, done
+                              Stadium.findOne { stadium_key: game.stadium_key }, done
                         , (err, results) ->
                            return cb(err) if err
                            game.opponent = results.opponent.full_name
