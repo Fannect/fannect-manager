@@ -34,7 +34,6 @@ scheduler = module.exports =
    updateTeam: (team, cb) ->
       team.schedule = {} unless team.schedule
       team.schedule.season = []
-
       request.get
          url: "#{url}/searchDocuments.php"            
          qs:
@@ -51,25 +50,28 @@ scheduler = module.exports =
             return cb(err) if err
 
             if parser.isEmpty(doc)
-               return cb(new Error("No XML Team results for: #{team.team_key}"))      
+               return cb("No XML Team results for: #{team.team_key}")      
             
             games = parser.schedule.parseGames(doc)
 
             if not games
-               return cb(new Error("No XML Team results for: #{team.team_key}"))  
+               return cb("No XML Team results for: #{team.team_key}")  
 
             gamesRunning = 0
             gameErrors = []
 
             for g in games
+               continue unless g
                game = parser.schedule.parseGameToJson(g)
                continue if game.is_past
 
                gamesRunning++
                game.is_home = game.home_key == team.team_key
+
                scheduler.addGame game, (err, gameObj) ->
                   if err then gameErrors.push(err)
                   else team.schedule.season.push(gameObj)
+
 
                   if --gamesRunning <= 0
                      # Remove id to allow updating
@@ -77,7 +79,7 @@ scheduler = module.exports =
                      delete team._id
                   
                      # sort games to be in correct order
-                     team.schedule.season = _.sortBy(team.schedule.season, (e) -> (e.game_time / -1))
+                     team.schedule.season = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))
                      team.schedule.pregame = team.schedule.season.shift()
 
                      Team.update { _id: id }, team, (err) ->

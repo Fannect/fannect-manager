@@ -22,10 +22,12 @@ program
 .command("schedules")
 .description("Updates the schedule for a league")
 .option("-l, --league <league_key>", "league key to update schedules")
+.option("-t, --team <team_key>", "team key to update schedules")
 .action(function (cmd) {
+   start = new Date() / 1;
+
    if (cmd.league) {
-      start = new Date() / 1;
-      scheduler.update(cmd.league, function (err, done) {
+      scheduler.update(cmd.league, function (err) {
          end = (((new Date() / 1) - start) / 1000.0)
          if (err) {
             console.error("Completed (" + end + ") with errors");
@@ -35,6 +37,26 @@ program
             console.log("Completed (" + end + "s)");
             process.exit(0);
          }
+      });
+   } else if (cmd.team) {
+      Team.findOne({ team_key: cmd.team }, "schedule team_key", function (err, team) {
+         if (err) {
+            console.error("Completed (" + (((new Date() / 1) - start) / 1000.0) + ") with errors");
+            console.error(err.stack || err);
+            process.exit(1);
+            return;
+         }
+         scheduler.updateTeam(team, function (err) {
+            end = (((new Date() / 1) - start) / 1000.0)
+            if (err) {
+               console.error("Completed (" + end + ") with errors");
+               console.error(err.stack || err);
+               process.exit(1);
+            } else {
+               console.log("Completed (" + end + "s)");
+               process.exit(0);
+            }
+         });
       });
    } else {
       console.error("'league_key' is required!")

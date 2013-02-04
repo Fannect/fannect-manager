@@ -2,6 +2,7 @@ Team = require "../common/models/Team"
 parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
+_ = require "underscore"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -12,7 +13,7 @@ postgame = module.exports =
 
       Team
       .find({ "schedule.pregame.game_time": { $lt: time }})
-      .select({ "schedule.pregame": 1, "schedule.postgame": 1, "schedule.season": { $slice: [0, 1]}})
+      .select("schedule")
       .exec (err, teams) ->
          return cb(err) if err
          return cb(err) unless teams.length > 0
@@ -41,7 +42,7 @@ postgame = module.exports =
                      if not (outcome.opponent_score and outcome.score)
                         return cb(null, "No outcome")
 
-                     nextgame = team.schedule.season[0]
+                     nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
                      oldpregame = team.schedule.pregame
                      
                      # Handle pregame move to postgame
