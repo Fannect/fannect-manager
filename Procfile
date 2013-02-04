@@ -1,1 +1,2 @@
-web: node server.js
+previewer: node manager.js previews
+postgame: node manager.js postgame
