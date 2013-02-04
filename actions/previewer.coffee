@@ -32,10 +32,15 @@ previewer = module.exports =
             "fixture-keys": "pre-event-coverage"
             "max-result-count": 40
             "content-returned": "all-content"
+         timeout: 30000
       , (err, resp, body) ->
          return cb(err) if err   
          parser.parse body, (err, doc) ->
             return cb(err) if err
+
+            if parser.isEmpty(doc)
+               return cb(new Error("No XML Data"))       
+
             articles = parser.preview.parseArticles(doc)
 
             return cb(null, "No articles") unless (articles?.length > 0)

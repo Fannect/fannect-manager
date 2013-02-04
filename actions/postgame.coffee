@@ -28,6 +28,7 @@ postgame = module.exports =
                      "fixture-keys": "event-stats"
                      "max-result-count": 1
                      "content-returned": "all-content"
+                  timeout: 10000
                , (err, resp, body) ->
                   return cb(err) if err   
 

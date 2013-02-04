@@ -32,18 +32,26 @@ process.env.NODE_ENV = "production"
 describe "Fannect Manager", () ->
    
    describe "XML Parser", () ->
+
+      it "should identify empty document", (done) ->
+         fs.readFile "#{__dirname}/res/fakeNoResult.xml", (err, xml) ->
+            return done(err) if err
+            parser.parse xml, (err, doc) ->
+               parser.isEmpty(doc).should.be.true
+               done()
+
       it "should parse sample schedule xml file", (done) ->
          fs.readFile "#{__dirname}/res/fakeschedule.xml", (err, xml) ->
             return done(err) if err
             parser.parse xml, (err, doc) ->
                return done(err) if err
                games = parser.schedule.parseGames(doc)
-               games.length.should.equal(2)
+               games.length.should.equal(3)
                result1 = parser.schedule.parseGameToJson(games[0])
                result1.event_key.should.equal("l.nba.com-2012-e.16887")
                result1.away_key.should.equal("l.nba.com-t.1")
                result1.home_key.should.equal("l.nba.com-t.2")
-               result1.stadium_key.should.equal("AmericanAirlines_Arena")
+               result1.stadium_key.should.equal("AmericanAirlines_Arena_TEST")
                result1.coverage.should.equal("TNT, CSN-NE")
                result1.is_past.should.be.true
                done()
@@ -74,7 +82,7 @@ describe "Fannect Manager", () ->
    describe "Scheduler", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeschedule.xml", "utf8", (err, xml) -> done null, null, xml
-         prepMongo(done)
+         emptyMongo () -> prepMongo(done)
       after emptyMongo
 
       it "should update schedules from fake schedule", (done) ->
@@ -85,7 +93,6 @@ describe "Fannect Manager", () ->
             .select("schedule")
             .lean()
             .exec (err, team) ->
-               # console.log team.schedule
                team.schedule.season.length.should.equal(1)
                game = team.schedule.season[0]
                game.is_home.should.be.true
@@ -97,7 +104,7 @@ describe "Fannect Manager", () ->
    describe "Previewer", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakepreview.xml", "utf8", (err, xml) -> done null, null, xml
-         prepMongo(done)
+         emptyMongo () -> prepMongo(done)
       after emptyMongo
 
       it "should update previews from fake preview", (done) ->

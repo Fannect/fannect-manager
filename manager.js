@@ -52,7 +52,7 @@ program
       previewer.update(cmd.league, function (err) {
          end = (((new Date() / 1) - start) / 1000.0)
          if (err) {
-            console.error("Completed (" + end + ") with errors");
+            console.error("Completed (" + end + ") with errors:");
             console.error(err.stack);
             process.exit(1);
          } else {

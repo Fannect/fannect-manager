@@ -24,7 +24,7 @@
         <sports-property formal-name="television-coverage" value="TNT, CSN-NE"/>
         <event-metadata-basketball/>
         <site>
-          <site-metadata site-key="AmericanAirlines_Arena">
+          <site-metadata site-key="AmericanAirlines_Arena_TEST">
             <name full="AmericanAirlines Arena"/>
             <home-location/>
           </site-metadata>
@@ -46,6 +46,35 @@
       <highlight class="series-status"/>
     </sports-event>
     <sports-event>
+      <event-metadata xmlns:fs="java.io.File" xmlns:xte="www.xmlteam.com/xte" date-coverage-type="event" event-key="l.nba.com-2012-e.16907" date-coverage-value="l.nba.com-2012-e.16907" event-status="pre-event" xts:tsn-event-status-string="7:30 PM" event-name="" event-number="0" start-date-time="20121201T193000-0400" xts:time-certainty="certain" time-certainty="certain" xts:broadcast-listing="FSN-WI, CSN-NE">
+        <sports-content-codes>
+          <sports-content-code code-type="season-type" code-key="regular"/>
+        </sports-content-codes>
+        <sports-property formal-name="television-coverage" value="FSN-WI, CSN-NE"/>
+        <event-metadata-basketball/>
+        <site>
+          <site-metadata site-key="TD_Garden_TEST">
+            <name full="TD Garden"/>
+            <home-location/>
+          </site-metadata>
+          <site-stats/>
+        </site>
+      </event-metadata>
+      <team>
+        <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.14" alignment="away">
+          <name first="Milwaukee" last="Bucks"/>
+        </team-metadata>
+        <team-stats score="99" event-outcome="win"/>
+      </team>
+      <team>
+        <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.1" alignment="home">
+          <name first="Boston" last="Celtics"/>
+        </team-metadata>
+        <team-stats score="88" event-outcome="loss"/>
+      </team>
+      <highlight class="series-status"/>
+    </sports-event>
+    <sports-event>
       <event-metadata xmlns:fs="java.io.File" xmlns:xte="www.xmlteam.com/xte" date-coverage-type="event" event-key="l.nba.com-2012-e.16907" date-coverage-value="l.nba.com-2012-e.16907" event-status="pre-event" xts:tsn-event-status-string="7:30 PM" event-name="" event-number="0" start-date-time="20121102T193000-0400" xts:time-certainty="certain" time-certainty="certain" xts:broadcast-listing="FSN-WI, CSN-NE">
         <sports-content-codes>
           <sports-content-code code-type="season-type" code-key="regular"/>
@@ -53,7 +82,7 @@
         <sports-property formal-name="television-coverage" value="FSN-WI, CSN-NE"/>
         <event-metadata-basketball/>
         <site>
-          <site-metadata site-key="TD_Garden">
+          <site-metadata site-key="TD_Garden_TEST">
             <name full="TD Garden"/>
             <home-location/>
           </site-metadata>
