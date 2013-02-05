@@ -77,7 +77,7 @@ scheduler = module.exports =
 
                scheduler.addGame game, (err, gameObj) ->
                   if err then gameErrors.push(err)
-                  else team.schedule.season.push(gameObj)
+                  else team.schedule.season.push(gameObj) if gameObj
 
                   if --gamesRunning <= 0
                      # Remove id to allow updating
@@ -111,6 +111,7 @@ scheduler = module.exports =
                console.log "#{red}Fail: #{game.home_key}, can't find opponent: #{game.away_key}#{reset}"
             else
                console.log "#{red}Fail: #{game.away_key}, can't find opponent: #{game.home_key}#{reset}"
+            cb()
 
          game.opponent = results.opponent?.full_name
          game.opponent_id = results.opponent?._id

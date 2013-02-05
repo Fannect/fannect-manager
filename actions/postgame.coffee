@@ -6,61 +6,85 @@ _ = require "underscore"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
+# Colors
+red = "\u001b[31m"
+green = "\u001b[32m"
+white = "\u001b[37m"
+reset = "\u001b[0m"
+
 postgame = module.exports =
 
    update: (cb) ->
       time = new Date(new Date() / 1 - 1000 * 60 * 120)
-
+      
       Team
       .find({ "schedule.pregame.game_time": { $lt: time }})
-      .select("schedule")
+      .select("schedule team_key")
       .exec (err, teams) ->
          return cb(err) if err
-         return cb(err) unless teams.length > 0
+
+         if teams.length <= 0
+            console.log "#{white}No teams found to updated.#{reset}"
+            return cb()
+         else
+            console.log "#{white}Found #{green}#{teams.length}#{white} in progress..#{reset}"
          
          count = 0
-         for t in teams
-            do (team = t) ->
-               count++
-               request.get
-                  url: "#{url}/searchDocuments.php"            
-                  qs:
-                     "team-keys": team._id
-                     "fixture-keys": "event-stats"
-                     "max-result-count": 1
-                     "content-returned": "all-content"
-                  timeout: 10000
-               , (err, resp, body) ->
-                  return cb(err) if err   
+         for team in teams
+            count++
+            postgame.updateTeam team, (err) ->
+               if --count <= 0 then cb() 
 
-                  parser.parse body, (err, doc) ->
-                     return cb(err) if err
+   updateTeam: (team, cb) ->
+      request.get
+         url: "#{url}/searchDocuments.php"            
+         qs:
+            "team-keys": team.team_id
+            "fixture-keys": "event-stats"
+            "max-result-count": 1
+            "content-returned": "all-content"
+         timeout: 10000
+      , (err, resp, body) ->
+         return cb(err) if err   
 
-                     outcome = parser.boxScores.parseBoxScoreToJson(doc)
+         parser.parse body, (err, doc) ->
+            return cb(err) if err
 
-                     # Return if no real data
-                     if not (outcome.opponent_score and outcome.score)
-                        return cb(null, "No outcome")
+            outcome = parser.boxScores.parseBoxScoreToJson(doc)
 
-                     if team.schedule.season?.length > 0
-                        nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
+            if not outcome.is_past
+               console.log("In progress: #{team.team_key}")
+               return cb()
 
-                     oldpregame = team.schedule.pregame
-                     
-                     # Handle pregame move to postgame
-                     team.schedule.postgame.game_time = oldpregame.game_time
-                     team.schedule.postgame.opponent = oldpregame.opponent
-                     team.schedule.postgame.opponent_id = oldpregame.opponent_id
-                     team.schedule.postgame.is_home = oldpregame.is_home
-                     team.schedule.postgame.score = outcome.score
-                     team.schedule.postgame.opponent_score = outcome.opponent_score
-                     team.schedule.postgame.won = outcome.won
-                     team.schedule.postgame.attendance = outcome.attendance
+            # Return if no real data
+            if not (outcome.opponent_score and outcome.score)
+               console.log("#{red}Failed: couldn't find score for #{team.team_key}#{reset}")
+               return cb() 
 
-                     # Handle pregame
-                     team.set("schedule.pregame", nextgame)
-                     team.schedule.season.remove(nextgame)
-                     
-                     team.save (err) ->
-                        return cb(err) if err   
-                        if --count <= 0 then cb() 
+            if team.schedule.season?.length > 0
+               nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
+
+            oldpregame = team.schedule.pregame
+            
+            # Handle pregame move to postgame
+            team.schedule.postgame.game_time = oldpregame.game_time
+            team.schedule.postgame.opponent = oldpregame.opponent
+            team.schedule.postgame.opponent_id = oldpregame.opponent_id
+            team.schedule.postgame.is_home = oldpregame.is_home
+            team.schedule.postgame.score = outcome.score
+            team.schedule.postgame.opponent_score = outcome.opponent_score
+            team.schedule.postgame.won = outcome.won
+            team.schedule.postgame.attendance = outcome.attendance
+
+            # Handle pregame
+            team.set("schedule.pregame", nextgame)
+            team.schedule.season.remove(nextgame)
+            
+            team.save (err) ->
+               if err
+                  console.log("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
+               else
+                  console.log("#{white}Finished: #{team.team_key}#{reset} (team_key)")
+               cb()
+
+               

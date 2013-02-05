@@ -74,6 +74,7 @@ describe "Fannect Manager", () ->
             parser.parse xml, (err, doc) ->
                return done(err) if err
                outcome = parser.boxScores.parseBoxScoreToJson(doc)
+               outcome.is_past.should.be.true
                outcome.won.should.be.false
                outcome.opponent_score.should.equal(99)
                outcome.score.should.equal(81)
@@ -93,12 +94,7 @@ describe "Fannect Manager", () ->
             .select("schedule")
             .lean()
             .exec (err, team) ->
-               team.schedule.season.length.should.equal(1)
-               game = team.schedule.season[0]
-               game.is_home.should.be.true
-               game.opponent.should.equal("Milwaukee  Bucks")
-               game.opponent_id.toString().should.equal("51084c08f71f44551a7b1f0d")
-               game.stadium_name.should.equal("TD Garden")
+               (team.schedule.season[0].game_time > team.schedule.pregame.game_time).should.be.true
                done()
 
    describe "Previewer", () ->
@@ -114,7 +110,7 @@ describe "Fannect Manager", () ->
             .select("schedule.pregame")
             .exec (err, team) ->
                return done(err) if err
-               team.schedule.pregame.preview.length.should.equal(16)
+               team.schedule.pregame.preview.should.be.ok
                done()
 
    describe "Postgame", () ->
