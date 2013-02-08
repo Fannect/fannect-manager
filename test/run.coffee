@@ -113,19 +113,25 @@ describe "Fannect Manager", () ->
                team.schedule.pregame.preview.should.be.ok
                done()
 
-   describe "Postgame", () ->
+   describe.only "Postgame", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeboxscores.xml", "utf8", (err, xml) -> done null, null, xml
-         async.series
-            setup: (done) -> dbSetup.load data_postgame, done
-            update: postgame.update
-         , (err) =>
+         
+         dbSetup.load data_postgame, (err) =>
+            return done(err) if err
             Team
             .findById("51084c08f71f55551a7b1ef6")
-            .select("schedule")
+            .select("schedule team_key")
             .exec (err, team) =>
-               @team = team
-               done(err)
+               return done(err) if err
+               postgame.updateTeam team, (err) =>
+                  return done(err) if err
+                  Team
+                  .findById("51084c08f71f55551a7b1ef6")
+                  .select("schedule")               
+                  .exec (err, team) =>
+                     @team = team
+                     done(err)
 
       after (done) ->
          dbSetup.unload data_postgame, done
