@@ -39,7 +39,7 @@ postgame = module.exports =
       request.get
          url: "#{url}/searchDocuments.php"            
          qs:
-            "team-keys": team.team_id
+            "team-keys": team.team_key
             "fixture-keys": "event-stats"
             "max-result-count": 1
             "content-returned": "all-content"

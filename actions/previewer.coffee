@@ -75,7 +75,7 @@ previewer = module.exports =
                   , { "schedule.pregame.preview": preview }
                   , { multi: true }
                   , (err, data) ->
-                     if err then errors.push(data)
+                     if err then errors.push(err)
                      else console.log("#{white}Finished: #{articleObj.event_key} #{reset}(event_key)")
 
                      if --count <= 0
