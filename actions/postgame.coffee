@@ -3,6 +3,7 @@ parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
 _ = require "underscore"
+Log = require "../utils/Log"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -12,11 +13,14 @@ green = "\u001b[32m"
 white = "\u001b[37m"
 reset = "\u001b[0m"
 
+log = new Log()
+
 postgame = module.exports =
 
    update: (cb) ->
       time = new Date(new Date() / 1 - 1000 * 60 * 120)
-      
+      log.empty()
+
       Team
       .find({ "schedule.pregame.game_time": { $lt: time }})
       .select("schedule team_key")
@@ -24,16 +28,17 @@ postgame = module.exports =
          return cb(err) if err
 
          if teams.length <= 0
-            console.log "#{white}No teams found to updated.#{reset}"
+            log.write "#{white}No teams found to updated.#{reset}"
             return cb()
          else
-            console.log "#{white}Found #{green}#{teams.length}#{white} in progress..#{reset}"
+            log.write "#{white}Found #{green}#{teams.length}#{white} in progress..#{reset}"
          
          count = 0
          for team in teams
             count++
             postgame.updateTeam team, (err) ->
-               if --count <= 0 then cb() 
+               if --count <= 0
+                  log.sendErrors("Postgame", cb)
 
    updateTeam: (team, cb) ->
       request.get
@@ -53,12 +58,14 @@ postgame = module.exports =
             outcome = parser.boxScores.parseBoxScoreToJson(doc)
 
             if not outcome.is_past
-               console.log("In progress: #{team.team_key}")
+               log.write("In progress: #{team.team_key}")
                return cb()
+
+            console.log "HIT"
 
             # Return if no real data
             if not (outcome.opponent_score and outcome.score)
-               console.log("#{red}Failed: couldn't find score for #{team.team_key}#{reset}")
+               log.error("#{red}Failed: couldn't find score for #{team.team_key}#{reset}")
                return cb() 
 
             if team.schedule.season?.length > 0
@@ -82,9 +89,9 @@ postgame = module.exports =
             
             team.save (err) ->
                if err
-                  console.log("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
+                  log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
                else
-                  console.log("#{white}Finished: #{team.team_key}#{reset} (team_key)")
+                  log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
                cb()
 
                

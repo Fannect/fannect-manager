@@ -2,6 +2,7 @@ Team = require "../common/models/Team"
 parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
+Log = require "../utils/Log"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -11,9 +12,13 @@ green = "\u001b[32m"
 white = "\u001b[37m"
 reset = "\u001b[0m"
 
+log = new Log()
+
 previewer = module.exports =
    
    updateAll: (cb) ->
+      log.empty()
+
       Team
       .aggregate { $group: { _id: "$league_key" }}
       , (err, leagues) ->
@@ -25,10 +30,8 @@ previewer = module.exports =
             do (league = l) ->
                count++
                previewer.update league._id, (err) -> 
-                  errors.push(err) if err
-
                   if --count <= 0
-                     cb(if errors.length > 0 then errors else null)
+                     log.sendErrors("Previewer", cb)
 
    update: (league_key, cb) ->
       errors = []
@@ -47,13 +50,13 @@ previewer = module.exports =
             return cb(err) if err
 
             if parser.isEmpty(doc)
-               console.log("#{white}No articles: #{league_key}#{reset} (league_key)")
+               log.write("#{white}No articles: #{league_key}#{reset} (league_key)")
                return cb()   
 
             articles = parser.preview.parseArticles(doc)
 
             unless (articles?.length > 0)
-               console.log("#{white}No articles: #{league_key}#{reset} (league_key)")
+               log.write("#{white}No articles: #{league_key}#{reset} (league_key)")
                return cb() 
 
             count = 0
@@ -64,8 +67,9 @@ previewer = module.exports =
 
                   articleObj = parser.preview.parseArticleToJson(article)
                   if not (articleObj.preview and articleObj.event_key)
-                     return cb(new Error("#{red}Error: Unable to parse for league: #{league_key}#{reset}")) unless articleObj
-                  
+                     unless articleObj
+                        return log.error("#{red}Error: Unable to parse for league: #{league_key}#{reset}")
+                        
                   preview = "<p>" + Array.prototype.join.call(articleObj.preview, "</p><p>") + "</p>"
 
                   Team.update {
@@ -75,8 +79,8 @@ previewer = module.exports =
                   , { "schedule.pregame.preview": preview }
                   , { multi: true }
                   , (err, data) ->
-                     if err then errors.push(err)
-                     else console.log("#{white}Finished: #{articleObj.event_key} #{reset}(event_key)")
+                     if err then log.error(err) if err
+                     else log.write("#{white}Finished: #{articleObj.event_key} #{reset}(event_key)")
 
                      if --count <= 0
                         return cb(errors) if errors.length > 0
