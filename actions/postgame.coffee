@@ -60,7 +60,7 @@ postgame = module.exports =
             if not outcome.is_past
                log.write("In progress: #{team.team_key}")
                return cb()
-               
+
             # Return if no real data
             if not (outcome.opponent_score and outcome.score)
                log.error("#{red}Failed: couldn't find score for #{team.team_key}#{reset}")
@@ -85,11 +85,12 @@ postgame = module.exports =
             team.set("schedule.pregame", nextgame)
             team.schedule.season.remove(nextgame)
             
+            team.needs_processing = true
+
             team.save (err) ->
                if err
                   log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
                else
                   log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
                cb()
-
                
