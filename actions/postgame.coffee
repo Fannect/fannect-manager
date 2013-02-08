@@ -60,9 +60,7 @@ postgame = module.exports =
             if not outcome.is_past
                log.write("In progress: #{team.team_key}")
                return cb()
-
-            console.log "HIT"
-
+               
             # Return if no real data
             if not (outcome.opponent_score and outcome.score)
                log.error("#{red}Failed: couldn't find score for #{team.team_key}#{reset}")
