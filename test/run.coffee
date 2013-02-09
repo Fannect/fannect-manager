@@ -13,21 +13,25 @@ mongoose.connect "mongodb://admin:testing@linus.mongohq.com:10064/fannect"
 mongooseTypes.loadTypes mongoose
 request = require "request"
 
+process.env.NODE_ENV = "production"
+process.env.BATCH_SIZE = 1
+
 Team = require "../common/models/Team"
+TeamProfile = require "../common/models/TeamProfile"
 
 data_standard = require "./res/standard"
 data_postgame = require "./res/postgametest"
+data_bookie = require "./res/bookie-test"
 dbSetup = require "./utils/dbSetup"
 
 scheduler = require "../actions/scheduler"
 previewer = require "../actions/previewer"
 postgame = require "../actions/postgame"
+bookie = require "../actions/bookie"
 
 prepMongo = (done) -> dbSetup.load data_standard, done
 emptyMongo = (done) -> dbSetup.unload data_standard, done
 
-process.env.REDIS_URL = "redis://redistogo:f74caf74a1f7df625aa879bf817be6d1@perch.redistogo.com:9203"
-process.env.NODE_ENV = "production"
 
 describe "Fannect Manager", () ->
    
@@ -113,7 +117,7 @@ describe "Fannect Manager", () ->
                team.schedule.pregame.preview.should.be.ok
                done()
 
-   describe.only "Postgame", () ->
+   describe "Postgame", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeboxscores.xml", "utf8", (err, xml) -> done null, null, xml
          
@@ -133,12 +137,10 @@ describe "Fannect Manager", () ->
                      @team = team
                      done(err)
 
-      after (done) ->
-         dbSetup.unload data_postgame, done
+      after (done) -> dbSetup.unload data_postgame, done
 
       it "should remove next game from season", () ->
          team = @team
-         # console.log team
          team.schedule.season.length.should.equal(1)
 
       it "should update pregame", () ->
@@ -153,7 +155,27 @@ describe "Fannect Manager", () ->
          team.schedule.postgame.score.should.equal(81)
          team.schedule.postgame.opponent_score.should.equal(99)
 
+   describe "Bookie", () ->
+
+      describe.only "Ranking", () ->
+         before (done) -> dbSetup.load data_bookie, done
+         after (done) -> dbSetup.unload data_bookie, done
+
+         it "should update all team profiles to have the correct rank", (done) ->
+            bookie.rankTeam "51084c19f71f55551a7b1ef6", (err) =>
+               return done(err) if err
 
 
-
+               TeamProfile
+               .find(team_id: "51084c19f71f55551a7b1ef6")
+               .sort("rank")
+               .select("rank points")
+               .exec (err, profiles) ->
+                  return done(err) if err
+                  profiles[0].rank.should.equal(1)
+                  profiles[1].rank.should.equal(2)
+                  profiles[2].rank.should.equal(3)
+                  (profiles[0].points.overall >= profiles[1].points.overall).should.be.true
+                  (profiles[1].points.overall >= profiles[2].points.overall).should.be.true
+                  done()
 

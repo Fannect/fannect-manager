@@ -1,0 +1,154 @@
+{
+    "teamprofiles": [
+        {
+            "_id": "5102b17148a0c8f70c100054",
+            "user_id": "5102b17168a0c8f70c000002",
+            "name": "Ron Testing",
+            "team_id": "51084c19f71f55551a7b1ef6",
+            "team_key": "l.test.com-t.19",
+            "team_name": "KCMO Fannect",
+            "events": [],
+            "is_college": false,
+            "points": {
+                "dedication": 23,
+                "passion": 45,
+                "knowledge": 63,
+                "overall": 131
+            },
+            "waiting_event": [
+                {
+                    "_id": "51168b7d8f962a0200033004",
+                    "type": "game_face",
+                    "meta": { "face_on": true }
+                }, {
+                    "_id": "51168b778f862a0560000021",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "picked": true,
+                        "away_score": 26,
+                        "home_score": 45
+                    }
+                }, {
+                    "_id": "51168b778f863a0200000104",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "checked_in": true,
+                        "lat": 26,
+                        "lng": 45
+                    }
+                }
+            ]
+        }, {
+            "_id": "5102b17168a0c8f70c100007",
+            "user_id": "5102b17168a0c8f70c000002",
+            "name": "Ron Testing",
+            "team_id": "51084c19f71f55551a7b1ef6",
+            "team_key": "l.test.com-t.19",
+            "team_name": "KCMO Fannect",
+            "events": [],
+            "is_college": false,
+            "points": {
+                "dedication": 54,
+                "passion": 32,
+                "knowledge": 91,
+                "overall": 177
+            },
+            "waiting_event": [
+                {
+                    "_id": "51168b6d8f862a0200033004",
+                    "type": "game_face",
+                    "meta": { "face_on": true }
+                }, {
+                    "_id": "51168b778f862a0200000023",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "picked": true,
+                        "away_score": 26,
+                        "home_score": 45
+                    }
+                }, {
+                    "_id": "51168b778f862a0200000103",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "checked_in": true,
+                        "lat": 26,
+                        "lng": 45
+                    }
+                }
+            ]
+        }, {
+            "_id": "5102b17168a0c8f70c001005",
+            "user_id": "5102b17168a0c8f70c000002",
+            "name": "Ron Testing",
+            "team_id": "51084c19f71f55551a7b1ef6",
+            "team_key": "l.test.com-t.19",
+            "team_name": "KCMO Fannect",
+            "friends": ["5102b17168a0c8f70c000007"],
+            "events": [],
+            "is_college": true,
+            "points": {
+                "dedication": 34,
+                "passion": 72,
+                "knowledge": 56,
+                "overall": 162
+            },
+            "waiting_events": [
+                {
+                    "_id": "51168b6d8f862a0200033002",
+                    "type": "game_face",
+                    "meta": { "face_on": true }
+                }, {
+                    "_id": "51168b778f862a0200200023",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "picked": true,
+                        "away_score": 99,
+                        "home_score": 93
+                    }
+                }, {
+                    "_id": "51168b778f862a0203300103",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "checked_in": true,
+                        "lat": 26,
+                        "lng": 45
+                    }
+                }
+            ]
+        }
+    ],
+    "teams": [
+        {
+            "_id": "51084c19f71f55551a7b1ef6",
+            "team_key": "l.test.com-t.19",   
+            "mascot": "Fannect",
+            "location_name": "KCMO",
+            "full_name": "KCMO Fannect",
+            "stadium": {
+                "stadium_id": "51084b38f71f54551a8b1d95",
+                "name": "TD Garden",
+                "location": "Boston, MA",
+                "coords": [ -71.06222, 42.366289 ]
+            },
+            "sport_key": "15008000",
+            "sport_name": "Basketball",
+            "league_key": "l.test3.nba.com",
+            "league_name": "National Basketball Association",
+            "conference_key": "c.eastern",
+            "conference_name": "Eastern",
+            "is_college": false,
+            "schedule": {
+                "postgame": {
+                    "attendance": 16701,
+                    "game_time": "2013-02-09T01:00:00Z",
+                    "is_home": true,
+                    "opponent": "Apple",
+                    "opponent_id": "5112238520b4f61f5be20f90",
+                    "opponent_score": 99,
+                    "score": 93,
+                    "won": false
+                }
+            }
+        }
+    ]
+}

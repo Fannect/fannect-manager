@@ -10,3 +10,4 @@ This is the source for the Fannect login API.
 * SENDGRID_USERNAME
 * SENDGRID_PASSWORD
 * EMAIL_TO
+* BATCH_SIZE
