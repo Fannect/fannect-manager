@@ -30,8 +30,8 @@
       </site>
     </event-metadata>
     <team>
-      <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.28" alignment="away">
-        <name first="Sacramento" last="Kings"/>
+      <team-metadata xmlns:fs="java.io.File" team-key="l.nba.com-t.19" alignment="away">
+        <name first="KCMO" last="Fannect"/>
       </team-metadata>
       <team-stats score="81" score-opposing="99" event-outcome="loss" time-played-total="240">
         <sub-score period-value="1" score="24"/>

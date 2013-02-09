@@ -62,11 +62,11 @@ postgame = module.exports =
                return cb()
 
             # Return if no real data
-            if not (outcome.opponent_score and outcome.score)
+            if not (outcome.home?.team_key == team.team_key or outcome.away?.team_key == team.team_key)
                log.error("#{red}Failed: couldn't find score for #{team.team_key}#{reset}")
                return cb() 
 
-            if team.schedule.season?.length > 0
+            if team.schedule.season?.length > 1
                nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
 
             oldpregame = team.schedule.pregame
@@ -76,10 +76,16 @@ postgame = module.exports =
             team.schedule.postgame.opponent = oldpregame.opponent
             team.schedule.postgame.opponent_id = oldpregame.opponent_id
             team.schedule.postgame.is_home = oldpregame.is_home
-            team.schedule.postgame.score = outcome.score
-            team.schedule.postgame.opponent_score = outcome.opponent_score
-            team.schedule.postgame.won = outcome.won
             team.schedule.postgame.attendance = outcome.attendance
+
+            if outcome.home.team_key == team.team_key
+               team.schedule.postgame.score = outcome.home.score
+               team.schedule.postgame.opponent_score = outcome.away.score
+               team.schedule.postgame.won = outcome.home.won
+            else
+               team.schedule.postgame.score = outcome.away.score
+               team.schedule.postgame.opponent_score = outcome.home.score
+               team.schedule.postgame.won = outcome.away.won
 
             # Handle pregame
             team.set("schedule.pregame", nextgame)
