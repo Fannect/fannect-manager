@@ -16,7 +16,7 @@ reset = "\u001b[0m"
 
 log = new Log()
 
-batchSize = process.env.BATCH_SIZE = 50
+batchSize = parseInt(process.env.BATCH_SIZE or 50)
 
 bookie = module.exports =
    
@@ -26,31 +26,37 @@ bookie = module.exports =
    # findAndUpdate: () ->
 
    processTeam: (team, cb) ->
-      TeamProfile
-      .find({ team_id: team._id })
-      .skip()
+      bookie.processBatch(team, 0, cb)
 
    processBatch: (team, skip, cb) ->
       TeamProfile
       .find({ team_id: team._id })
       .skip(skip)
       .limit(batchSize)
-      .select("schedule.postgame points events")
+      .select("schedule.postgame points events waiting_events")
       .exec (err, profiles) ->
-         async.parallel
-            batch: (done) ->
-               if profiles and profiles.length == batchSize
-                  processBatch(team, skip + batchSize, done)
-               else 
-                  done()
-            teamProfiles: (done) ->
-               cargo = async.cargo (profile, done) ->
-                  new EventProcessor profile, () -> profile.save(done)
-               , 10
+         if err
+            log.error("#{red}Failed: on #{team._id} (team_id), #{err}#{reset}")
+            return cb(err)
+         if profiles.length < 1
+            log.write("#{white}No team profiles for: #{team._id}#{reset} (team_id)") if skip == 0
+            return cb()
 
-               cargo.push(p) for p in profiles
-               cargo.drain(done)
-         , cb
+
+         run = [
+            (done) -> 
+               if profiles and profiles.length == batchSize
+                  bookie.processBatch(team, skip + batchSize, cb)
+               else 
+                  cb()
+         ]
+
+         for p in profiles
+            do (profile = p) ->
+               profile.processEvents(team) 
+               run.push (done) -> profile.save()
+
+         async.parallel run, cb
 
    rankTeam: (teamId, cb) ->
       bookie.rankBatch(teamId, 0, cb)
@@ -67,13 +73,13 @@ bookie = module.exports =
             log.error("#{red}Failed: on #{teamId} (team_id), #{err}#{reset}")
             return cb(err)
          if profiles.length < 1
-            log.write("#{white}No team profiles for: #{teamId}#{reset} (team_id)")
+            log.write("#{white}No team profiles for: #{teamId}#{reset} (team_id)") if skip == 0
             return cb(err)
 
          async.parallel
             batch: (done) ->
-               if profiles and profiles.length == batchSize
-                  processBatch(team, skip + batchSize, done)
+               if profiles.length == batchSize
+                  bookie.rankBatch(teamId, skip + batchSize, done)
                else
                   done()
             teamProfiles: (done) ->

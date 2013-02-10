@@ -15,7 +15,7 @@
                 "knowledge": 63,
                 "overall": 131
             },
-            "waiting_event": [
+            "waiting_events": [
                 {
                     "_id": "51168b7d8f962a0200033004",
                     "type": "game_face",
@@ -30,7 +30,7 @@
                     }
                 }, {
                     "_id": "51168b778f863a0200000104",
-                    "type": "guess_the_score",
+                    "type": "attendance_streak",
                     "meta": {
                         "checked_in": true,
                         "lat": 26,
@@ -53,7 +53,7 @@
                 "knowledge": 91,
                 "overall": 177
             },
-            "waiting_event": [
+            "waiting_events": [
                 {
                     "_id": "51168b6d8f862a0200033004",
                     "type": "game_face",
@@ -68,7 +68,7 @@
                     }
                 }, {
                     "_id": "51168b778f862a0200000103",
-                    "type": "guess_the_score",
+                    "type": "attendance_streak",
                     "meta": {
                         "checked_in": true,
                         "lat": 26,
@@ -106,8 +106,8 @@
                         "home_score": 93
                     }
                 }, {
-                    "_id": "51168b778f862a0203300103",
-                    "type": "guess_the_score",
+                    "_id": "51168b778f862a0204300103",
+                    "type": "attendance_streak",
                     "meta": {
                         "checked_in": true,
                         "lat": 26,

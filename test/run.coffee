@@ -157,7 +157,7 @@ describe "Fannect Manager", () ->
 
    describe "Bookie", () ->
 
-      describe.only "Ranking", () ->
+      describe "Ranking", () ->
          before (done) -> dbSetup.load data_bookie, done
          after (done) -> dbSetup.unload data_bookie, done
 
@@ -165,12 +165,12 @@ describe "Fannect Manager", () ->
             bookie.rankTeam "51084c19f71f55551a7b1ef6", (err) =>
                return done(err) if err
 
-
                TeamProfile
                .find(team_id: "51084c19f71f55551a7b1ef6")
                .sort("rank")
                .select("rank points")
                .exec (err, profiles) ->
+                  console.log profiles
                   return done(err) if err
                   profiles[0].rank.should.equal(1)
                   profiles[1].rank.should.equal(2)
@@ -178,4 +178,32 @@ describe "Fannect Manager", () ->
                   (profiles[0].points.overall >= profiles[1].points.overall).should.be.true
                   (profiles[1].points.overall >= profiles[2].points.overall).should.be.true
                   done()
+
+      describe.only "Scoring", () ->
+         before (cb) -> 
+            async.series [
+               (done) -> dbSetup.unload data_bookie, done
+               (done) -> dbSetup.load data_bookie, done
+               (done) -> 
+                  Team.findById "51084c19f71f55551a7b1ef6", (err, team) ->
+                     return done(err) if err
+                     bookie.processTeam team, done
+               (done) =>
+                  TeamProfile
+                  .find(team_id: "51084c19f71f55551a7b1ef6")
+                  .sort("points.overall")
+                  .select("rank points waiting_events events")
+                  .exec (err, profiles) =>
+                     @profiles = profiles
+                     done()
+            ], cb
+
+         after (done) -> dbSetup.unload data_bookie, done
+
+         it "should update all team profiles to have the correct points", () ->
+            console.log @profiles
+
+
+
+
 
