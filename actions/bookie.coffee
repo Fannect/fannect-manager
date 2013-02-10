@@ -4,8 +4,6 @@ parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
 Log = require "../utils/Log"
-EventProcessor = require "../common/utils/EventProcessor"
-
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
 # Colors
