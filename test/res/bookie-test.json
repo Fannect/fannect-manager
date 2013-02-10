@@ -25,8 +25,8 @@
                     "type": "guess_the_score",
                     "meta": {
                         "picked": true,
-                        "away_score": 26,
-                        "home_score": 45
+                        "away_score": 99,
+                        "home_score": 93
                     }
                 }, {
                     "_id": "51168b778f863a0200000104",
@@ -63,16 +63,8 @@
                     "type": "guess_the_score",
                     "meta": {
                         "picked": true,
-                        "away_score": 26,
-                        "home_score": 45
-                    }
-                }, {
-                    "_id": "51168b778f862a0200000103",
-                    "type": "attendance_streak",
-                    "meta": {
-                        "checked_in": true,
-                        "lat": 26,
-                        "lng": 45
+                        "away_score": 88,
+                        "home_score": 86
                     }
                 }
             ]
@@ -94,16 +86,12 @@
             },
             "waiting_events": [
                 {
-                    "_id": "51168b6d8f862a0200033002",
-                    "type": "game_face",
-                    "meta": { "face_on": true }
-                }, {
                     "_id": "51168b778f862a0200200023",
                     "type": "guess_the_score",
                     "meta": {
                         "picked": true,
-                        "away_score": 99,
-                        "home_score": 93
+                        "away_score": 44,
+                        "home_score": 22
                     }
                 }, {
                     "_id": "51168b778f862a0204300103",

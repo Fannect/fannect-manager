@@ -18,6 +18,7 @@ var Team = require("./common/models/Team");
 var scheduler = require("./actions/scheduler");
 var previewer = require("./actions/previewer");
 var postgame = require("./actions/postgame");
+var bookie = require("./actions/bookie");
 
 program
 .command("schedules")
@@ -131,6 +132,24 @@ program
          }
       }
       process.exit();
+   });
+});
+
+program
+.command("bookie")
+.description("Processes all scores and team's that require it")
+.action(function (cmd) {
+   start = new Date() / 1;
+   bookie.updateAll(function (err) {
+      end = (((new Date() / 1) - start) / 1000.0)
+      if (err) {
+         console.error("Completed (" + end + ") with errors:");
+         console.error(err.stack);
+         process.exit(1);
+      } else {
+         console.log("Completed (" + end + "s)");
+         process.exit();
+      }
    });
 });
 

@@ -78,10 +78,12 @@ describe "Fannect Manager", () ->
             parser.parse xml, (err, doc) ->
                return done(err) if err
                outcome = parser.boxScores.parseBoxScoreToJson(doc)
-               outcome.is_past.should.be.true
-               outcome.won.should.be.false
-               outcome.opponent_score.should.equal(99)
-               outcome.score.should.equal(81)
+               outcome.attendance.should.equal("18624")
+               outcome.is_past.should.equal(true)
+               outcome.away.score.should.equal(81)
+               outcome.away.won.should.be.false
+               outcome.home.score.should.equal(99)
+               outcome.home.won.should.be.true
                done()
 
    describe "Scheduler", () ->
@@ -158,28 +160,49 @@ describe "Fannect Manager", () ->
    describe "Bookie", () ->
 
       describe "Ranking", () ->
-         before (done) -> dbSetup.load data_bookie, done
+         before (done) -> 
+            async.series [
+               (done) -> dbSetup.unload data_bookie, done
+               (done) -> dbSetup.load data_bookie, done
+               (done) => 
+                  Team.findById "51084c19f71f55551a7b1ef6", (err, team) =>
+                     return done(err) if err
+                     bookie.rankTeam team, done
+               (done) => 
+                  TeamProfile
+                  .find(team_id: "51084c19f71f55551a7b1ef6")
+                  .sort("rank")
+                  .select("rank points")
+                  .exec (err, profiles) =>
+                     return done(err) if err
+                     @profiles = profiles
+                     done()
+            ], done
+
          after (done) -> dbSetup.unload data_bookie, done
 
-         it "should update all team profiles to have the correct rank", (done) ->
-            bookie.rankTeam "51084c19f71f55551a7b1ef6", (err) =>
+         it "should update all team profiles to have the correct rank", () ->
+               @profiles[0].rank.should.equal(1)
+               @profiles[1].rank.should.equal(2)
+               @profiles[2].rank.should.equal(3)
+               (@profiles[0].points.overall >= @profiles[1].points.overall).should.be.true
+               (@profiles[1].points.overall >= @profiles[2].points.overall).should.be.true
+           
+         it "should update the points of the team", (done) ->
+            Team.findById "51084c19f71f55551a7b1ef6", "points", (err, team) =>
                return done(err) if err
+               overall = @profiles[0].points.overall + @profiles[1].points.overall + @profiles[2].points.overall 
+               passion = @profiles[0].points.passion + @profiles[1].points.passion + @profiles[2].points.passion 
+               dedication = @profiles[0].points.dedication + @profiles[1].points.dedication + @profiles[2].points.dedication 
+               knowledge = @profiles[0].points.knowledge + @profiles[1].points.knowledge + @profiles[2].points.knowledge 
 
-               TeamProfile
-               .find(team_id: "51084c19f71f55551a7b1ef6")
-               .sort("rank")
-               .select("rank points")
-               .exec (err, profiles) ->
-                  console.log profiles
-                  return done(err) if err
-                  profiles[0].rank.should.equal(1)
-                  profiles[1].rank.should.equal(2)
-                  profiles[2].rank.should.equal(3)
-                  (profiles[0].points.overall >= profiles[1].points.overall).should.be.true
-                  (profiles[1].points.overall >= profiles[2].points.overall).should.be.true
-                  done()
+               team.points.overall.should.equal(overall)
+               team.points.passion.should.equal(passion)
+               team.points.dedication.should.equal(dedication)
+               team.points.knowledge.should.equal(knowledge)
+               done()
 
-      describe.only "Scoring", () ->
+      describe "Scoring", () ->
          before (cb) -> 
             async.series [
                (done) -> dbSetup.unload data_bookie, done
@@ -200,8 +223,19 @@ describe "Fannect Manager", () ->
 
          after (done) -> dbSetup.unload data_bookie, done
 
+         it "should processes all waiting_events", () ->
+            for profile in @profiles
+               profile.waiting_events.length.should.equal(0)
+
+         it "should add events", () ->
+            @profiles[0].events.length.should.equal(3)
+            @profiles[1].events.length.should.equal(2)
+            @profiles[2].events.length.should.equal(2)
+
          it "should update all team profiles to have the correct points", () ->
-            console.log @profiles
+            @profiles[0].points.overall.should.equal(154)
+            @profiles[1].points.overall.should.equal(167)
+            @profiles[2].points.overall.should.equal(182)
 
 
 
