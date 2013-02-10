@@ -25,7 +25,7 @@ bookie = module.exports =
          log.sendErrors("Postgame", cb)
 
    findAndUpdate: (cb) ->
-      Team.findOneAndUpdate { needs_processing: true, is_processing: false, }
+      Team.findOneAndUpdate { needs_processing: true, is_processing: { $ne: true }}
       , { is_processing: true }
       , { select: "schedule.postgame sport_key needs_processing is_processing points" }
       , (err, team) ->
