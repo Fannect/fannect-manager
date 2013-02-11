@@ -210,44 +210,44 @@ describe "Fannect Manager", () ->
          #          done()
 
 
-   describe "Postgame", () ->
+   describe.only "Postgame", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeboxscores.xml", "utf8", (err, xml) -> done null, null, xml
-         
-         dbSetup.load data_postgame, (err) =>
+         dbSetup.unload data_postgame, (err) =>
             return done(err) if err
-            Team
-            .findById("51084c08f71f55551a7b1ef6")
-            .select("schedule team_key")
-            .exec (err, team) =>
+            dbSetup.load data_postgame, (err) =>
                return done(err) if err
-               postgame.updateTeam team, true, (err) =>
+               Team
+               .findById("51084c08f71f55551a7b1ef6")
+               .select("schedule team_key sport_key needs_processing is_processing points")
+               .exec (err, team) =>
                   return done(err) if err
-                  Team
-                  .findById("51084c08f71f55551a7b1ef6")
-                  .select("schedule")               
-                  .exec (err, team) =>
-                     @team = team
-                     done(err)
+                  postgame.updateTeam team, true, (err) =>
+                     return done(err) if err
+                     Team
+                     .findById("51084c08f71f55551a7b1ef6")
+                     .select("schedule points")               
+                     .exec (err, team) =>
+                        @team = team
+                        done(err)
 
       after (done) -> dbSetup.unload data_postgame, done
 
       it "should remove next game from season", () ->
-         team = @team
-         team.schedule.season.length.should.equal(1)
+         @team.schedule.season.length.should.equal(1)
 
       it "should update pregame", () ->
-         team = @team
-         team.schedule.pregame.event_key.should.equal("l.nba.com-2012-e.17838")
-         team.schedule.pregame.is_home.should.be.false
+         @team.schedule.pregame.event_key.should.equal("l.nba.com-2012-e.17838")
+         @team.schedule.pregame.is_home.should.be.false
 
       it "should update box scores", () ->
-         team = @team
-         team.schedule.postgame.attendance.should.equal(18624)
-         team.schedule.postgame.won.should.be.false
-         team.schedule.postgame.score.should.equal(81)
-         team.schedule.postgame.opponent_score.should.equal(99)
+         @team.schedule.postgame.attendance.should.equal(18624)
+         @team.schedule.postgame.won.should.be.false
+         @team.schedule.postgame.score.should.equal(81)
+         @team.schedule.postgame.opponent_score.should.equal(99)
 
+      it "should update team points", () ->
+         @team.points.overall.should.equal(483)
 
 
 

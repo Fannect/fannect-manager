@@ -16,7 +16,7 @@ previewer = module.exports =
    
    updateAll: (cb) ->
       log.empty()
-      log.write "#{white}Starting bookie... #{green}#{new Date()}#{reset}"
+      log.write "#{white}Starting previewer... #{green}#{new Date()}#{reset}"
 
       Team
       .aggregate { $group: { _id: "$league_key" }}

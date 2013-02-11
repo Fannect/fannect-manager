@@ -1,4 +1,110 @@
 {
+    "teamprofiles": [
+        {
+            "_id": "5102b17148a0c8f70c100054",
+            "user_id": "5102b17168a0c8f70c000002",
+            "name": "Ron Testing",
+            "team_id": "51084c08f71f55551a7b1ef6",
+            "team_key": "l.test.com-t.19",
+            "team_name": "KCMO Fannect",
+            "events": [],
+            "is_college": false,
+            "points": {
+                "dedication": 23,
+                "passion": 45,
+                "knowledge": 63,
+                "overall": 131
+            },
+            "waiting_events": [
+                {
+                    "_id": "51168b7d8f962a0200033004",
+                    "type": "game_face",
+                    "meta": { "face_on": true }
+                }, {
+                    "_id": "51168b778f862a0560000021",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "picked": true,
+                        "away_score": 99,
+                        "home_score": 93
+                    }
+                }, {
+                    "_id": "51168b778f863a0200000104",
+                    "type": "attendance_streak",
+                    "meta": {
+                        "checked_in": true,
+                        "lat": 26,
+                        "lng": 45
+                    }
+                }
+            ]
+        }, {
+            "_id": "5102b17168a0c8f70c100007",
+            "user_id": "5102b17168a0c8f70c000002",
+            "name": "Ron Testing",
+            "team_id": "51084c08f71f55551a7b1ef6",
+            "team_key": "l.test.com-t.19",
+            "team_name": "KCMO Fannect",
+            "events": [],
+            "is_college": false,
+            "points": {
+                "dedication": 54,
+                "passion": 32,
+                "knowledge": 91,
+                "overall": 177
+            },
+            "waiting_events": [
+                {
+                    "_id": "51168b6d8f862a0200033004",
+                    "type": "game_face",
+                    "meta": { "face_on": true }
+                }, {
+                    "_id": "51168b778f862a0200000023",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "picked": true,
+                        "away_score": 88,
+                        "home_score": 86
+                    }
+                }
+            ]
+        }, {
+            "_id": "5102b17168a0c8f70c001005",
+            "user_id": "5102b17168a0c8f70c000002",
+            "name": "Ron Testing",
+            "team_id": "51084c08f71f55551a7b1ef6",
+            "team_key": "l.test.com-t.19",
+            "team_name": "KCMO Fannect",
+            "friends": ["5102b17168a0c8f70c000007"],
+            "events": [],
+            "is_college": true,
+            "points": {
+                "dedication": 34,
+                "passion": 72,
+                "knowledge": 56,
+                "overall": 162
+            },
+            "waiting_events": [
+                {
+                    "_id": "51168b778f862a0200200023",
+                    "type": "guess_the_score",
+                    "meta": {
+                        "picked": true,
+                        "away_score": 44,
+                        "home_score": 22
+                    }
+                }, {
+                    "_id": "51168b778f862a0204300103",
+                    "type": "attendance_streak",
+                    "meta": {
+                        "checked_in": true,
+                        "lat": 26,
+                        "lng": 45
+                    }
+                }
+            ]
+        }
+    ],
     "teams": [
         {
             "_id": "51084c08f71f55551a7b1ef6",
