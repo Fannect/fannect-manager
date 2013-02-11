@@ -20,7 +20,7 @@ postgame = module.exports =
    update: (runBookie, cb) ->
       time = new Date(new Date() / 1 - 1000 * 60 * 120)
       log.empty()
-      log.write "#{white}Starting bookie... #{green}#{new Date()}#{reset}"
+      log.write "#{white}Starting postgame... #{green}#{new Date()}#{reset}"
 
       Team
       .find({ "schedule.pregame.game_time": { $lt: time }})
