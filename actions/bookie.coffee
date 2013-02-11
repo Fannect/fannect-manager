@@ -77,9 +77,9 @@ bookie = module.exports =
 
    rankTeam: (team, cb) ->
       # Reset points so they can be freshly added
-      log.write("Team (#{team._id}) before set: #{JSON.parse(team)}")
+      log.write("Team (#{team._id}) before set: #{JSON.stringify(team.toObject())}")
       team.set("points", {overall: 0, passion: 0, dedication: 0, knowledge: 0})
-      log.write("Team (#{team._id}) after set: #{JSON.parse(team)}")
+      log.write("Team (#{team._id}) after set: #{JSON.stringify(team.toObject)}")
 
       bookie.rankBatch team, 0, (err) ->
          return cb(err) if err
@@ -117,7 +117,7 @@ bookie = module.exports =
                   team.points.passion += profile.points.passion
                   team.points.dedication += profile.points.dedication
                   team.points.knowledge += profile.points.knowledge
-                  log.write("Team (#{team._id}) points: #{JSON.parse(team)}")
+                  log.write("Team (#{team._id}) points: #{JSON.stringify(team)}")
 
                   profile.rank = rank++
                   profile.save (err) -> 
