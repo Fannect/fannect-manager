@@ -2,7 +2,7 @@ Team = require "../common/models/Team"
 parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
-Log = require "../utils/Log"
+log = require "../utils/Log"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -12,12 +12,11 @@ green = "\u001b[32m"
 white = "\u001b[37m"
 reset = "\u001b[0m"
 
-log = new Log()
-
 previewer = module.exports =
    
    updateAll: (cb) ->
       log.empty()
+      log.write "#{white}Starting bookie... #{green}#{new Date()}#{reset}"
 
       Team
       .aggregate { $group: { _id: "$league_key" }}

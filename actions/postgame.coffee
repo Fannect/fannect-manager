@@ -3,7 +3,7 @@ parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
 _ = require "underscore"
-Log = require "../utils/Log"
+log = require "../utils/Log"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -13,17 +13,18 @@ green = "\u001b[32m"
 white = "\u001b[37m"
 reset = "\u001b[0m"
 
-log = new Log()
+bookie = require "./bookie"
 
 postgame = module.exports =
 
-   update: (cb) ->
+   update: (runBookie, cb) ->
       time = new Date(new Date() / 1 - 1000 * 60 * 120)
       log.empty()
+      log.write "#{white}Starting bookie... #{green}#{new Date()}#{reset}"
 
       Team
       .find({ "schedule.pregame.game_time": { $lt: time }})
-      .select("schedule team_key")
+      .select("schedule team_key sport_key needs_processing is_processing points")
       .exec (err, teams) ->
          return cb(err) if err
 
@@ -36,11 +37,11 @@ postgame = module.exports =
          count = 0
          for team in teams
             count++
-            postgame.updateTeam team, (err) ->
+            postgame.updateTeam team, bookie, (err) ->
                if --count <= 0
                   log.sendErrors("Postgame", cb)
 
-   updateTeam: (team, cb) ->
+   updateTeam: (team, runBookie, cb) ->
       request.get
          url: "#{url}/searchDocuments.php"            
          qs:
@@ -93,10 +94,19 @@ postgame = module.exports =
             
             team.needs_processing = true
 
-            team.save (err) ->
-               if err
-                  log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
-               else
-                  log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
-               cb()
-               
+            if runBookie
+               log.write("#{white}Finished postgame, starting bookie: #{team.team_key}#{reset} (team_key)")
+               bookie.processTeam team, (err) ->
+                  if err
+                     log.error("#{red}Failed: couldn't update bookie for #{team.team_key}#{reset} (team_key)")
+                  else
+                     log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
+                  cb()
+            else
+               team.save (err) ->
+                  if err
+                     log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
+                  else
+                     log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
+                  cb()
+                  

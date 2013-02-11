@@ -1,4 +1,3 @@
 previews: node manager.js previews
-postgame: node manager.js postgame
+postgame: node manager.js postgame -b
 list: node manager.js list
-bookie: node manager.js bookie

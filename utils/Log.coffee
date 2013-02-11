@@ -3,37 +3,36 @@ sendgrid = new (require("sendgrid-web"))({
    key: process.env.SENDGRID_PASSWORD or "1Billion!" 
 })
 
-class Log 
-   constructor: () ->
-      @messages = []
-      @errors = []
+messages = []
+errors = []
 
-   write: (text) =>
-      @messages.push text
+log =
+   write: (text) ->
+      messages.push text
       console.log text
 
-   error: (text) =>
-      @errors.push text
+   error: (text) ->
+      errors.push text
       console.log text
 
-   sendErrors: (appName, cb) =>
-      if @errors?.length > 0
-         @send(appName, cb)
+   sendErrors: (appName, cb) ->
+      if errors?.length > 0
+         log.send(appName, cb)
       else
          cb()
 
    empty: () =>
-      @errors.length = 0
-      @messages.length = 0
+      errors.length = 0
+      messages.length = 0
       
    send: (appName, cb) =>
       html = "<h2>Date: #{new Date()}</h2><br/><br/>"
-      html += "<h2>Errors: #{@errors.length}</h2>"
-      html += "#{@errors.join('<br/>')}<br/>"
-      html += "<h2>Messages: #{@messages.length}</h2>"
-      html += "#{@messages.join('<br/>')}<br/>"
+      html += "<h2>Errors: #{errors.length}</h2>"
+      html += "#{errors.join('<br/>')}<br/>"
+      html += "<h2>Messages: #{messages.length}</h2>"
+      html += "#{messages.join('<br/>')}<br/>"
 
-      @empty()
+      log.empty()
 
       if process.env.NODE_ENV == "production"
          sendgrid.send
@@ -47,4 +46,4 @@ class Log
          console.log html
          cb() if cb
          
-module.exports = Log
+module.exports = log

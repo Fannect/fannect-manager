@@ -104,9 +104,10 @@ program
 program
 .command("postgame")
 .description("Updates all postgames")
+.option("-b, --bookie", "run bookie after postgame finished")
 .action(function (cmd) {
    start = new Date() / 1;
-   postgame.update(function (err) {
+   postgame.update(cmd.bookie || false, function (err) {
       end = (((new Date() / 1) - start) / 1000.0)
       if (err) {
          console.error("Completed (" + end + ") with errors");

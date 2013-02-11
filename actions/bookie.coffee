@@ -3,7 +3,7 @@ TeamProfile = require "../common/models/TeamProfile"
 parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
-Log = require "../utils/Log"
+log = require "../utils/Log"
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
 # Colors
@@ -12,14 +12,13 @@ green = "\u001b[32m"
 white = "\u001b[37m"
 reset = "\u001b[0m"
 
-log = new Log()
-
 batchSize = parseInt(process.env.BATCH_SIZE or 50)
 
 bookie = module.exports =
    
    updateAll: (cb) ->
       log.empty()
+      log.write "#{white}Starting bookie... #{green}#{new Date()}#{reset}"
       bookie.findAndUpdate (err) ->
          log.error "#{red}Failed: #{err}#{reset}" if err
          log.sendErrors("Postgame", cb)
@@ -55,10 +54,10 @@ bookie = module.exports =
       .select("schedule.postgame points events waiting_events")
       .exec (err, profiles) ->
          if err
-            log.error "#{red}Failed: on #{team._id} (team_id), #{err}#{reset}"
+            log.error "#{red}Process: Failed: on #{team._id} (team_id), #{err}#{reset}"
             return cb(err)
          if profiles.length < 1
-            log.write "#{white}No team profiles for: #{team._id}#{reset} (team_id)" if skip == 0
+            log.write "Process: No team profiles for: #{team._id} (team_id)" if skip == 0
             return cb()
 
          run = [
@@ -97,10 +96,10 @@ bookie = module.exports =
       .select("rank points")
       .exec (err, profiles) ->
          if err
-            log.error("#{red}Failed to rank team: #{team._id} (team_id), #{err}#{reset}")
+            log.error("#{red}Rank: Failed to rank team: #{team._id} (team_id), #{err}#{reset}")
             return cb(err)
          if profiles.length < 1
-            log.write("#{white}No team profiles for: #{team._id}#{reset} (team_id)") if skip == 0
+            log.write("Rank: No team profiles for: #{team._id} (team_id)") if skip == 0
             return cb(err)
 
          async.parallel
@@ -120,6 +119,7 @@ bookie = module.exports =
                   team.points.passion += profile.points.passion
                   team.points.dedication += profile.points.dedication
                   team.points.knowledge += profile.points.knowledge
+                  log.write("Team (#{team._id}) points:", team.points)
 
                   profile.rank = rank++
                   profile.save (err) -> 
