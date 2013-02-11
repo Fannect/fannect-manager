@@ -37,7 +37,7 @@ postgame = module.exports =
          count = 0
          for team in teams
             count++
-            postgame.updateTeam team, bookie, (err) ->
+            postgame.updateTeam team, runBookie, (err) ->
                if --count <= 0
                   log.sendErrors("Postgame", cb)
 
@@ -100,7 +100,7 @@ postgame = module.exports =
                   if err
                      log.error("#{red}Failed: couldn't update bookie for #{team.team_key}#{reset} (team_key)")
                   else
-                     log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
+                     log.write("#{white}Finished bookie: #{team.team_key}#{reset} (team_key)")
                   cb()
             else
                team.save (err) ->

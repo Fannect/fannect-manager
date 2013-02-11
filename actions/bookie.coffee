@@ -77,12 +77,9 @@ bookie = module.exports =
 
    rankTeam: (team, cb) ->
       # Reset points so they can be freshly added
-      team.points = 
-         overall: 0
-         passion: 0
-         dedication: 0
-         knowledge: 0
-      
+      team.set("points", {overall: 0, passion: 0, dedication: 0, knowledge: 0})
+      log.write("Team (#{team._id}) after set:", team)
+
       bookie.rankBatch team, 0, (err) ->
          return cb(err) if err
          team.save(cb)

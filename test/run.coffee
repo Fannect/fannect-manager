@@ -210,7 +210,7 @@ describe "Fannect Manager", () ->
          #          done()
 
 
-   describe.only "Postgame", () ->
+   describe "Postgame", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeboxscores.xml", "utf8", (err, xml) -> done null, null, xml
          
