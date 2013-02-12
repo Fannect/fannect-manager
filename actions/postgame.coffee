@@ -59,7 +59,7 @@ postgame = module.exports =
 
             if not (sportsEvents?.length >= 1)
                log.write("In progress: #{team.team_key}")
-               return callback()
+               return cb()
 
             alreadyChecked = []
             q = async.queue (ev, callback) ->
