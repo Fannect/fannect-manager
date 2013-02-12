@@ -121,7 +121,7 @@ postgame = module.exports =
                      else
                         log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
                      callback()
-            , 5
+            , 1
                   
             q.push(ev) for ev in sportsEvents
             q.drain = cb

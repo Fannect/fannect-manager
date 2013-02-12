@@ -51,7 +51,7 @@ bookie = module.exports =
       .find({ team_id: team._id })
       .skip(skip)
       .limit(batchSize)
-      .select("schedule.postgame points events waiting_events")
+      .select("points events waiting_events")
       .exec (err, profiles) ->
          if err
             log.error "#{red}Process: Failed: on #{team._id} (team_id), #{err}#{reset}"
@@ -63,15 +63,15 @@ bookie = module.exports =
          run = [
             (done) -> 
                if profiles and profiles.length == batchSize
-                  bookie.processBatch(team, skip + batchSize, cb)
+                  bookie.processBatch(team, skip + batchSize, done)
                else 
-                  cb()
+                  done()
          ]
 
          for p in profiles
             do (profile = p) ->
                profile.processEvents(team) 
-               run.push (done) -> profile.save()
+               run.push (done) -> profile.save(done)
 
          async.parallel run, cb
 
@@ -88,7 +88,7 @@ bookie = module.exports =
       .find({ team_id: team._id })
       .skip(skip)
       .limit(batchSize)
-      .sort("-points.overall")
+      .sort({"points.overall": -1, name: 1})
       .select("rank points")
       .exec (err, profiles) ->
          if err
@@ -101,12 +101,13 @@ bookie = module.exports =
          async.parallel
             batch: (done) ->
                if profiles.length == batchSize
-                  bookie.rankBatch(team, skip + batchSize, done)
+                  bookie.rankBatch(team, skip + batchSize, -> done)
                else
                   done()
             teamProfiles: (done) ->
                rank = skip + 1
                count = 0
+               
                for profile in profiles
                   count++
 

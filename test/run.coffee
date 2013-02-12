@@ -77,7 +77,8 @@ describe "Fannect Manager", () ->
             return done(err) if err
             parser.parse xml, (err, doc) ->
                return done(err) if err
-               outcome = parser.boxScores.parseBoxScoreToJson(doc)
+               events = parser.boxScores.parseEvents(doc)
+               outcome = parser.boxScores.parseBoxScoreToJson(events[0])
                outcome.attendance.should.equal("18624")
                outcome.is_past.should.equal(true)
                outcome.away.score.should.equal(81)
@@ -199,6 +200,12 @@ describe "Fannect Manager", () ->
             @profiles[1].points.overall.should.equal(167)
             @profiles[2].points.overall.should.equal(182)
 
+         it "should update team points correctly", (done) ->
+            Team.findById "51084c19f71f55551a7b1ef6", "points", (err, team) =>
+               sum = @profiles[0].points.overall + @profiles[1].points.overall + @profiles[2].points.overall
+               team.points.overall.should.equal(sum)
+               done()
+
          # it "should update the ranking of the team", (done) ->
          #    async.parallel
                   
@@ -247,7 +254,7 @@ describe "Fannect Manager", () ->
          @team.schedule.postgame.opponent_score.should.equal(99)
 
       it "should update team points", () ->
-         @team.points.overall.should.equal(481)
+         @team.points.overall.should.equal(483)
 
 
 
