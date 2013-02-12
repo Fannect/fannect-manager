@@ -58,7 +58,7 @@ postgame = module.exports =
 
             outcome = parser.boxScores.parseBoxScoreToJson(doc)
 
-            if not outcome.is_past
+            if not outcome.is_past or outcome.event_key != team.schedule.pregame.event_key
                log.write("In progress: #{team.team_key}")
                return cb()
 

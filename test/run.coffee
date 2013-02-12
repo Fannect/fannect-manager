@@ -247,7 +247,7 @@ describe "Fannect Manager", () ->
          @team.schedule.postgame.opponent_score.should.equal(99)
 
       it "should update team points", () ->
-         @team.points.overall.should.equal(483)
+         @team.points.overall.should.equal(481)
 
 
 
