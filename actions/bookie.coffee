@@ -1,5 +1,6 @@
 Team = require "../common/models/Team"
 TeamProfile = require "../common/models/TeamProfile"
+Group = require "../common/models/Group"
 parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
@@ -41,6 +42,7 @@ bookie = module.exports =
 
    processTeam: (team, cb) ->
       bookie.processBatch team, 0, (err) ->
+         log.errors("#{red}Process: Failed: #{err.stack}#{reset}") if err
          return cb(err) if err
          team.is_processing = false
          team.needs_processing = false
@@ -63,7 +65,9 @@ bookie = module.exports =
          run = [
             (done) -> 
                if profiles and profiles.length == batchSize
-                  bookie.processBatch(team, skip + batchSize, done)
+                  bookie.processBatch team, skip + batchSize, (err) -> 
+                     log.error "#{red}Process: Failed: #{err.stack}#{reset}" if err
+                     done()
                else 
                   done()
          ]
@@ -71,17 +75,23 @@ bookie = module.exports =
          for p in profiles
             do (profile = p) ->
                profile.processEvents(team) 
-               run.push (done) -> profile.save(done)
+               run.push (done) -> 
+                  profile.save (err) ->
+                     log.error "#{red}Process: Failed: #{err.stack}#{reset}" if err
+                     done()
 
-         async.parallel run, cb
+         async.parallel run, (err) ->
+            log.error "#{red}Process: Failed: #{err.stack}#{reset}" if err
+            cb()
 
    rankTeam: (team, cb) ->
       # Reset points so they can be freshly added
       team.set("points", {overall: 0, passion: 0, dedication: 0, knowledge: 0})
-      
       bookie.rankBatch team, 0, (err) ->
          return cb(err) if err
-         team.save(cb)
+         team.save (err) ->
+            return cb(err) if err
+            bookie.rankGroups(team._id, cb)
 
    rankBatch: (team, skip, cb) ->
       TeamProfile
@@ -101,7 +111,9 @@ bookie = module.exports =
          async.parallel
             batch: (done) ->
                if profiles.length == batchSize
-                  bookie.rankBatch(team, skip + batchSize, -> done)
+                  bookie.rankBatch team, skip + batchSize, (err) ->
+                     log.error "#{red}Rank: Failed: #{err.stack}#{reset}" if err
+                     done()
                else
                   done()
             teamProfiles: (done) ->
@@ -119,9 +131,41 @@ bookie = module.exports =
                   
                   profile.rank = rank++
                   profile.save (err) -> 
-                     return done(err) if err
+                     log.error "#{red}Rank: Failed: #{err.stack}#{reset}" if err
                      done() if --count == 0
          , cb
 
+   rankGroups: (team_id, cb) ->
+      TeamProfile
+      # .find { team_id: team_id }
+      .aggregate { $match: { "team_id": team_id }}
+      , { $unwind: "$groups" }
+      , { $group: { 
+         _id: "$groups.group_id",
+         members: { $sum: 1 },
+         overall: { $sum: "$points.overall" },
+         passion: { $sum: "$points.passion" }, 
+         dedication: { $sum: "$points.dedication" }, 
+         knowledge: { $sum: "$points.knowledge" }}}
+      , (err, groups) ->
+
+         run = []
+
+         for g in groups 
+            do (group = g) ->
+               run.push (done) ->
+                  Group.update _id: group._id,
+                     members: group.members
+                     points: 
+                        overall: group.overall
+                        passion: group.passion
+                        dedication: group.dedication
+                        knowledge: group.knowledge
+                  , (err, results) ->
+                     log.error("Groups: Fail: #{err.stack}") if err
+                     done()
 
 
+         async.parallel run, (err) ->
+            log.error("Groups: Fail: #{err.stack}") if err
+            cb()

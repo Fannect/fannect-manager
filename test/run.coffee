@@ -17,6 +17,7 @@ process.env.NODE_ENV = "production"
 process.env.BATCH_SIZE = 1
 
 Team = require "../common/models/Team"
+Group = require "../common/models/Group"
 TeamProfile = require "../common/models/TeamProfile"
 
 data_standard = require "./res/standard"
@@ -129,6 +130,7 @@ describe "Fannect Manager", () ->
                (done) -> dbSetup.load data_bookie, done
                (done) => 
                   Team.findById "51084c19f71f55551a7b1ef6", (err, team) =>
+
                      return done(err) if err
                      bookie.rankTeam team, done
                (done) => 
@@ -173,13 +175,15 @@ describe "Fannect Manager", () ->
                (done) -> 
                   Team.findById "51084c19f71f55551a7b1ef6", (err, team) ->
                      return done(err) if err
-                     bookie.processTeam team, done
+                     bookie.processTeam team, (err) ->
+                        done(err)
                (done) =>
                   TeamProfile
                   .find(team_id: "51084c19f71f55551a7b1ef6")
                   .sort("points.overall")
-                  .select("rank points waiting_events events")
+                  .select("rank points waiting_events events groups")
                   .exec (err, profiles) =>
+                     return done(err) if err
                      @profiles = profiles
                      done()
             ], cb
@@ -206,6 +210,19 @@ describe "Fannect Manager", () ->
                team.points.overall.should.equal(sum)
                done()
 
+         it "should update group points correctly", (done) ->
+            group_id = "51084c19f71f55551a7b2ef7"
+            Group.findById group_id, "points", (err, group) =>
+               group = group.toObject()
+               sum = 0
+               for profile in @profiles
+                  for g in profile.groups
+                     if g.group_id?.toString() == "51084c19f71f55551a7b2ef7"
+                        sum += profile.points.overall
+                        break
+               group.points.overall.should.equal(sum)
+               done()
+
          # it "should update the ranking of the team", (done) ->
          #    async.parallel
                   
@@ -217,7 +234,7 @@ describe "Fannect Manager", () ->
          #          done()
 
 
-   describe.only "Postgame", () ->
+   describe "Postgame", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeboxscores.xml", "utf8", (err, xml) -> done null, null, xml
          dbSetup.unload data_postgame, (err) =>

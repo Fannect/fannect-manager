@@ -67,7 +67,15 @@
                         "home_score": 86
                     }
                 }
-            ]
+            ],
+            "groups": [
+                {
+                    "_id": "51168b778f862a0204400108",
+                    "group_id": "51084c19f71f55551a7b2ef7",
+                    "name": "Some group",
+                    "tags": ["greek"]
+                }
+            ] 
         }, {
             "_id": "5102b17168a0c8f70c001005",
             "user_id": "5102b17168a0c8f70c000002",
@@ -102,7 +110,36 @@
                         "lng": 45
                     }
                 }
-            ]
+            ],
+            "groups": [
+                {
+                    "_id": "51168b778f862a0204400101",
+                    "group_id": "51084c19f71f55551a7b2ef7",
+                    "name": "Some group",
+                    "tags": ["greek"]
+                }
+            ] 
+        }
+    ],
+    "groups": [
+        {
+            "_id": "51084c19f71f55551a7b2ef7",
+            "name": "Some group",
+            "team_id": "51084c19f71f55551a7b1ef6",
+            "team_key": "l.test.com-t.19",
+            "team_name": "KCMO Fannect",
+            "sport_key": "15008000",
+            "sport_name": "Basketball",
+            "tags": ["greek"]
+        }, {
+            "_id": "51084c19f71f55551a7b2ef9",
+            "name": "Some other group",
+            "team_id": "51084c19f71f55551a8b1ef3",
+            "team_key": "l.test.com-t.21",
+            "team_name": "KCMO Fannect 2",
+            "sport_key": "15008000",
+            "sport_name": "Basketball",
+            "tags": ["greek"]
         }
     ],
     "teams": [
