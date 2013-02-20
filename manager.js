@@ -126,7 +126,7 @@ program
 .description("Updates all events")
 .action(function (cmd) {
    start = new Date() / 1;
-   commissioner.updateAll(function (err) {
+   commissioner.processAll(function (err) {
       end = (((new Date() / 1) - start) / 1000.0)
       if (err) {
          console.error("Completed (" + end + ") with errors");
