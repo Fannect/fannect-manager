@@ -45,7 +45,7 @@ postgame = module.exports =
             #    postgame.updateTeam team, runBookie, (err) ->
             #       if --count <= 0
             #          log.sendErrors("Postgame", cb)
-
+         q.push(team) for team in teams
          q.drain = () ->
             log.sendErrors("Postgame", cb)
 
