@@ -34,12 +34,20 @@ postgame = module.exports =
          else
             log.write "#{white}Found #{green}#{teams.length}#{white} in progress..#{reset}"
          
-         count = 0
-         for team in teams
-            count++
-            postgame.updateTeam team, runBookie, (err) ->
-               if --count <= 0
-                  log.sendErrors("Postgame", cb)
+         q = async.queue (team, callback) ->
+            postgame.updateTeam team, runBookie, () ->
+               callback() # errors are already logged so swallow at this point
+            , 10
+            
+            # count = 0
+            # for team in teams
+            #    count++
+            #    postgame.updateTeam team, runBookie, (err) ->
+            #       if --count <= 0
+            #          log.sendErrors("Postgame", cb)
+
+         q.drain = () ->
+            log.sendErrors("Postgame", cb)
 
    updateTeam: (team, runBookie, cb) ->
       request.get
@@ -48,7 +56,7 @@ postgame = module.exports =
             "team-keys": team.team_key
             "fixture-keys": "event-stats"
             "content-returned": "all-content"
-         timeout: 60000
+         timeout: 120000
       , (err, resp, body) ->
          if err
             log.error("#{red}Failed: XML Team request failed #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
@@ -120,14 +128,14 @@ postgame = module.exports =
                         log.error("#{red}Failed: couldn't update bookie for #{team.team_key}#{reset} (team_key)")
                      else
                         log.write("#{white}Finished bookie: #{team.team_key}#{reset} (team_key)")
-                     callback()
+                     return callback()
                else
                   team.save (err) ->
                      if err
                         log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
                      else
                         log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
-                     callback()
+                     return callback()
             , 1
                   
             q.push(ev) for ev in sportsEvents
