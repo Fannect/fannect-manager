@@ -37,8 +37,8 @@ postgame = module.exports =
          q = async.queue (team, callback) ->
             postgame.updateTeam team, runBookie, () ->
                callback() # errors are already logged so swallow at this point
-            , 10
-            
+            , 20
+
             # count = 0
             # for team in teams
             #    count++
