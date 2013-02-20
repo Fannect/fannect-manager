@@ -1,0 +1,117 @@
+{"teamprofiles": [{
+  "_id": "6116922f0952930200000005",
+  "events": [
+    {
+      "type": "attendance_streak",
+      "meta": {
+        "lat": "38.95327065439026",
+        "lng": "-95.24978303550483",
+        "checked_in": true
+      },
+      "_id": "512061c95659b50200000065",
+      "points_earned": {
+        "dedication": 4
+      }
+    },
+    {
+      "type": "attendance_streak",
+      "meta": {
+        "lat": "38.95327065439026",
+        "lng": "-95.24978303550483",
+        "checked_in": true
+      },
+      "_id": "512061c95659b50200000065",
+      "points_earned": {
+        "dedication": 4
+      }
+    },
+    {
+      "type": "guess_the_score",
+      "meta": {
+        "home_score": "68",
+        "away_score": "72",
+        "picked": true
+      },
+      "_id": "51172b85d71a5a020000001b",
+      "points_earned": {
+        "knowledge": 13
+      }
+    },
+    {
+      "type": "game_face",
+      "meta": {
+        "face_on": true
+      },
+      "_id": "51172b85d71a5a020000000c",
+      "points_earned": {
+        "passion": 1
+      }
+    },
+    {
+      "type": "guess_the_score",
+      "meta": {
+        "home_score": "68",
+        "away_score": "63",
+        "picked": true
+      },
+      "_id": "5119c7ea0fcd5c020000000c",
+      "points_earned": {
+        "knowledge": 4
+      }
+    },
+    {
+      "type": "game_face",
+      "meta": {
+        "face_on": true
+      },
+      "_id": "5119c7ea0fcd5c020000000d",
+      "points_earned": {
+        "passion": 1
+      }
+    },
+    {
+      "type": "guess_the_score",
+      "meta": {
+        "home_score": "72",
+        "away_score": "64",
+        "picked": true
+      },
+      "_id": "512061c95659b50200000007",
+      "points_earned": {
+        "knowledge": 4
+      }
+    },
+    {
+      "type": "game_face",
+      "meta": {
+        "face_on": true
+      },
+      "_id": "512061c95659b50200000008",
+      "points_earned": {
+        "passion": 1
+      }
+    }
+  ],
+  "points": {
+    "dedication": 0,
+    "knowledge": 21,
+    "overall": 24,
+    "passion": 3
+  },
+  "profile_image_url": "http://res.cloudinary.com/fannect-dev/image/upload/v1360933309/ujvdgbwj8o9bhejx4t41.jpg",
+  "rank": 1,
+  "team_id": "5112449520b4f61f5be20ebd",
+  "team_image_url": "http://res.cloudinary.com/fannect-dev/image/upload/v1361120404/euxrkchxdxnmcq663jru.jpg",
+  "team_key": "l.ncaa.org.mbasket-t.B33",
+  "team_name": "Kansas Jayhawks",
+  "user_id": "51168fa9a7d45a0200000001",
+  "waiting_events": [
+    {
+      "type": "game_face",
+      "meta": {
+        "face_on": true
+      },
+      "_id": "5124db543b0286020000000e"
+    }
+  ]
+}]}

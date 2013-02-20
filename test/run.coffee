@@ -23,12 +23,14 @@ TeamProfile = require "../common/models/TeamProfile"
 data_standard = require "./res/standard"
 data_postgame = require "./res/postgametest"
 data_bookie = require "./res/bookie-test"
+data_commissioner = require "./res/commissioner-test"
 dbSetup = require "./utils/dbSetup"
 
 scheduler = require "../actions/scheduler"
 previewer = require "../actions/previewer"
 postgame = require "../actions/postgame"
 bookie = require "../actions/bookie"
+commissioner = require "../actions/commissioner"
 
 prepMongo = (done) -> dbSetup.load data_standard, done
 emptyMongo = (done) -> dbSetup.unload data_standard, done
@@ -173,22 +175,19 @@ describe "Fannect Manager", () ->
                (done) -> dbSetup.unload data_bookie, done
                (done) -> dbSetup.load data_bookie, done
                (done) -> 
-                  Team.findById "51084c19f71f55551a7b1ef6", (err, team) ->
+                  Team.findById "51084c19f71f55551a7b1ef6", "schedule sport_key needs_processing is_processing points", (err, team) ->
                      return done(err) if err
                      bookie.processTeam team, (err) ->
                         done(err)
                (done) =>
-                  setTimeout (() =>
-                     TeamProfile
-                     .find(team_id: "51084c19f71f55551a7b1ef6")
-                     .sort("points.overall")
-                     .select("rank points waiting_events events groups")
-                     .exec (err, profiles) =>
-                        return done(err) if err
-                        @profiles = profiles
-                        # console.log profiles
-                        done()
-                  ), 1000
+                  TeamProfile
+                  .find(team_id: "51084c19f71f55551a7b1ef6")
+                  .sort("points.overall")
+                  .select("rank points waiting_events events groups")
+                  .exec (err, profiles) =>
+                     return done(err) if err
+                     @profiles = profiles
+                     done()
             ], cb
 
          after (done) -> dbSetup.unload data_bookie, done
@@ -198,14 +197,14 @@ describe "Fannect Manager", () ->
                profile.waiting_events.length.should.equal(0)
 
          it "should add events", () ->
-            @profiles[0].events.length.should.equal(3)
+            @profiles[0].events.length.should.equal(2)
             @profiles[1].events.length.should.equal(2)
-            @profiles[2].events.length.should.equal(2)
+            @profiles[2].events.length.should.equal(4)
 
          it "should update all team profiles to have the correct points", () ->
-            @profiles[0].points.overall.should.equal(154)
-            @profiles[1].points.overall.should.equal(167)
-            @profiles[2].points.overall.should.equal(182)
+            @profiles[0].points.overall.should.equal(3)
+            @profiles[1].points.overall.should.equal(11)
+            @profiles[2].points.overall.should.equal(30)
 
          it "should update team points correctly", (done) ->
             Team.findById "51084c19f71f55551a7b1ef6", "points", (err, team) =>
@@ -265,5 +264,30 @@ describe "Fannect Manager", () ->
       it "should update team points", () ->
          @team.points.overall.should.equal(483)
 
+   describe.only "Commissioner", () ->
+      before (cb) -> 
+         async.series [
+            (done) -> dbSetup.unload data_commissioner, done
+            (done) -> dbSetup.load data_commissioner, done
+            (done) -> 
+               commissioner.processAll (err) ->
+                  done(err)
+            (done) =>
+               TeamProfile
+               .findOne(_id: "6116922f0952930200000005")
+               .select("rank points waiting_events events groups")
+               .exec (err, profile) =>
+                  return done(err) if err
+                  @profile = profile
+                  done()
+         ], cb
+
+      after (done) -> dbSetup.unload data_commissioner, done
+
+      it "should correct points and overall points", () ->
+         @profile.points.passion.should.equal(3)
+         @profile.points.dedication.should.equal(21)
+         @profile.points.knowledge.should.equal(8)
+         @profile.points.overall.should.equal(32)
 
 

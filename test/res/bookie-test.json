@@ -7,14 +7,19 @@
             "team_id": "51084c19f71f55551a7b1ef6",
             "team_key": "l.test.com-t.19",
             "team_name": "KCMO Fannect",
-            "events": [],
+            "events": [
+                {
+                    "_id": "51168b778f863a0200000104",
+                    "type": "attendance_streak",
+                    "meta": {
+                        "checked_in": true,
+                        "lat": 26,
+                        "lng": 45
+                    },
+                    "points_earned": { "dedication": 10 }
+                }
+            ],
             "is_college": false,
-            "points": {
-                "dedication": 23,
-                "passion": 45,
-                "knowledge": 63,
-                "overall": 131
-            },
             "waiting_events": [
                 {
                     "_id": "51168b7d8f962a0200033004",
@@ -47,12 +52,6 @@
             "team_name": "KCMO Fannect",
             "events": [],
             "is_college": false,
-            "points": {
-                "dedication": 54,
-                "passion": 32,
-                "knowledge": 91,
-                "overall": 177
-            },
             "waiting_events": [
                 {
                     "_id": "51168b6d8f862a0200033004",
@@ -86,12 +85,6 @@
             "friends": ["5102b17168a0c8f70c000007"],
             "events": [],
             "is_college": true,
-            "points": {
-                "dedication": 34,
-                "passion": 72,
-                "knowledge": 56,
-                "overall": 162
-            },
             "waiting_events": [
                 {
                     "_id": "51168b778f862a0200200023",
@@ -108,7 +101,8 @@
                         "checked_in": true,
                         "lat": 26,
                         "lng": 45
-                    }
+                    },
+                    "event_key": "something"
                 }
             ],
             "groups": [
@@ -164,6 +158,7 @@
             "is_college": false,
             "schedule": {
                 "postgame": {
+                    "event_key": "something.com-1121",
                     "attendance": 16701,
                     "game_time": "2013-02-09T01:00:00Z",
                     "is_home": true,

@@ -95,6 +95,7 @@ postgame = module.exports =
                
                # Handle pregame move to postgame
                team.schedule.postgame.game_time = oldpregame.game_time
+               team.schedule.postgame.event_key = oldpregame.event_key
                team.schedule.postgame.opponent = oldpregame.opponent
                team.schedule.postgame.opponent_id = oldpregame.opponent_id
                team.schedule.postgame.is_home = oldpregame.is_home

@@ -27,7 +27,7 @@ bookie = module.exports =
    findAndUpdate: (cb) ->
       Team.findOneAndUpdate { needs_processing: true, is_processing: { $ne: true }}
       , { is_processing: true }
-      , { select: "schedule.postgame sport_key needs_processing is_processing points" }
+      , { select: "schedule sport_key needs_processing is_processing points" }
       , (err, team) ->
          return cb(err) if err 
          return cb() unless team
@@ -51,6 +51,7 @@ bookie = module.exports =
    processBatch: (team, skip, cb) ->
       TeamProfile
       .find({ team_id: team._id })
+      .sort("_id")
       .skip(skip)
       .limit(batchSize)
       .select("points events waiting_events")
@@ -75,7 +76,7 @@ bookie = module.exports =
          for p in profiles
             do (profile = p) ->
                profile.processEvents(team) 
-               run.push (done) -> 
+               run.push (done) ->
                   profile.save (err) ->
                      log.error "#{red}Process: Failed: #{err.stack}#{reset}" if err
                      done()
