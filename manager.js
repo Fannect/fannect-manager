@@ -19,6 +19,7 @@ var scheduler = require("./actions/scheduler");
 var previewer = require("./actions/previewer");
 var postgame = require("./actions/postgame");
 var bookie = require("./actions/bookie");
+var commissioner = require("./actions/commissioner");
 
 program
 .command("schedules")
@@ -108,6 +109,24 @@ program
 .action(function (cmd) {
    start = new Date() / 1;
    postgame.update(cmd.bookie || false, function (err) {
+      end = (((new Date() / 1) - start) / 1000.0)
+      if (err) {
+         console.error("Completed (" + end + ") with errors");
+         console.error(err.stack);
+         process.exit(1);
+      } else {
+         console.log("Completed (" + end + "s)");
+         process.exit();
+      }
+   });
+});
+
+program
+.command("commissioner")
+.description("Updates all events")
+.action(function (cmd) {
+   start = new Date() / 1;
+   commissioner.updateAll(function (err) {
       end = (((new Date() / 1) - start) / 1000.0)
       if (err) {
          console.error("Completed (" + end + ") with errors");
