@@ -51,8 +51,12 @@ postgame = module.exports =
          timeout: 10000
       , (err, resp, body) ->
          if err
-            log.error("#{red}Failed: couldn't parse XML Team body for #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
+            log.error("#{red}Failed: XML Team request failed #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
             return cb(err)   
+
+         if body.indexOf("<xts:sports-content-set />") > -1
+            log.write("In progress: #{team.team_key}")
+            return cb()
 
          parser.parse body, (err, doc) ->
             if err
