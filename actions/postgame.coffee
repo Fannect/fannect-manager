@@ -48,7 +48,7 @@ postgame = module.exports =
             "team-keys": team.team_key
             "fixture-keys": "event-stats"
             "content-returned": "all-content"
-         timeout: 30000
+         timeout: 60000
       , (err, resp, body) ->
          if err
             log.error("#{red}Failed: XML Team request failed #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
