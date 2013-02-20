@@ -51,7 +51,7 @@ postgame = module.exports =
          timeout: 10000
       , (err, resp, body) ->
          if err
-            log.error("#{red}Failed: couldn't parse XML Team body for #{team.team_key}#{reset}")
+            log.error("#{red}Failed: couldn't parse XML Team body for #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
             return cb(err)   
 
          parser.parse body, (err, doc) ->
