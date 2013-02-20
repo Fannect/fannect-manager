@@ -178,14 +178,17 @@ describe "Fannect Manager", () ->
                      bookie.processTeam team, (err) ->
                         done(err)
                (done) =>
-                  TeamProfile
-                  .find(team_id: "51084c19f71f55551a7b1ef6")
-                  .sort("points.overall")
-                  .select("rank points waiting_events events groups")
-                  .exec (err, profiles) =>
-                     return done(err) if err
-                     @profiles = profiles
-                     done()
+                  setTimeout (() =>
+                     TeamProfile
+                     .find(team_id: "51084c19f71f55551a7b1ef6")
+                     .sort("points.overall")
+                     .select("rank points waiting_events events groups")
+                     .exec (err, profiles) =>
+                        return done(err) if err
+                        @profiles = profiles
+                        # console.log profiles
+                        done()
+                  ), 1000
             ], cb
 
          after (done) -> dbSetup.unload data_bookie, done
@@ -222,17 +225,6 @@ describe "Fannect Manager", () ->
                         break
                group.points.overall.should.equal(sum)
                done()
-
-         # it "should update the ranking of the team", (done) ->
-         #    async.parallel
-                  
-         #       Team.findById "51084c19f71f55551a7b1ef6", (err, team) ->
-         #          return done(err) if err
-
-
-         #          console.log team
-         #          done()
-
 
    describe "Postgame", () ->
       before (done) ->

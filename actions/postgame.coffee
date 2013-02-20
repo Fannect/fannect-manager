@@ -50,10 +50,14 @@ postgame = module.exports =
             "content-returned": "all-content"
          timeout: 10000
       , (err, resp, body) ->
-         return cb(err) if err   
+         if err
+            log.error("#{red}Failed: couldn't parse XML Team body for #{team.team_key}#{reset}")
+            return cb(err)   
 
          parser.parse body, (err, doc) ->
-            return cb(err) if err
+            if err
+               log.error("#{red}Failed: couldn't parse XML Team body for #{team.team_key}#{reset} \nBody:\n#{body}")
+               return cb(err)
 
             sportsEvents = parser.boxScores.parseEvents(doc)
 
@@ -104,7 +108,6 @@ postgame = module.exports =
                team.schedule.season.remove(nextgame)
                
                team.needs_processing = true
-
 
                if runBookie
                   log.write("#{white}Finished postgame, starting bookie: #{team.team_key}#{reset} (team_key)")

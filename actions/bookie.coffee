@@ -137,7 +137,6 @@ bookie = module.exports =
 
    rankGroups: (team_id, cb) ->
       TeamProfile
-      # .find { team_id: team_id }
       .aggregate { $match: { "team_id": team_id }}
       , { $unwind: "$groups" }
       , { $group: { 
@@ -164,7 +163,6 @@ bookie = module.exports =
                   , (err, results) ->
                      log.error("Groups: Fail: #{err.stack}") if err
                      done()
-
 
          async.parallel run, (err) ->
             log.error("Groups: Fail: #{err.stack}") if err
