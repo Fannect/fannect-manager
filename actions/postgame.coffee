@@ -98,6 +98,9 @@ postgame = module.exports =
                team.schedule.postgame.event_key = oldpregame.event_key
                team.schedule.postgame.opponent = oldpregame.opponent
                team.schedule.postgame.opponent_id = oldpregame.opponent_id
+               team.schedule.postgame.stadium_id = oldpregame.stadium_id
+               team.schedule.postgame.stadium_name = oldpregame.stadium_name
+               team.schedule.postgame.stadium_location = oldpregame.stadium_location
                team.schedule.postgame.is_home = oldpregame.is_home
                team.schedule.postgame.attendance = outcome.attendance
 
