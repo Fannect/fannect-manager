@@ -27,7 +27,7 @@ bookie = module.exports =
    findAndUpdate: (cb) ->
       Team.findOneAndUpdate { needs_processing: true, is_processing: { $ne: true }}
       , { is_processing: true }
-      , { select: "schedule sport_key needs_processing is_processing points" }
+      , { select: "full_name schedule sport_key needs_processing is_processing points" }
       , (err, team) ->
          return cb(err) if err 
          return cb() unless team

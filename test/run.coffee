@@ -175,7 +175,7 @@ describe "Fannect Manager", () ->
                (done) -> dbSetup.unload data_bookie, done
                (done) -> dbSetup.load data_bookie, done
                (done) -> 
-                  Team.findById "51084c19f71f55551a7b1ef6", "schedule sport_key needs_processing is_processing points", (err, team) ->
+                  Team.findById "51084c19f71f55551a7b1ef6", "schedule full_name sport_key needs_processing is_processing points", (err, team) ->
                      return done(err) if err
                      bookie.processTeam team, (err) ->
                         done(err)

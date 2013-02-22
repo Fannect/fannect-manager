@@ -24,7 +24,7 @@ postgame = module.exports =
 
       Team
       .find({ "schedule.pregame.game_time": { $lt: time }})
-      .select("schedule team_key sport_key needs_processing is_processing points")
+      .select("schedule full_name team_key sport_key needs_processing is_processing points")
       .exec (err, teams) ->
          return cb(err) if err
 
