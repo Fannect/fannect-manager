@@ -40,7 +40,7 @@ previewer = module.exports =
          qs:
             "league-keys": league_key
             "fixture-keys": "pre-event-coverage"
-            "max-result-count": 40
+            "max-result-count": 80
             "content-returned": "all-content"
          timeout: 30000
       , (err, resp, body) ->
