@@ -204,7 +204,7 @@ describe "Fannect Manager", () ->
          it "should update all team profiles to have the correct points", () ->
             @profiles[0].points.overall.should.equal(3)
             @profiles[1].points.overall.should.equal(11)
-            @profiles[2].points.overall.should.equal(30)
+            @profiles[2].points.overall.should.equal(34)
 
          it "should update team points correctly", (done) ->
             Team.findById "51084c19f71f55551a7b1ef6", "points", (err, team) =>

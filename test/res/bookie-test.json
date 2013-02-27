@@ -24,7 +24,10 @@
                 {
                     "_id": "51168b7d8f962a0200033004",
                     "type": "game_face",
-                    "meta": { "face_on": true }
+                    "meta": { 
+                        "face_on": true,
+                        "motivated_count":11
+                    }
                 }, {
                     "_id": "51168b778f862a0560000021",
                     "type": "guess_the_score",
