@@ -1,0 +1,12 @@
+<xts:sports-content-set xmlns:xts="http://www.xmlteam.com" query-date-time="20130227T061728-0500" query-string="" hostname="sportscaster.xmlteam.com" result-count="2" error-count="0" elapsed-time="16ms">
+<sports-content><sports-metadata date-time="20130227T181728-0500" doc-id="xt.17814385-update-post-event" language="en-US" document-class="event-summary" fixture-key="event-score" fixture-name="Event Score"><sports-title>Metadata for event</sports-title><sports-content-codes>
+<sports-content-code code-type="publisher" code-key="sportsnetwork.com"/>
+<sports-content-code code-type="sport" code-key="15008000"/>
+<sports-content-code code-type="league" code-key="l.ncaa.org.mbasket" code-name="NCAA Men's Basketball Division 1"/>
+<sports-content-code code-type="sport" code-key="15008000" code-name="Basketball"/>
+<sports-content-code code-type="team" code-key="l.ncaa.org.mbasket-t.B33" code-name="Kansas Jayhawks" />
+<sports-content-code code-type="team" code-key="l.ncaa.org.mbasket-t.B28" code-name="Iowa St. Cyclones" />
+</sports-content-codes></sports-metadata><sports-event><event-metadata date-coverage-type="event" event-key="l.ncaa.org.mbasket-2012-e.63012" event-status="post-event" start-date-time="20130225T210000-0500"><event-metadata-basketball period-value="3" period-time-remaining="0:00"/><sports-property formal-name="lineup" value="xt.17810278-lineup"/><sports-property formal-name="pre-event-coverage" value="xt.17810721-preview"/><sports-property formal-name="schedule-day" value="xt.17810570-daysked"/><sports-property formal-name="event-score" value="xt.17814385-update-post-event"/><sports-property formal-name="post-event-coverage" value="xt.17814590-recap"/><sports-property formal-name="event-stats" value="xt.17814514-box"/></event-metadata>
+<team>
+<team-metadata team-key="l.ncaa.org.mbasket-t.B33" alignment="away"><name first="Kansas" last="Jayhawks"/></team-metadata><team-stats event-outcome="win" score="108"><sub-score period-value="1" score="41"/><sub-score period-value="2" score="49"/><sub-score period-value="3" score="18"/></team-stats></team><team>
+<team-metadata team-key="l.ncaa.org.mbasket-t.B28" alignment="home"><name first="Iowa St." last="Cyclones"/></team-metadata><team-stats event-outcome="loss" score="96"><sub-score period-value="1" score="40"/><sub-score period-value="2" score="50"/><sub-score period-value="3" score="6"/></team-stats></team></sports-event></sports-content></xts:sports-content-set>

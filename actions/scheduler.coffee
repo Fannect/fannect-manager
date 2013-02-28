@@ -20,7 +20,6 @@ scheduler = module.exports =
       Team
       .find({ league_key: league_key })
       .select("schedule team_key")
-      .lean()
       .exec (err, teams) ->
          return cb(err) if err
          return cb(new Error("#{white}No teams found.#{reset}")) if teams?.length == 0
@@ -49,7 +48,7 @@ scheduler = module.exports =
             "max-result-count": 1
             "content-returned": "all-content"
             "earliest-date-time": "20130101T010000"
-         timeout: 1200000
+         timeout: 1800000
       , (err, resp, body) ->
          return cb(err) if err
 
@@ -80,18 +79,14 @@ scheduler = module.exports =
                   else team.schedule.season.push(gameObj) if gameObj
 
                   if --gamesRunning <= 0
-                     # Remove id to allow updating
-                     id = team._id 
-                     delete team._id
-                  
+
                      # sort games to be in correct order
                      team.schedule.season = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))
                      team.schedule.pregame = team.schedule.season.shift()
 
-                     Team.update { _id: id }, team, (err) ->
+                     team.save (err) ->
                         return cb(err) if err
                         return cb(gameErrors) if gameErrors.length > 0
-
                         cb()
 
    addGame: (game, cb) ->
@@ -112,6 +107,9 @@ scheduler = module.exports =
             else
                console.log "#{red}Fail: #{game.away_key}, can't find opponent: #{game.home_key}#{reset}"
             cb()
+
+         if not results.stadium
+            console.log "#{red}Unable to find stadium: #{game.stadium_key}#{reset} (stadium_key)"
 
          game.opponent = results.opponent?.full_name
          game.opponent_id = results.opponent?._id

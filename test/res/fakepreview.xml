@@ -1,8 +1,7 @@
 <xts:sports-content-set xmlns:xts="http://www.xmlteam.com">
 <sports-content xmlns:xts="http://www.xmlteam.com" xmlns:str="java.lang.String" xmlns:dt="http://xsltsl.org/date-time" xmlns:exsl="http://exslt.org/common" path-id="basketball/l.nba.com/event-summary/xt.17588894-preview" xts:systemid="nbapreviewxml" xts:tsnid="17588894">
   <sports-metadata xmlns:fs="java.io.File" date-time="20130131T103300-0500" doc-id="xt.17588894-preview" xts:tsnslug="ACV!PREVIEW-MEM-OKC" language="en-US" revision-id="l.nba.com-2012-e.17856-pre-event-coverage-sportsnetwork.com" fixture-key="pre-event-coverage" document-class="event-summary" fixture-name="Game Preview">
-    <sports-title>Preview: 
-Memphis Grizzlies (29-15) at Oklahoma City Thunder (34-11), 8 p.m. (ET)</sports-title>
+    <sports-title>Preview: Memphis Grizzlies (29-15) at Oklahoma City Thunder (34-11), 8 p.m. (ET)</sports-title>
     <sports-content-codes>
       <sports-content-code code-name="The Sports Network" code-key="sportsnetwork.com" code-type="publisher"/>
       <sports-content-code code-name="XML Team Solutions, Inc." code-key="xmlteam.com" code-type="distributor"/>
@@ -77,8 +76,7 @@ Memphis Grizzlies (29-15) at Oklahoma City Thunder (34-11), 8 p.m. (ET)</sports-
 </sports-content>
 <sports-content xmlns:xts="http://www.xmlteam.com" xmlns:str="java.lang.String" xmlns:dt="http://xsltsl.org/date-time" xmlns:exsl="http://exslt.org/common" path-id="basketball/l.nba.com/event-summary/xt.17588885-preview" xts:systemid="nbapreviewxml" xts:tsnid="17588885">
   <sports-metadata xmlns:fs="java.io.File" date-time="20130131T103100-0500" doc-id="xt.17588885-preview" xts:tsnslug="ACV!PREVIEW-DAL-GSW" language="en-US" revision-id="l.nba.com-2012-e.17858-pre-event-coverage-sportsnetwork.com" fixture-key="pre-event-coverage" document-class="event-summary" fixture-name="Game Preview">
-    <sports-title>Preview: 
-Dallas Mavericks (19-26) at Golden State Warriors (28-17), 10:30 p.m. (ET)</sports-title>
+    <sports-title>Preview: Dallas Mavericks (19-26) at Golden State Warriors (28-17), 10:30 p.m. (ET)</sports-title>
     <sports-content-codes>
       <sports-content-code code-name="The Sports Network" code-key="sportsnetwork.com" code-type="publisher"/>
       <sports-content-code code-name="XML Team Solutions, Inc." code-key="xmlteam.com" code-type="distributor"/>
