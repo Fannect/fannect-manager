@@ -1,9 +1,10 @@
 Team = require "../common/models/Team"
 Stadium = require "../common/models/Stadium"
-parser = require "../common/utils/xmlParser"
+sportsML = require "../common/sportsMLParser/sportsMLParser"
 request = require "request"
 async = require "async"
 _ = require "underscore"
+
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -52,13 +53,13 @@ scheduler = module.exports =
       , (err, resp, body) ->
          return cb(err) if err
 
-         parser.parse body, (err, doc) ->
+         sportsML.schedule body, (err, schedule) ->
             return cb(err) if err
 
-            if parser.isEmpty(doc)
+            unless schedule
                return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")      
             
-            games = parser.schedule.parseGames(doc)
+            games = schedule.sportsEvents
 
             if not games
                return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")  
@@ -66,18 +67,13 @@ scheduler = module.exports =
             gamesRunning = 0
             gameErrors = []
 
-            for g in games
-               continue unless g
-               game = parser.schedule.parseGameToJson(g)
-               continue if game.is_past
+            for game in games
+               continue if game.eventMeta.isPast() or not game.isValid()
 
                gamesRunning++
-               game.is_home = game.home_key == team.team_key
-
-               scheduler.addGame game, (err, gameObj) ->
+               
+               scheduler.addGame team, game, (err) ->
                   if err then gameErrors.push(err)
-                  else team.schedule.season.push(gameObj) if gameObj
-
                   if --gamesRunning <= 0
 
                      # sort games to be in correct order
@@ -89,39 +85,39 @@ scheduler = module.exports =
                         return cb(gameErrors) if gameErrors.length > 0
                         cb()
 
-   addGame: (game, cb) ->
+   addGame: (team, game, cb) ->
       async.parallel 
          opponent: (done) ->
-            if game.is_home
-               Team.findOne { team_key: game.away_key }, "full_name", done
+            if game.isHome(team.team_key)
+               Team.findOne { team_key: game.away_team.team_key }, "full_name", done
             else
-               Team.findOne { team_key: game.home_key }, "full_name", done
+               Team.findOne { team_key: game.home_team.team_key }, "full_name", done
          stadium: (done) ->
-            Stadium.findOne { stadium_key: game.stadium_key }, done
+            Stadium.findOne { stadium_key: game.eventMeta.stadium_key }, done
       , (err, results) ->
          return cb(err) if err
 
          if not results.opponent
-            if game.is_home
-               console.log "#{red}Fail: #{game.home_key}, can't find opponent: #{game.away_key}#{reset}"
+            if game.isHome(team.team_key)
+               console.log "#{red}Fail: #{game.home_team.team_key}, can't find opponent: #{game.away_team.team_key}#{reset}"
             else
-               console.log "#{red}Fail: #{game.away_key}, can't find opponent: #{game.home_key}#{reset}"
+               console.log "#{red}Fail: #{game.away_team.team_key}, can't find opponent: #{game.home_team.team_key}#{reset}"
             cb()
 
          if not results.stadium
             console.log "#{red}Unable to find stadium: #{game.stadium_key}#{reset} (stadium_key)"
 
-         game.opponent = results.opponent?.full_name
-         game.opponent_id = results.opponent?._id
-         game.stadium_name = results.stadium?.name or ""
-         game.stadium_location = results.stadium?.location or ""
-         game.stadium_coords = results.stadium?.coords or []
-         delete game.home_key
-         delete game.away_key
-         delete game.stadium_key
-         delete game.is_past
-
-         cb(null, game)
+         team.schedule.season.push
+            event_key: game.eventMeta.event_key
+            game_time: game.eventMeta.start_date_time
+            is_home: game.isHome(team.team_key)
+            opponent: results.opponent?.full_name
+            opponent_id: results.opponent?._id
+            stadium_name: results.stadium?.name or ""
+            stadium_location: results.stadium?.location or ""
+            stadium_coords: results.stadium?.coords or []
+            
+         cb(null)
 
                          
 

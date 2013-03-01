@@ -39,7 +39,7 @@ emptyMongo = (done) -> dbSetup.unload data_standard, done
 
 describe "Fannect Manager", () ->
    
-   describe.only "XML Parser", () ->
+   describe "XML Parser", () ->
 
       it "should identify empty document", (done) ->
          fs.readFile "#{__dirname}/res/fakeNoResult.xml", (err, xml) ->
@@ -48,7 +48,7 @@ describe "Fannect Manager", () ->
                should.not.exist(preview)
                done()
 
-      it.only "should parse sample schedule xml file", (done) ->
+      it "should parse sample schedule xml file", (done) ->
          fs.readFile "#{__dirname}/res/fakeschedule.xml", (err, xml) ->
             return done(err) if err
             sportsML.schedule xml, (err, schedule) ->
@@ -111,7 +111,17 @@ describe "Fannect Manager", () ->
             .select("schedule")
             .lean()
             .exec (err, team) ->
-               (team.schedule.season[0].game_time > team.schedule.pregame.game_time).should.be.true
+
+               pregame = team.schedule.pregame
+               (team.schedule.season[0].game_time > pregame.game_time).should.be.true
+               pregame.is_home.should.be.true
+               pregame.opponent.should.equal("Milwaukee Bucks")
+               pregame.opponent_id.toString().should.equal("51084c08f71f44551a7b1ef7")
+               pregame.stadium_name.should.equal("TD Garden")
+               pregame.stadium_location.should.equal("Boston, MA")
+               pregame.stadium_coords[0].should.equal(-71.06222)
+               pregame.stadium_coords[1].should.equal(42.366289)
+
                done()
 
    describe "Previewer", () ->
