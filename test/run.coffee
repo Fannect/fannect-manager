@@ -281,30 +281,26 @@ describe "Fannect Manager", () ->
       it "should update team points", () ->
          @team.points.overall.should.equal(45)
 
-   # describe "Commissioner", () ->
-   #    before (cb) -> 
-   #       async.series [
-   #          (done) -> dbSetup.unload data_commissioner, done
-   #          (done) -> dbSetup.load data_commissioner, done
-   #          (done) -> 
-   #             commissioner.processAll (err) ->
-   #                done(err)
-   #          (done) =>
-   #             TeamProfile
-   #             .findOne(_id: "6116922f0952930200000005")
-   #             .select("rank points waiting_events events groups")
-   #             .exec (err, profile) =>
-   #                return done(err) if err
-   #                @profile = profile
-   #                done()
-   #       ], cb
+   describe.only "Commissioner", () ->
+      before (cb) -> 
+         async.series [
+            (done) -> dbSetup.unload data_commissioner, done
+            (done) -> dbSetup.load data_commissioner, done
+            (done) -> 
+               commissioner.processAll (err) ->
+                  done(err)
+            (done) =>
+               TeamProfile
+               .findOne(_id: "6116922f0952930200000005")
+               .select("rank points waiting_events events groups")
+               .exec (err, profile) =>
+                  return done(err) if err
+                  @profile = profile
+                  done()
+         ], cb
 
-   #    after (done) -> dbSetup.unload data_commissioner, done
+      after (done) -> dbSetup.unload data_commissioner, done
 
-   #    it "should correct points and overall points", () ->
-   #       @profile.points.passion.should.equal(3)
-   #       @profile.points.dedication.should.equal(21)
-   #       @profile.points.knowledge.should.equal(8)
-   #       @profile.points.overall.should.equal(32)
-
-
+      it "should correct points and overall points", () ->
+         console.log @profile
+         

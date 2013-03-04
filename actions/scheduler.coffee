@@ -68,8 +68,8 @@ scheduler = module.exports =
             gameErrors = []
 
             for game in games
-               continue if game.eventMeta.isPast() or not game.isValid()
-
+               continue unless (game.eventMeta.isBefore() and game.isValid())
+               
                gamesRunning++
                
                scheduler.addGame team, game, (err) ->

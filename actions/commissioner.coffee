@@ -4,7 +4,7 @@ request = require "request"
 async = require "async"
 log = require "../utils/Log"
 _ = require "underscore"
-attendanceStreak = require "../common/utils/eventProcessor/attendanceStreak"
+gameFace = require "../common/utils/eventProcessor/gameFace"
 
 # Colors
 red = "\u001b[31m"
@@ -61,25 +61,17 @@ commissioner = module.exports =
             cb()
 
 updateEvents = (profile) ->
-   streaks = _.where(profile.events, {type: "attendance_streak"})
-   guesses = _.where(profile.events, {type: "guess_the_score"})
+   gamefaces = _.where(profile.events, {type: "game_face"})
+   
+   for ev in gamefaces
+      if ev.meta?.face_on
+         ev.points_earned.passion = gameFace.calcScore(ev.meta?.motivated_count or 0)
 
-   count = 0
-   for ev in streaks
-      ev.points_earned.dedication = attendanceStreak.calcScore(count++, false)
-
-   for ev in guesses
-      switch ev.points_earned.knowledge
-         when 18 then ev.points_earned.knowledge = 6
-         when 16 then ev.points_earned.knowledge = 5
-         when 13 then ev.points_earned.knowledge = 4
-         when 9 then ev.points_earned.knowledge = 3
-         when 4 then ev.points_earned.knowledge = 2
-         when 1 then ev.points_earned.knowledge = 1
-
+   profile.points = {} unless profile.points
    profile.points.passion = 0
    profile.points.dedication = 0
    profile.points.knowledge = 0
+   profile.points.overall = 0
 
    for ev in profile.events
       profile.points.passion += ev.points_earned.passion if ev.points_earned.passion
@@ -87,9 +79,3 @@ updateEvents = (profile) ->
       profile.points.knowledge += ev.points_earned.knowledge if ev.points_earned.knowledge
 
    profile.points.overall = profile.points.passion + profile.points.dedication + profile.points.knowledge
-
-      
-   
-
-
-

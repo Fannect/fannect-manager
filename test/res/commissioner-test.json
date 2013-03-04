@@ -10,7 +10,7 @@
       },
       "_id": "512061c95659b50200000065",
       "points_earned": {
-        "dedication": 4
+        "dedication": 10
       }
     },
     {
@@ -22,7 +22,7 @@
       },
       "_id": "512061c95659b50200000065",
       "points_earned": {
-        "dedication": 4
+        "dedication": 11
       }
     },
     {
@@ -34,59 +34,37 @@
       },
       "_id": "51172b85d71a5a020000001b",
       "points_earned": {
-        "knowledge": 13
+        "knowledge": 5
       }
     },
     {
+      "_id": "5128d9595cf67b0200000008",
       "type": "game_face",
       "meta": {
+        "opponent": "TCU Horned Frogs",
+        "team_name": "Kansas Jayhawks",
         "face_on": true
       },
-      "_id": "51172b85d71a5a020000000c",
+      "event_key": "l.ncaa.org.mbasket-2012-e.63035",
       "points_earned": {
         "passion": 1
       }
     },
     {
-      "type": "guess_the_score",
-      "meta": {
-        "home_score": "68",
-        "away_score": "63",
-        "picked": true
-      },
-      "_id": "5119c7ea0fcd5c020000000c",
-      "points_earned": {
-        "knowledge": 4
-      }
-    },
-    {
+      "_id": "5131fdbe88dafb0200000008",
       "type": "game_face",
       "meta": {
-        "face_on": true
+        "opponent": "West Virginia Mountaineers",
+        "team_name": "Kansas Jayhawks",
+        "motivator": {
+          "team_profile_id": "5116922f0952930200000004",
+          "name": "Scott Browning"
+        },
+        "motivated_count": 2,
+        "face_on": true,
+        "attempted_motivation_count": 5
       },
-      "_id": "5119c7ea0fcd5c020000000d",
-      "points_earned": {
-        "passion": 1
-      }
-    },
-    {
-      "type": "guess_the_score",
-      "meta": {
-        "home_score": "72",
-        "away_score": "64",
-        "picked": true
-      },
-      "_id": "512061c95659b50200000007",
-      "points_earned": {
-        "knowledge": 4
-      }
-    },
-    {
-      "type": "game_face",
-      "meta": {
-        "face_on": true
-      },
-      "_id": "512061c95659b50200000008",
+      "event_key": "l.ncaa.org.mbasket-2012-e.63036",
       "points_earned": {
         "passion": 1
       }
