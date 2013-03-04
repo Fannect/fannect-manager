@@ -124,7 +124,7 @@ describe "Fannect Manager", () ->
 
                done()
 
-   describe "Previewer", () ->
+   describe.only "Previewer", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakepreview.xml", "utf8", (err, xml) -> done null, null, xml
          emptyMongo () -> prepMongo(done)
@@ -281,7 +281,7 @@ describe "Fannect Manager", () ->
       it "should update team points", () ->
          @team.points.overall.should.equal(45)
 
-   describe.only "Commissioner", () ->
+   describe.skip "Commissioner", () ->
       before (cb) -> 
          async.series [
             (done) -> dbSetup.unload data_commissioner, done
