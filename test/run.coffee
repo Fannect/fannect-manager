@@ -124,7 +124,7 @@ describe "Fannect Manager", () ->
 
                done()
 
-   describe.only "Previewer", () ->
+   describe "Previewer", () ->
       before (done) ->
          request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakepreview.xml", "utf8", (err, xml) -> done null, null, xml
          emptyMongo () -> prepMongo(done)
@@ -140,7 +140,7 @@ describe "Fannect Manager", () ->
                team.schedule.pregame.preview.should.be.ok
                done()
 
-   describe "Bookie", () ->
+   describe.only "Bookie", () ->
 
       describe "Ranking", () ->
          before (done) -> 
@@ -149,7 +149,6 @@ describe "Fannect Manager", () ->
                (done) -> dbSetup.load data_bookie, done
                (done) => 
                   Team.findById "51084c19f71f55551a7b1ef6", (err, team) =>
-
                      return done(err) if err
                      bookie.rankTeam team, done
                (done) => 

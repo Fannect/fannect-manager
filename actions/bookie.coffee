@@ -6,6 +6,7 @@ request = require "request"
 async = require "async"
 log = require "../utils/Log"
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
+sportsML = require "../common/sportsMLParser/sportsMLParser"
 
 # Colors
 red = "\u001b[31m"
