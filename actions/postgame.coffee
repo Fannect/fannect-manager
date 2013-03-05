@@ -88,7 +88,7 @@ postgame = module.exports =
                   log.error("#{red}Failed: couldn't find score for #{team.team_key}#{reset}")
                   return callback() 
 
-               if team.schedule.season?.length > 1
+               if team.schedule.season?.length > 0
                   nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
 
                oldpregame = team.schedule.pregame
