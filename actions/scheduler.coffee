@@ -67,8 +67,6 @@ scheduler = module.exports =
             gamesRunning = 0
             gameErrors = []
 
-            console.log games.length
-
             for game, i in games
                continue unless (game.eventMeta.isBefore() and game.isValid())
                
