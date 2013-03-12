@@ -105,7 +105,7 @@ scheduler = module.exports =
             cb()
 
          if not results.stadium
-            console.log "#{red}Unable to find stadium: #{game.stadium_key}#{reset} (stadium_key)"
+            console.log "#{red}Unable to find stadium: #{game.eventMeta.stadium_key}#{reset} (stadium_key)"
 
          team.schedule.season.push
             event_key: game.eventMeta.event_key
