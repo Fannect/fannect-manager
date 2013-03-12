@@ -67,11 +67,13 @@ scheduler = module.exports =
             gamesRunning = 0
             gameErrors = []
 
-            for game in games
+            console.log games.length
+
+            for game, i in games
                continue unless (game.eventMeta.isBefore() and game.isValid())
                
                gamesRunning++
-               
+
                scheduler.addGame team, game, (err) ->
                   if err then gameErrors.push(err)
                   if --gamesRunning <= 0
@@ -85,6 +87,10 @@ scheduler = module.exports =
                         return cb(gameErrors) if gameErrors.length > 0
                         cb()
 
+            # return if no games to run
+            if gamesRunning == 0
+               cb("#{white}No future games to schedule.#{reset}")
+               
    addGame: (team, game, cb) ->
       async.parallel 
          opponent: (done) ->
