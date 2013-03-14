@@ -46,11 +46,13 @@ scheduler = module.exports =
          qs:
             "team-keys": team.team_key
             "fixture-keys": "schedule-single-team"
-            "max-result-count": 1
+            "revision-control": "latest-only"
+            "date-window": 2400
             "content-returned": "all-content"
-            "earliest-date-time": "20130101T010000"
+            "earliest-date-time": "20130301T010000"
          timeout: 1800000
       , (err, resp, body) ->
+         # console.log resp
          return cb(err) if err
 
          sportsML.schedule body, (err, schedule) ->
@@ -69,7 +71,7 @@ scheduler = module.exports =
 
             for game, i in games
                continue unless (game.eventMeta.isBefore() and game.isValid())
-               
+              
                gamesRunning++
 
                scheduler.addGame team, game, (err) ->
