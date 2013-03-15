@@ -281,7 +281,7 @@ describe "Fannect Manager", () ->
       it "should update team points", () ->
          @team.points.overall.should.equal(45)
 
-   describe.only "Commissioner", () ->
+   describe.skip "Commissioner", () ->
       before (cb) -> 
          async.series [
             (done) -> dbSetup.unload data_commissioner, done
