@@ -46,11 +46,13 @@ scheduler = module.exports =
          qs:
             "team-keys": team.team_key
             "fixture-keys": "schedule-single-team"
-            "max-result-count": 1
+            "revision-control": "latest-only"
+            "date-window": 2400
             "content-returned": "all-content"
-            "earliest-date-time": "20130101T010000"
+            "earliest-date-time": "20130301T010000"
          timeout: 1800000
       , (err, resp, body) ->
+         # console.log resp
          return cb(err) if err
 
          sportsML.schedule body, (err, schedule) ->
@@ -67,11 +69,11 @@ scheduler = module.exports =
             gamesRunning = 0
             gameErrors = []
 
-            for game in games
+            for game, i in games
                continue unless (game.eventMeta.isBefore() and game.isValid())
-               
+              
                gamesRunning++
-               
+
                scheduler.addGame team, game, (err) ->
                   if err then gameErrors.push(err)
                   if --gamesRunning <= 0
@@ -85,6 +87,10 @@ scheduler = module.exports =
                         return cb(gameErrors) if gameErrors.length > 0
                         cb()
 
+            # return if no games to run
+            if gamesRunning == 0
+               cb("#{white}No future games to schedule.#{reset}")
+               
    addGame: (team, game, cb) ->
       async.parallel 
          opponent: (done) ->
@@ -105,7 +111,7 @@ scheduler = module.exports =
             cb()
 
          if not results.stadium
-            console.log "#{red}Unable to find stadium: #{game.stadium_key}#{reset} (stadium_key)"
+            console.log "#{red}Unable to find stadium: #{game.eventMeta.stadium_key}#{reset} (stadium_key)"
 
          team.schedule.season.push
             event_key: game.eventMeta.event_key
