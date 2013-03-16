@@ -4,6 +4,7 @@ request = require "request"
 async = require "async"
 _ = require "underscore"
 log = require "../utils/Log"
+sportsML = require "../common/sportsMLParser/sportsMLParser"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -28,114 +29,157 @@ postgame = module.exports =
       .exec (err, teams) ->
          return cb(err) if err
 
+         # Log state
          if teams.length <= 0
             log.write "#{white}No teams found to updated.#{reset}"
             return cb()
          else
             log.write "#{white}Found #{green}#{teams.length}#{white} in progress..#{reset}"
          
-         q = async.queue (team, callback) ->
-            postgame.updateTeam team, runBookie, () ->
-               callback() # errors are already logged so swallow at this point
-         , 20
+         # Get all the event keys for a single call
+         event_keys = []
+         for t in teams 
+            event_keys.push(t.schedule.pregame.event_key) if t.schedule.pregame.event_key
 
-         q.push(team) for team in teams
-         q.drain = () ->
-            log.sendErrors("Postgame", cb)
+         # Get events
+         getEvents event_keys.join(","), (err, events) ->
+
+            results = []
+            for s in events.sportsEvents
+               team = _.find teams, (t) -> s.eventMeta.event_key == t?.schedule?.pregame?.event_key
+               results.push
+                  team: team
+                  stats: s
+
+            q = async.queue (event, callback) ->
+               gameUpdate event.team, event.stats, runBookie, () ->
+                  # errors are already logged so swallow at this point
+                  callback()
+            , 20
+
+            q.push(event) for event in results
+            q.drain = () -> log.sendErrors("Postgame", cb)
 
    updateTeam: (team, runBookie, cb) ->
+      return cb("No pregame..") unless team?.schedule?.pregame?.event_key
+      getEvents team.schedule.pregame.event_key, (err, events) ->
+         event = _.find events.sportsEvents, (e) -> e.eventMeta.event_key == team.schedule.pregame.event_key
+         gameUpdate(team, event, runBookie, cb)
+
+getEvents = (event_keys, cb) ->
+   event_keys = event_keys.join(",") if typeof event_keys != "string" 
+   request.get
+      url: "#{url}/getEvents.php"            
+      qs:
+         "event-keys": event_keys
+         "content-returned": "metadata"
+      timeout: 120000
+   , (err, resp, body) ->   
+      if err
+         log.error("#{red}Failed: XML Team event stats failed #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
+         return cb(err) 
+
+      sportsML.eventStats body, (err, eventStats) ->
+         if err
+            log.error("#{red}Failed: couldn't parse event stats for #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
+            return cb(err) 
+
+         cb(null, eventStats)
+
+gameUpdate = (team, eventStatsML, runBookie, cb) ->
+   return cb() if eventStatsML.eventMeta.isBefore() or not team?.schedule?.pregame?.event_key
+
+   if eventStatsML.eventMeta.isPast()
+
+      unless eventStatsML["event-stats"]?
+         log.write("No event stats yet: #{team.team_key}")
+
       request.get
-         url: "#{url}/searchDocuments.php"            
+         url: "#{url}/getDocuments.php"            
          qs:
-            "team-keys": team.team_key
-            "fixture-keys": "event-stats"
+            "doc-ids": eventStatsML["event-stats"] 
             "content-returned": "all-content"
          timeout: 120000
       , (err, resp, body) ->
          if err
-            log.error("#{red}Failed: XML Team request failed #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
-            return cb(err)   
+            log.error("#{red}Failed: XML Team box score failed #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
+            return cb(err) 
 
-         if body.indexOf("<xts:sports-content-set />") > -1
-            log.write("In progress: #{team.team_key}")
-            return cb()
-
-         parser.parse body, (err, doc) ->
+         sportsML.eventStats body, (err, boxscores) ->
             if err
-               log.error("#{red}Failed: couldn't parse XML Team body for #{team.team_key}#{reset} \nBody:\n#{body}")
-               return cb(err)
+               log.error("#{red}Failed: couldn't parse box score for #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
+               return cb(err) 
 
-            sportsEvents = parser.boxScores.parseEvents(doc)
+            # Ensure it is the correct event
+            outcome = _.find boxscores.sportsEvents, (e) -> e.eventMeta.event_key == team.schedule.pregame.event_key
 
-            if not (sportsEvents?.length >= 1)
-               log.write("In progress: #{team.team_key}")
+            # Return if not the correct event
+            unless outcome
+               log.error("#{red}Event was not found in box scores for #{team.team_key}#{reset}")
                return cb()
 
-            alreadyChecked = []
-            q = async.queue (ev, callback) ->
-               
-               outcome = parser.boxScores.parseBoxScoreToJson(ev)
+            # Sort schedules
+            if team.schedule.season?.length > 0
+               nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
 
-               return callback() if (outcome.event_key in alreadyChecked)
-               alreadyChecked.push outcome.event_key
-
-               if not outcome.is_past or outcome.event_key != team.schedule.pregame.event_key
-                  log.write("In progress: #{team.team_key}")
-                  return callback()
-
-               # Return if no real data
-               if not (outcome.home?.team_key == team.team_key or outcome.away?.team_key == team.team_key)
-                  log.error("#{red}Failed: couldn't find score for #{team.team_key}#{reset}")
-                  return callback() 
-
-               if team.schedule.season?.length > 0
-                  nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
-
-               oldpregame = team.schedule.pregame
-               
-               # Handle pregame move to postgame
-               team.schedule.postgame.game_time = oldpregame.game_time
-               team.schedule.postgame.event_key = oldpregame.event_key
-               team.schedule.postgame.opponent = oldpregame.opponent
-               team.schedule.postgame.opponent_id = oldpregame.opponent_id
-               team.schedule.postgame.stadium_id = oldpregame.stadium_id
-               team.schedule.postgame.stadium_name = oldpregame.stadium_name
-               team.schedule.postgame.stadium_location = oldpregame.stadium_location
-               team.schedule.postgame.is_home = oldpregame.is_home
-               team.schedule.postgame.attendance = outcome.attendance
-
-               if outcome.home.team_key == team.team_key
-                  team.schedule.postgame.score = outcome.home.score
-                  team.schedule.postgame.opponent_score = outcome.away.score
-                  team.schedule.postgame.won = outcome.home.won
-               else
-                  team.schedule.postgame.score = outcome.away.score
-                  team.schedule.postgame.opponent_score = outcome.home.score
-                  team.schedule.postgame.won = outcome.away.won
-
-               # Handle pregame
-               team.set("schedule.pregame", nextgame)
-               team.schedule.season.remove(nextgame)
-               
-               team.needs_processing = true
-
-               if runBookie
-                  log.write("#{white}Finished postgame, starting bookie: #{team.team_key}#{reset} (team_key)")
-                  bookie.processTeam team, (err) ->
-                     if err
-                        log.error("#{red}Failed: couldn't update bookie for #{team.team_key}#{reset} (team_key)")
-                     else
-                        log.write("#{white}Finished bookie: #{team.team_key}#{reset} (team_key)")
-                     return callback()
-               else
-                  team.save (err) ->
-                     if err
-                        log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
-                     else
-                        log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
-                     return callback()
-            , 1
-                  
-            q.push(ev) for ev in sportsEvents
-            q.drain = cb
+            oldpregame = team.schedule.pregame
             
+            # Handle pregame move to postgame
+            team.schedule.postgame.game_time = oldpregame.game_time
+            team.schedule.postgame.event_key = oldpregame.event_key
+            team.schedule.postgame.opponent = oldpregame.opponent
+            team.schedule.postgame.opponent_id = oldpregame.opponent_id
+            team.schedule.postgame.stadium_id = oldpregame.stadium_id
+            team.schedule.postgame.stadium_name = oldpregame.stadium_name
+            team.schedule.postgame.stadium_location = oldpregame.stadium_location
+            team.schedule.postgame.is_home = oldpregame.is_home
+            team.schedule.postgame.attendance = outcome.eventMeta.attendance
+
+            if outcome.isHome(team.team_key)
+               team.schedule.postgame.score = outcome.home_team.score
+               team.schedule.postgame.opponent_score = outcome.away_team.score
+               team.schedule.postgame.won = outcome.home_team.won()
+            else
+               team.schedule.postgame.score = outcome.away_team.score
+               team.schedule.postgame.opponent_score = outcome.home_team.score
+               team.schedule.postgame.won = outcome.away_team.won()
+
+            # Handle pregame
+            team.set("schedule.pregame", nextgame)
+            team.schedule.season.remove(nextgame)
+            
+            # Set the needs processing flag (only used if bookie is not immediately run)
+            team.needs_processing = true
+
+            # Run bookie if required
+            if runBookie
+               log.write("#{white}Finished postgame, starting bookie: #{team.team_key}#{reset} (team_key)")
+               bookie.processTeam team, (err) ->
+                  if err
+                     log.error("#{red}Failed: couldn't update bookie for #{team.team_key}#{reset} (team_key)")
+                  else
+                     log.write("#{white}Finished bookie: #{team.team_key}#{reset} (team_key)")
+                  return cb()
+            else
+               team.save (err) ->
+                  if err
+                     log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
+                  else
+                     log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
+                  return cb()
+
+   else if eventStatsML.eventMeta.isPostponed()
+
+      # probably should run schedule or something?
+
+
+   else
+      log.write("In progress: #{team.team_key}")
+      return cb()
+
+
+
+
+
+      eventStatsML["post-event"]
+

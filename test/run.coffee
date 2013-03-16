@@ -21,10 +21,10 @@ Team = require "../common/models/Team"
 Group = require "../common/models/Group"
 TeamProfile = require "../common/models/TeamProfile"
 
-data_standard = require "./res/standard"
-data_postgame = require "./res/postgametest"
-data_bookie = require "./res/bookie-test"
-data_commissioner = require "./res/commissioner-test"
+data_standard = require "./res/json/standard"
+data_postgame = require "./res/json/postgametest"
+data_bookie = require "./res/json/bookie-test"
+data_commissioner = require "./res/json/commissioner-test"
 dbSetup = require "./utils/dbSetup"
 
 scheduler = require "../actions/scheduler"
@@ -42,14 +42,14 @@ describe "Fannect Manager", () ->
    describe "XML Parser", () ->
 
       it "should identify empty document", (done) ->
-         fs.readFile "#{__dirname}/res/fakeNoResult.xml", (err, xml) ->
+         fs.readFile "#{__dirname}/res/xml/fakeNoResult.xml", (err, xml) ->
             return done(err) if err
             sportsML.preview xml, (err, preview) ->
                should.not.exist(preview)
                done()
 
       it "should parse sample schedule xml file", (done) ->
-         fs.readFile "#{__dirname}/res/fakeschedule.xml", (err, xml) ->
+         fs.readFile "#{__dirname}/res/xml/fakeschedule.xml", (err, xml) ->
             return done(err) if err
             sportsML.schedule xml, (err, schedule) ->
                result1 = schedule.sportsEvents[0]
@@ -62,7 +62,7 @@ describe "Fannect Manager", () ->
                done()
 
       it "should parse sample game preview xml file", (done) ->
-         fs.readFile "#{__dirname}/res/fakepreview.xml", (err, xml) ->
+         fs.readFile "#{__dirname}/res/xml/fakepreview.xml", (err, xml) ->
             return done(err) if err
             sportsML.preview xml, (err, preview) ->
                return done(err) if err
@@ -74,7 +74,7 @@ describe "Fannect Manager", () ->
             parser.parse xml, (err, doc) ->
 
       it "should parse sample event", (done) ->
-         fs.readFile "#{__dirname}/res/fakeevent.xml", (err, xml) ->
+         fs.readFile "#{__dirname}/res/xml/fakeevent.xml", (err, xml) ->
             return done(err) if err
             sportsML.eventStats xml, (err, eventStats) ->
                docs = eventStats.sportsEvents[0].eventMeta.docs
@@ -87,7 +87,7 @@ describe "Fannect Manager", () ->
                done()
 
       it "should parse sample box scores xml file", (done) ->
-         fs.readFile "#{__dirname}/res/fakeboxscores.xml", (err, xml) ->
+         fs.readFile "#{__dirname}/res/xml/fakeboxscores.xml", (err, xml) ->
             return done(err) if err
             sportsML.eventStats xml, (err, eventStats) ->
                eventStats.sportsEvents[0].eventMeta.attendance.should.equal("18624")
@@ -99,7 +99,7 @@ describe "Fannect Manager", () ->
 
    describe "Scheduler", () ->
       before (done) ->
-         request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeschedule.xml", "utf8", (err, xml) -> done null, null, xml
+         request.get = (options, done) -> fs.readFile "#{__dirname}/res/xml/fakeschedule.xml", "utf8", (err, xml) -> done null, null, xml
          emptyMongo () -> prepMongo(done)
       after emptyMongo
 
@@ -126,7 +126,7 @@ describe "Fannect Manager", () ->
 
    describe "Previewer", () ->
       before (done) ->
-         request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakepreview.xml", "utf8", (err, xml) -> done null, null, xml
+         request.get = (options, done) -> fs.readFile "#{__dirname}/res/xml/fakepreview.xml", "utf8", (err, xml) -> done null, null, xml
          emptyMongo () -> prepMongo(done)
       after emptyMongo
 
@@ -140,7 +140,7 @@ describe "Fannect Manager", () ->
                team.schedule.pregame.preview.should.be.ok
                done()
 
-   describe.only "Bookie", () ->
+   describe "Bookie", () ->
 
       describe "Ranking", () ->
          before (done) -> 
@@ -241,9 +241,14 @@ describe "Fannect Manager", () ->
                group.points.overall.should.equal(sum)
                done()
 
-   describe "Postgame", () ->
+   describe.only "Postgame", () ->
       before (done) ->
-         request.get = (options, done) -> fs.readFile "#{__dirname}/res/fakeboxscores.xml", "utf8", (err, xml) -> done null, null, xml
+         request.get = (options, done) -> 
+            if options.url.indexOf("getEvents") != -1
+               fs.readFile "#{__dirname}/res/xml/fakeEventStats.xml", "utf8", (err, xml) -> done null, null, xml
+            else if options.url.indexOf("xt.17971005-box")
+               fs.readFile "#{__dirname}/res/xml/fakeBoxScore1.xml", "utf8", (err, xml) -> done null, null, xml
+
          dbSetup.unload data_postgame, (err) =>
             return done(err) if err
             dbSetup.load data_postgame, (err) =>
@@ -269,6 +274,7 @@ describe "Fannect Manager", () ->
 
       it "should update pregame", () ->
          @team.schedule.pregame.event_key.should.equal("l.nba.com-2012-e.17838")
+         @team.schedule.pregame.opponent_id.toString().should.equal("51084c08f71f44551a7b3ef7")
          @team.schedule.pregame.is_home.should.be.false
 
       it "should update box scores", () ->

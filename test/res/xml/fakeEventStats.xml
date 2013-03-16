@@ -1,0 +1,126 @@
+<xts:sports-content-set xmlns:xts="http://www.xmlteam.com" query-date-time="20130316T120819-0400" query-string="" hostname="sportscaster.xmlteam.com" result-count="7" error-count="0" elapsed-time="243.6ms">
+<sports-content>
+<sports-metadata date-time="20130316T000819-0400" doc-id="xt.17969841-update-post-event" language="en-US" document-class="event-summary" fixture-key="event-score" fixture-name="Event Score">
+<sports-title>Metadata for event</sports-title>
+<sports-content-codes>
+<sports-content-code code-type="publisher" code-key="sportsnetwork.com"/>
+<sports-content-code code-type="sport" code-key="15008000"/>
+<sports-content-code code-type="league" code-key="l.ncaa.org.mbasket" code-name="NCAA Men's Basketball Division 1"/>
+<sports-content-code code-type="sport" code-key="15008000" code-name="Basketball"/>
+<sports-content-code code-type="team" code-key="l.ncaa.org.mbasket-t.B45" code-name="LSU Tigers"/>
+<sports-content-code code-type="team" code-key="l.ncaa.org.mbasket-t.A89" code-name="Florida Gators"/>
+</sports-content-codes>
+</sports-metadata>
+<sports-event>
+<event-metadata date-coverage-type="event" event-key="l.nba.com-2012-e.17838" event-status="post-event" start-date-time="20130315T130000-0400">
+<event-metadata-basketball period-value="2" period-time-remaining="0:00"/>
+<sports-property formal-name="lineup" value="xt.17968145-lineup"/>
+<sports-property formal-name="pre-event-coverage" value="xt.17968155-preview"/>
+<sports-property formal-name="event-score" value="xt.17969841-update-post-event"/>
+<sports-property formal-name="post-event-coverage" value="xt.17971105-recap"/>
+<sports-property formal-name="event-stats" value="xt.17971005-box"/>
+</event-metadata>
+<team>
+<team-metadata team-key="l.ncaa.org.mbasket-t.B45" alignment="away">
+<name first="LSU" last="Tigers"/>
+</team-metadata>
+<team-stats event-outcome="loss" score="58">
+<sub-score period-value="1" score="28"/>
+<sub-score period-value="2" score="30"/>
+</team-stats>
+</team>
+<team>
+<team-metadata team-key="l.ncaa.org.mbasket-t.A89" alignment="home">
+<name first="Florida" last="Gators"/>
+</team-metadata>
+<team-stats event-outcome="win" score="80">
+<sub-score period-value="1" score="43"/>
+<sub-score period-value="2" score="37"/>
+</team-stats>
+</team>
+</sports-event>
+</sports-content>
+<sports-content>
+<sports-metadata date-time="20130316T000819-0400" doc-id="xt.17974146-update-post-event" language="en-US" document-class="event-summary" fixture-key="event-score" fixture-name="Event Score">
+<sports-title>Metadata for event</sports-title>
+<sports-content-codes>
+<sports-content-code code-type="publisher" code-key="sportsnetwork.com"/>
+<sports-content-code code-type="sport" code-key="15008000"/>
+<sports-content-code code-type="league" code-key="l.ncaa.org.mbasket" code-name="NCAA Men's Basketball Division 1"/>
+<sports-content-code code-type="sport" code-key="15008000" code-name="Basketball"/>
+<sports-content-code code-type="team" code-key="l.ncaa.org.mbasket-t.B28" code-name="Iowa St. Cyclones"/>
+<sports-content-code code-type="team" code-key="l.ncaa.org.mbasket-t.B33" code-name="Kansas Jayhawks"/>
+</sports-content-codes>
+</sports-metadata>
+<sports-event>
+<event-metadata date-coverage-type="event" event-key="l.ncaa.org.mbasket-2012-e.66973" event-status="post-event" start-date-time="20130315T193000-0400">
+<event-metadata-basketball period-value="2" period-time-remaining="0:00"/>
+<sports-property formal-name="lineup" value="xt.17968152-lineup"/>
+<sports-property formal-name="pre-event-coverage" value="xt.17968154-preview"/>
+<sports-property formal-name="event-score" value="xt.17974146-update-post-event"/>
+<sports-property formal-name="post-event-coverage" value="xt.17974866-recap"/>
+<sports-property formal-name="event-stats" value="xt.17975855-box"/>
+</event-metadata>
+<team>
+<team-metadata team-key="l.ncaa.org.mbasket-t.B28" alignment="away">
+<name first="Iowa St." last="Cyclones"/>
+</team-metadata>
+<team-stats event-outcome="loss" score="73">
+<sub-score period-value="1" score="31"/>
+<sub-score period-value="2" score="42"/>
+</team-stats>
+</team>
+<team>
+<team-metadata team-key="l.ncaa.org.mbasket-t.B33" alignment="home">
+<name first="Kansas" last="Jayhawks"/>
+</team-metadata>
+<team-stats event-outcome="win" score="88">
+<sub-score period-value="1" score="35"/>
+<sub-score period-value="2" score="53"/>
+</team-stats>
+</team>
+</sports-event>
+</sports-content>
+<sports-content>
+<sports-metadata date-time="20130316T000819-0400" doc-id="xt.17972376-update-post-event" language="en-US" document-class="event-summary" fixture-key="event-score" fixture-name="Event Score">
+<sports-title>Metadata for event</sports-title>
+<sports-content-codes>
+<sports-content-code code-type="publisher" code-key="sportsnetwork.com"/>
+<sports-content-code code-type="sport" code-key="15008000"/>
+<sports-content-code code-type="sport" code-key="15008000" code-name="Basketball"/>
+<sports-content-code code-type="league" code-key="l.ncaa.org.mbasket" code-name="NCAA Men's Basketball Division 1"/>
+<sports-content-code code-type="conference" code-key="c.mid-eastern-athletic" code-name="Mid-Eastern Athletic Conference"/>
+<sports-content-code code-type="team" code-key="l.ncaa.org.mbasket-t.A23" code-name="Bethune-Cookman Wildcats"/>
+<sports-content-code code-type="team" code-key="l.ncaa.org.mbasket-t.B80" code-name="Morgan St. Bears"/>
+</sports-content-codes>
+</sports-metadata>
+<sports-event>
+<event-metadata date-coverage-type="event" event-key="l.ncaa.org.mbasket-2012-e.67081" event-status="post-event" start-date-time="20130315T180000-0400">
+<event-metadata-basketball period-value="2" period-time-remaining="0:00"/>
+<sports-property formal-name="lineup" value="xt.17968148-lineup"/>
+<sports-property formal-name="pre-event-coverage" value="xt.17968153-preview"/>
+<sports-property formal-name="event-score" value="xt.17972376-update-post-event"/>
+<sports-property formal-name="event-stats" value="xt.17975120-box"/>
+<sports-property formal-name="post-event-coverage" value="xt.17975324-recap"/>
+</event-metadata>
+<team>
+<team-metadata team-key="l.ncaa.org.mbasket-t.A23" alignment="away">
+<name first="Bethune-Cookman" last="Wildcats"/>
+</team-metadata>
+<team-stats event-outcome="loss" score="71">
+<sub-score period-value="1" score="31"/>
+<sub-score period-value="2" score="40"/>
+</team-stats>
+</team>
+<team>
+<team-metadata team-key="l.ncaa.org.mbasket-t.B80" alignment="home">
+<name first="Morgan St." last="Bears"/>
+</team-metadata>
+<team-stats event-outcome="win" score="82">
+<sub-score period-value="1" score="39"/>
+<sub-score period-value="2" score="43"/>
+</team-stats>
+</team>
+</sports-event>
+</sports-content>
+</xts:sports-content-set>
