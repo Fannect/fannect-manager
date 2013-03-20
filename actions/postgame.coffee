@@ -4,6 +4,7 @@ async = require "async"
 _ = require "underscore"
 log = require "../utils/Log"
 sportsML = require "../common/sportsMLParser/sportsMLParser"
+scheduler = require "./scheduler"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -168,17 +169,12 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
                   return cb()
 
    else if eventStatsML.eventMeta.isPostponed()
-
-      # probably should run schedule or something?
-
+      log.write("Game has been postponed for #{team.team_key}, running scheduler")
+      updateTeam(team, cb)
 
    else
       log.write("In progress: #{team.team_key}")
       return cb()
-
-
-
-
 
       eventStatsML["post-event"]
 
