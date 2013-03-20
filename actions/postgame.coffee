@@ -91,13 +91,14 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
 
    if eventStatsML.eventMeta.isPast()
 
-      unless eventStatsML["event-stats"]?
+      unless eventStatsML?.eventMeta?.docs["event_stats"]?
          log.write("No event stats yet: #{team.team_key}")
+         return cb()
 
       request.get
          url: "#{url}/getDocuments.php"            
          qs:
-            "doc-ids": eventStatsML["event-stats"] 
+            "doc-ids": eventStatsML?.eventMeta?.docs["event_stats"]
             "content-returned": "all-content"
          timeout: 120000
       , (err, resp, body) ->
@@ -109,6 +110,14 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
             if err
                log.error("#{red}Failed: couldn't parse box score for #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
                return cb(err) 
+
+            unless boxscores
+               return log.write("No box scores in document for #{team.team_key}")
+               return cb()
+
+            # unless outcome
+            #    log.error("#{red}Event was not found in box scores for #{team.team_key}#{reset}")
+            #    return cb()
 
             # Ensure it is the correct event
             outcome = _.find boxscores.sportsEvents, (e) -> e.eventMeta.event_key == team.schedule.pregame.event_key
@@ -169,8 +178,8 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
                   return cb()
 
    else if eventStatsML.eventMeta.isPostponed()
-      log.write("Game has been postponed for #{team.team_key}, running scheduler")
-      updateTeam(team, cb)
+      log.write("#{white}Game has been postponed for #{team.team_key}, running scheduler#{reset}")
+      scheduler.updateTeam(team, cb)
 
    else
       log.write("In progress: #{team.team_key}")
