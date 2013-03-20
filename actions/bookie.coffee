@@ -1,7 +1,6 @@
 Team = require "../common/models/Team"
 TeamProfile = require "../common/models/TeamProfile"
 Group = require "../common/models/Group"
-parser = require "../common/utils/xmlParser"
 request = require "request"
 async = require "async"
 log = require "../utils/Log"
