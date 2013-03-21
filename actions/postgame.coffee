@@ -39,16 +39,17 @@ postgame = module.exports =
          # Get all the event keys for a single call
          event_keys = []
          for t in teams 
-            event_keys.push(t.schedule.pregame.event_key) if t.schedule.pregame.event_key
+            if (k = t.schedule.pregame.event_key) and not (k in event_keys)
+               event_keys.push(k)
 
          # Get events
          getEvents event_keys.join(","), (err, events) ->
 
             results = []
-            for s in events.sportsEvents
-               team = _.find teams, (t) -> s.eventMeta.event_key == t?.schedule?.pregame?.event_key
-               results.push
-                  team: team
+            for t in teams 
+               s = _.find events.sportsEvents, (e) -> e.eventMeta.event_key == t?.schedule.pregame?.event_key
+               results.push   
+                  team: t
                   stats: s
 
             q = async.queue (event, callback) ->
@@ -114,10 +115,6 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
             unless boxscores
                return log.write("No box scores in document for #{team.team_key}")
                return cb()
-
-            # unless outcome
-            #    log.error("#{red}Event was not found in box scores for #{team.team_key}#{reset}")
-            #    return cb()
 
             # Ensure it is the correct event
             outcome = _.find boxscores.sportsEvents, (e) -> e.eventMeta.event_key == team.schedule.pregame.event_key

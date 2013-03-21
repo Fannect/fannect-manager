@@ -9,7 +9,7 @@ sportsML = require "../common/sportsMLParser/sportsMLParser"
 
 mongoose = require "mongoose"
 mongooseTypes = require "mongoose-types"
-mongoose.connect "mongodb://admin:testing@linus.mongohq.com:10064/fannect"
+mongoose.connect "mongodb://localhost:27017" # "mongodb://admin:testing@linus.mongohq.com:10064/fannect"
 mongooseTypes.loadTypes mongoose
 request = require "request"
 
