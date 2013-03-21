@@ -47,12 +47,12 @@ scheduler = module.exports =
             "team-keys": team.team_key
             "fixture-keys": "schedule-single-team"
             "revision-control": "latest-only"
-            "date-window": 2400
+            "date-window": 24000
             "content-returned": "all-content"
             "earliest-date-time": "20130301T010000"
          timeout: 1800000
       , (err, resp, body) ->
-         # console.log resp
+         # console.log body
          return cb(err) if err
 
          sportsML.schedule body, (err, schedule) ->
