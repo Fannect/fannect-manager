@@ -99,7 +99,11 @@ scheduler = module.exports =
             else
                Team.findOne { team_key: game.home_team.team_key }, "full_name", done
          stadium: (done) ->
-            Stadium.findOne { stadium_key: game.eventMeta.stadium_key }, done
+            Stadium.findOne
+               $or: [
+                  { stadium_key: game.eventMeta.stadium_key }
+                  { alias_keys: game.eventMeta.stadium_key }
+               ], done
       , (err, results) ->
          return cb(err) if err
 
