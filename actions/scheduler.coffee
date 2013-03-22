@@ -126,6 +126,7 @@ scheduler = module.exports =
             stadium_name: results.stadium?.name or ""
             stadium_location: results.stadium?.location or ""
             stadium_coords: results.stadium?.coords or []
+            coverage: game.eventMeta.coverage
             
          cb(null)
 
