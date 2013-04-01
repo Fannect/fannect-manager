@@ -1,0 +1,72 @@
+{
+    "teams": [
+        {
+            "_id": "5102b17168a0c8f70c000008",
+            "conference_key": "c.big-12",
+            "conference_name": "Big 12 Conference",
+            "is_college": true,
+            "league_key": "l.ncaa.org.mfoot",
+            "league_name": "NCAA Men's Football Division 1A",
+            "location_name": "Kansas St.",
+            "mascot": "Wildcats",
+            "full_name": "Kansas St. Wildcats",
+            "sport_key": "15003000",
+            "sport_name": "American Football",
+            "stadium": {
+                "name": "Bill Snyder Family Stadium",
+                "coords": [
+                    -96.593878,
+                    39.20198
+                ]
+            },
+            "team_key": "l.ncaa.org.mfoot-test-t.522",
+            "schedule": {
+                "pregame": {
+                    "event_key": "l.nba.com-2012-e.17856",
+                    "game_time": "2013-02-02T01:55:15.638Z",
+                    "opponent": "Fannect a Squad",
+                    "opponent_id": "51084c08f71f44551a7b3ef7",
+                    "stadium_id": "51084c08f71f34551a7b1ef6", 
+                    "stadium_name": "Some Stadium",
+                    "stadium_location": "KCMO",
+                    "stadium_coords": [32,32],
+                    "is_home": false,
+                    "coverage": "ESPN"
+                }
+            }
+        }, {
+            "_id": "51084c08f71f44551a7b1ef6",
+            "team_key": "l.nba.test-t.1",   
+            "mascot": "Celtics",
+            "location_name": "Boston",
+            "full_name": "Boston Celtics",
+            "stadium": {
+                "stadium_id": "51084b38f71f54551a8b1d95",
+                "name": "TD Garden",
+                "location": "Boston, MA",
+                "coords": [ -71.06222, 42.366289 ]
+            },
+            "sport_key": "15008000",
+            "sport_name": "Basketball",
+            "league_key": "l.test.nba.com",
+            "league_name": "National Basketball Association",
+            "conference_key": "c.eastern",
+            "conference_name": "Eastern",
+            "is_college": false,
+            "schedule": {
+                "pregame": {
+                    "event_key": "l.nba.com-2012-e.17856",
+                    "game_time": "2013-02-02T01:55:15.638Z",
+                    "opponent": "Fannect a Squad",
+                    "opponent_id": "51084c08f71f44551a7b3ef7",
+                    "stadium_id": "51084c08f71f34551a7b1ef6", 
+                    "stadium_name": "Some Stadium",
+                    "stadium_coords": [32,32],
+                    "stadium_location": "KCMO",
+                    "is_home": false,
+                    "coverage": "ESPN"
+                }
+            }
+        }
+    ]
+}

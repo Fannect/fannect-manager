@@ -1,9 +1,5 @@
 #! /usr/bin/env node
-/*
-Environmental variables
- - MONGO_URL
- - XMLTEAM_URL
-*/
+
 require("coffee-script")
 var program = require("commander");
 
@@ -14,6 +10,9 @@ mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk
 // mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk3R1ll967LO41FG1gL2Kil@fannect-production.member0.mongolayer.com:27017/fannect-production");
 mongooseTypes.loadTypes(mongoose);
 
+var redis = require("./common/utils/redis");
+queue = redis(process.env.REDIS_QUEUE_URL || "redis://redistogo:f74caf74a1f7df625aa879bf817be6d1@perch.redistogo.com:9203", "queue");
+
 var Team = require("./common/models/Team");
 
 var scheduler = require("./actions/scheduler");
@@ -21,6 +20,7 @@ var previewer = require("./actions/previewer");
 var postgame = require("./actions/postgame");
 var bookie = require("./actions/bookie");
 var commissioner = require("./actions/commissioner");
+var notifier = require("./actions/notifier");
 
 program
 .command("schedules")
@@ -210,6 +210,29 @@ program
             process.exit(0);
          }
       });
+   });
+});
+
+program
+.command("notify")
+.description("Send gameday notification")
+.option("-h, --hours <hours>", "hours out to send notification for")
+.action(function (cmd) {
+   start = new Date() / 1;
+
+   cmd.hours = cmd.hours || 22
+
+   notifier.sendAll(cmd.hours, function (err) {
+      end = (((new Date() / 1) - start) / 1000.0)
+      if (err) {
+         console.error("Completed (" + end + ") with errors");
+         console.error(err.stack || err);
+         process.exit(1);
+         return;
+      } else {
+         console.log("Completed (" + end + "s)");
+         process.exit(0);
+      }
    });
 });
 

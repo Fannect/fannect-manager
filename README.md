@@ -6,7 +6,7 @@ This is the source for the Fannect login API.
 # Environmental Variables
 * MONGO_URL
 * XMLTEAM_URL
-* REDIS_URL
+* REDIS_QUEUE_URL
 * SENDGRID_USERNAME
 * SENDGRID_PASSWORD
 * EMAIL_TO

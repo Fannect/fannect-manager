@@ -6,6 +6,7 @@ async = require "async"
 crypt = require "../common/utils/crypt"
 fs = require "fs"
 sportsML = require "../common/sportsMLParser/sportsMLParser"
+Job = require "../common/jobs/Job"
 
 mongoose = require "mongoose"
 mongooseTypes = require "mongoose-types"
@@ -82,108 +83,60 @@ describe "Fannect Manager", () ->
                done()
 
    describe "Bookie", () ->
+      before (cb) -> 
+         context = @
+         context.old_queue_fn = Job.prototype.queue
+         Job::queue = (cb = ->) ->
+            context.queued = @
+            process.nextTick(cb)
 
-      describe "Ranking", () ->
-         before (done) -> 
-            async.series [
-               (done) -> dbSetup.unload data_bookie, done
-               (done) -> dbSetup.load data_bookie, done
-               (done) => 
-                  Team.findById "51084c19f71f55551a7b1ef6", (err, team) =>
-                     return done(err) if err
-                     bookie.rankTeam team, done
-               (done) => 
-                  TeamProfile
-                  .find(team_id: "51084c19f71f55551a7b1ef6")
-                  .sort("rank")
-                  .select("rank points")
-                  .exec (err, profiles) =>
-                     return done(err) if err
-                     @profiles = profiles
-                     done()
-            ], done
+         async.series [
+            (done) -> dbSetup.unload data_bookie, done
+            (done) -> dbSetup.load data_bookie, done
+            (done) -> 
+               Team.findById "51084c19f71f55551a7b1ef6", "schedule full_name sport_key needs_processing is_processing points", (err, team) ->
+                  return done(err) if err
+                  bookie.processTeam team, (err) ->
+                     done(err)
+            (done) =>
+               TeamProfile
+               .find(team_id: "51084c19f71f55551a7b1ef6")
+               .sort("points.overall")
+               .select("rank points waiting_events events groups")
+               .exec (err, profiles) =>
+                  return done(err) if err
+                  @profiles = profiles
+                  done()
+         ], cb
 
-         after (done) -> dbSetup.unload data_bookie, done
+      after (done) -> 
+         Job.prototype.queue = context.old_queue_fn
+         dbSetup.unload data_bookie, done
 
-         it "should update all team profiles to have the correct rank", () ->
-               @profiles[0].rank.should.equal(1)
-               @profiles[1].rank.should.equal(2)
-               @profiles[2].rank.should.equal(3)
-               (@profiles[0].points.overall >= @profiles[1].points.overall).should.be.true
-               (@profiles[1].points.overall >= @profiles[2].points.overall).should.be.true
-           
-         it "should update the points of the team", (done) ->
-            Team.findById "51084c19f71f55551a7b1ef6", "points", (err, team) =>
-               return done(err) if err
-               overall = @profiles[0].points.overall + @profiles[1].points.overall + @profiles[2].points.overall 
-               passion = @profiles[0].points.passion + @profiles[1].points.passion + @profiles[2].points.passion 
-               dedication = @profiles[0].points.dedication + @profiles[1].points.dedication + @profiles[2].points.dedication 
-               knowledge = @profiles[0].points.knowledge + @profiles[1].points.knowledge + @profiles[2].points.knowledge 
+      it "should processes all waiting_events", () ->
+         for profile in @profiles
+            profile.waiting_events.length.should.equal(0)
 
-               team.points.overall.should.equal(overall)
-               team.points.passion.should.equal(passion)
-               team.points.dedication.should.equal(dedication)
-               team.points.knowledge.should.equal(knowledge)
-               done()
+      it "should add events", () ->
+         @profiles[0].events.length.should.equal(2)
+         @profiles[1].events.length.should.equal(2)
+         @profiles[2].events.length.should.equal(4)
 
-      describe "Scoring", () ->
-         before (cb) -> 
-            async.series [
-               (done) -> dbSetup.unload data_bookie, done
-               (done) -> dbSetup.load data_bookie, done
-               (done) -> 
-                  Team.findById "51084c19f71f55551a7b1ef6", "schedule full_name sport_key needs_processing is_processing points", (err, team) ->
-                     return done(err) if err
-                     bookie.processTeam team, (err) ->
-                        done(err)
-               (done) =>
-                  TeamProfile
-                  .find(team_id: "51084c19f71f55551a7b1ef6")
-                  .sort("points.overall")
-                  .select("rank points waiting_events events groups")
-                  .exec (err, profiles) =>
-                     return done(err) if err
-                     @profiles = profiles
-                     done()
-            ], cb
+      it "should update all team profiles to have the correct points", () ->
+         @profiles[0].points.overall.should.equal(3)
+         @profiles[1].points.overall.should.equal(11)
+         @profiles[2].points.overall.should.equal(34)
 
-         after (done) -> dbSetup.unload data_bookie, done
-
-         it "should processes all waiting_events", () ->
-            for profile in @profiles
-               profile.waiting_events.length.should.equal(0)
-
-         it "should add events", () ->
-            @profiles[0].events.length.should.equal(2)
-            @profiles[1].events.length.should.equal(2)
-            @profiles[2].events.length.should.equal(4)
-
-         it "should update all team profiles to have the correct points", () ->
-            @profiles[0].points.overall.should.equal(3)
-            @profiles[1].points.overall.should.equal(11)
-            @profiles[2].points.overall.should.equal(34)
-
-         it "should update team points correctly", (done) ->
-            Team.findById "51084c19f71f55551a7b1ef6", "points", (err, team) =>
-               sum = @profiles[0].points.overall + @profiles[1].points.overall + @profiles[2].points.overall
-               team.points.overall.should.equal(sum)
-               done()
-
-         it "should update group points correctly", (done) ->
-            group_id = "51084c19f71f55551a7b2ef7"
-            Group.findById group_id, "points", (err, group) =>
-               group = group.toObject()
-               sum = 0
-               for profile in @profiles
-                  for g in profile.groups
-                     if g.group_id?.toString() == "51084c19f71f55551a7b2ef7"
-                        sum += profile.points.overall
-                        break
-               group.points.overall.should.equal(sum)
-               done()
+      it "should queue team rank update", () ->
+         @queued.meta.team_id.toString().should.equal("51084c19f71f55551a7b1ef6")
 
    describe "Postgame", () ->
       before (done) ->
+         context = @
+         context.old_queue_fn = Job.prototype.queue
+         Job::queue = (cb = ->) ->
+            context.queued = @
+            process.nextTick(cb)
          request.get = (options, done) -> 
             if options.url.indexOf("getEvents") != -1
                fs.readFile "#{__dirname}/res/xml/fakeEventStats.xml", "utf8", (err, xml) -> done null, null, xml
@@ -208,7 +161,9 @@ describe "Fannect Manager", () ->
                         @team = team
                         done(err)
 
-      after (done) -> dbSetup.unload data_postgame, done
+      after (done) -> 
+         Job.prototype.queue = context.old_queue_fn
+         dbSetup.unload data_postgame, done
 
       it "should remove next game from season", () ->
          @team.schedule.season.length.should.equal(1)
@@ -218,14 +173,8 @@ describe "Fannect Manager", () ->
          @team.schedule.pregame.opponent_id.toString().should.equal("51084c08f71f44551a7b3ef7")
          @team.schedule.pregame.is_home.should.be.false
 
-      it "should update box scores", () ->
-         @team.schedule.postgame.attendance.should.equal(18624)
-         @team.schedule.postgame.won.should.be.false
-         @team.schedule.postgame.score.should.equal(81)
-         @team.schedule.postgame.opponent_score.should.equal(99)
-
-      it "should update team points", () ->
-         @team.points.overall.should.equal(45)
+      it "should queue team rank update", () ->
+         @queued.meta.team_id.toString().should.equal("51084c08f71f55551a7b1ef6")
 
    describe.skip "Commissioner", () ->
       before (cb) -> 

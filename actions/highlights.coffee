@@ -5,7 +5,6 @@ _ = require "underscore"
 log = require "../utils/Log"
 sportsML = require "../common/sportsMLParser/sportsMLParser"
 scheduler = require "./scheduler"
-TeamRankUpdateJob = require "../common/jobs/TeamRankUpdateJob"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -158,26 +157,30 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
             # Set the needs processing flag (only used if bookie is not immediately run)
             team.needs_processing = true
 
-            team.save (err) ->
-               if err
-                  log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
+            # Run bookie if required
+            if runBookie
+               log.write("#{white}Finished postgame, starting bookie: #{team.team_key}#{reset} (team_key)")
+               bookie.processTeam team, (err) ->
+                  if err
+                     log.error("#{red}Failed: couldn't update bookie for #{team.team_key}#{reset} (team_key)")
+                  else
+                     log.write("#{white}Finished bookie: #{team.team_key}#{reset} (team_key)")
+                  return cb()
+            else
+               team.save (err) ->
+                  if err
+                     log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
+                  else
+                     log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
                   return cb()
 
-               # Run bookie if required
-               if runBookie
-                  log.write("#{white}Finished postgame, starting bookie: #{team.team_key}#{reset} (team_key)")
-                  job = new TeamRankUpdateJob({ team_id: team._id })
-                  job.queue()
-               else
-                  log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
-               
-               return cb()
-
    else if eventStatsML.eventMeta.isPostponed()
-      # run scheduler to find next game
       log.write("#{white}Game has been postponed for #{team.team_key}, running scheduler#{reset}")
       scheduler.updateTeam(team, cb)
+
    else
-      # game is still in progress (or XML Team hasn't published box scores)
       log.write("In progress: #{team.team_key}")
       return cb()
+
+      eventStatsML["post-event"]
+
