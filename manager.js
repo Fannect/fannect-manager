@@ -5,9 +5,9 @@ var program = require("commander");
 
 var mongoose = require("mongoose");
 var mongooseTypes = require("mongoose-types");
-mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk3R1ll967LO41FG1gL2Kil@linus.mongohq.com:10045/fannect-dev");
-// console.log("RUNNING IN PRODUCTION");
-// mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk3R1ll967LO41FG1gL2Kil@fannect-production.member0.mongolayer.com:27017/fannect-production");
+// mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk3R1ll967LO41FG1gL2Kil@linus.mongohq.com:10045/fannect-dev");
+console.log("RUNNING IN PRODUCTION");
+mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk3R1ll967LO41FG1gL2Kil@fannect-production.member0.mongolayer.com:27017/fannect-production");
 mongooseTypes.loadTypes(mongoose);
 
 var redis = require("./common/utils/redis");
@@ -27,6 +27,7 @@ program
 .description("Updates the schedule for a league")
 .option("-l, --league <league_key>", "league key to update schedules")
 .option("-t, --team <team_key>", "team key to update schedules")
+.option("-f, --file <file_path>", "file to use from schedule information")
 .action(function (cmd) {
    start = new Date() / 1;
 
@@ -50,7 +51,8 @@ program
             process.exit(1);
             return;
          }
-         scheduler.updateTeam(team, function (err) {
+
+         done = function (err) {
             end = (((new Date() / 1) - start) / 1000.0)
             if (err) {
                console.error("Completed (" + end + ") with errors");
@@ -60,7 +62,10 @@ program
                console.log("Completed (" + end + "s)");
                process.exit(0);
             }
-         });
+         };
+
+         if (cmd.file) scheduler.updateTeamWithFile(team, cmd.file, done);
+         else scheduler.updateTeam(team, done);
       });
    } else {
       console.error("'league_key' is required!")

@@ -4,7 +4,7 @@ sportsML = require "../common/sportsMLParser/sportsMLParser"
 request = require "request"
 async = require "async"
 _ = require "underscore"
-
+fs = require "fs"
 
 url = process.env.XMLTEAM_URL or "http://fannect:k4ns4s@sportscaster.xmlteam.com/gateway/php_ci"
 
@@ -48,49 +48,65 @@ scheduler = module.exports =
             "fixture-keys": "schedule-single-team"
             "revision-control": "latest-only"
             "content-returned": "all-content"
-            "earliest-date-time": "20130101T010000"
+            # "earliest-date-time": "20130101T010000"
+            "date-window": 4800
          timeout: 1800000
       , (err, resp, body) ->
          # console.log body
          # console.log resp
          return cb(err) if err
-         
          sportsML.schedule body, (err, schedule) ->
             return cb(err) if err
 
             unless schedule
                return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")      
             
-            games = schedule.sportsEvents
+            scheduler.updateSchedule(team, schedule, cb)
 
-            if not games
-               return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")  
+   updateTeamWithFile: (team, file_name, cb) ->
+      team.schedule = {} unless team.schedule
+      team.schedule.season = []
+      fs.readFile file_name, "utf8", (err, xml) ->
+         return cb(err) if err
+         sportsML.schedule xml, (err, schedule) ->
+            return cb(err) if err
 
-            gamesRunning = 0
-            gameErrors = []
+            unless schedule
+               return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")      
+         
+            scheduler.updateSchedule(team, schedule, cb)
+      
+   updateSchedule: (team, schedule, cb) ->
+      games = schedule.sportsEvents
+
+      if not games
+         return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")  
+
+      gamesRunning = 0
+      gameErrors = []
 
 
-            for game, i in games
-               continue unless (game.eventMeta.isBefore() and game.isValid())
+      for game, i in games
+         continue unless (game.eventMeta.isBefore() and game.isValid())
 
-               gamesRunning++
+         gamesRunning++
 
-               scheduler.addGame team, game, (err) ->
-                  if err then gameErrors.push(err)
-                  if --gamesRunning <= 0
+         scheduler.addGame team, game, (err) ->
+            if err then gameErrors.push(err)
+            if --gamesRunning <= 0
 
-                     # sort games to be in correct order
-                     team.schedule.season = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))
-                     team.schedule.pregame = team.schedule.season.shift()
+               # sort games to be in correct order
+               team.schedule.season = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))
+               team.schedule.pregame = team.schedule.season.shift()
 
-                     team.save (err) ->
-                        return cb(err) if err
-                        return cb(gameErrors) if gameErrors.length > 0
-                        cb()
+               team.save (err) ->
+                  return cb(err) if err
+                  return cb(gameErrors) if gameErrors.length > 0
+                  cb()
 
-            # return if no games to run
-            if gamesRunning == 0
-               cb("#{white}No future games to schedule.#{reset}")
+      # return if no games to run
+      if gamesRunning == 0
+         cb("#{white}No future games to schedule.#{reset}")
                
    addGame: (team, game, cb) ->
       async.parallel 
