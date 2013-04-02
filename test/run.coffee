@@ -15,6 +15,7 @@ mongooseTypes.loadTypes mongoose
 request = require "request"
 
 process.env.NODE_ENV = "production"
+process.env.NODE_TESTING = true
 process.env.BATCH_SIZE = 1
 
 Team = require "../common/models/Team"
@@ -35,7 +36,6 @@ commissioner = require "../actions/commissioner"
 
 prepMongo = (done) -> dbSetup.load data_standard, done
 emptyMongo = (done) -> dbSetup.unload data_standard, done
-
 
 describe "Fannect Manager", () ->
    
