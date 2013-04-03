@@ -20,6 +20,7 @@ var previewer = require("./actions/previewer");
 var postgame = require("./actions/postgame");
 var bookie = require("./actions/bookie");
 var commissioner = require("./actions/commissioner");
+var judge = require("./actions/judge");
 var notifier = require("./actions/notifier");
 
 program
@@ -216,6 +217,41 @@ program
          }
       });
    });
+});
+
+program
+.command("judge")
+.description("Judges fan highlights")
+.option("-t, --team <team_key>", "only judge for specified team")
+.action(function (cmd) {
+   start = new Date() / 1;
+   if (cmd.team) {
+      judge.processTeam(cmd.team, function (err) {
+         end = (((new Date() / 1) - start) / 1000.0)
+         if (err) {
+            console.error("Completed (" + end + ") with errors:");
+            console.error(err.stack);
+            process.exit(1);
+         } else {
+            console.log("Completed (" + end + "s)");
+            process.exit();
+         }
+      });
+   } else {
+      judge.processAll(function (errs) {
+         end = (((new Date() / 1) - start) / 1000.0)
+         if (errs) {
+            console.error("Completed (" + end + ") with errors");
+            for (var i = errs.length - 1; i >= 0; i--) {
+               console.error(errs[i].stack);
+            };
+            process.exit(1);
+         } else {
+            console.log("Completed (" + end + "s)");
+            process.exit();
+         }
+      });
+   }
 });
 
 program

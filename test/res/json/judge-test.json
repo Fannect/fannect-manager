@@ -1,0 +1,148 @@
+{
+   "teamprofiles": [
+      {
+         "_id": "6116822f0952930200000001",
+         "team_id": "7116822f0952930200000111",
+         "events": [],
+         "points": {
+            "dedication": 1,
+            "knowledge": 1,
+            "overall": 3,
+            "passion": 1
+         }
+      }, {
+         "_id": "6116822f0952930200000002",
+         "team_id": "7116822f0952930200000111",
+         "events": [],
+         "points": {
+            "dedication": 1,
+            "knowledge": 1,
+            "overall": 3,
+            "passion": 1
+         }
+      }, {
+         "_id": "6116822f0952930200000003",
+         "team_id": "7116822f0952930200000111",
+         "events": [],
+         "points": {
+            "dedication": 1,
+            "knowledge": 1,
+            "overall": 3,
+            "passion": 1
+         }
+      }, {
+         "_id": "6116822f0952930200000004",
+         "team_id": "7116822f0952930200000111",
+         "events": [],
+         "points": {
+            "dedication": 1,
+            "knowledge": 1,
+            "overall": 3,
+            "passion": 1
+         }
+      }, {
+         "_id": "6116822f0952930200000005",
+         "team_id": "7116822f0952930200000111",
+         "events": [],
+         "points": {
+            "dedication": 1,
+            "knowledge": 1,
+            "overall": 3,
+            "passion": 1
+         }
+      }, {
+         "_id": "6116822f0952930200000006",
+         "team_id": "7116822f0952930200000111",
+         "events": [],
+         "points": {
+            "dedication": 1,
+            "knowledge": 1,
+            "overall": 3,
+            "passion": 1
+         }
+      }
+   ],
+   "highlights": [
+        {
+            "_id": "514526fec17e8ec75f000001",
+            "owner_id": "6116822f0952930200000001",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 100,
+            "down_votes": 1,
+            "game_type": "gameday_pics",
+            "is_active": true
+        }, {
+            "_id": "514526fec17e8ec75f000002",
+            "owner_id": "6116822f0952930200000002",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 90,
+            "down_votes": 1,
+            "game_type": "gameday_pics",
+            "is_active": true
+        }, {
+            "_id": "514526fec17e8ec75f000003",
+            "owner_id": "6116822f0952930200000003",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 90,
+            "down_votes": 8,
+            "game_type": "gameday_pics",
+            "is_active": true
+        }, {
+            "_id": "514526fec17e8ec75f000004",
+            "owner_id": "6116822f0952930200000004",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 10,
+            "down_votes": 2,
+            "game_type": "gameday_pics",
+            "is_active": true
+        }, {
+            "_id": "514526fec17e8ec75f000010",
+            "owner_id": "6116822f0952930200000001",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 10,
+            "down_votes": 2,
+            "game_type": "gameday_pics",
+            "is_active": true
+        }, {
+            "_id": "514526fec17e8ec75f000005",
+            "owner_id": "6116822f0952930200000005",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 10,
+            "down_votes": 2,
+            "game_type": "gameday_pics",
+            "is_active": true
+        }, {
+            "_id": "514526fec17e8ec75f000006",
+            "owner_id": "6116822f0952930200000006",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 1,
+            "down_votes": 0,
+            "game_type": "gameday_pics",
+            "is_active": true
+        }, {
+            "_id": "514526fec17e8ec75f000007",
+            "owner_id": "6116822f0952930200000007",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 1,
+            "down_votes": 0,
+            "game_type": "gameday_pics",
+            "is_active": false
+        }, {
+            "_id": "514526fec17e8ec75f000008",
+            "owner_id": "6116822f0952930200000007",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 0,
+            "down_votes": 0,
+            "game_type": "gameday_pics",
+            "is_active": true
+        }, {
+            "_id": "514526fec17e8ec75f000009",
+            "owner_id": "6116822f0952930200000002",
+            "team_id": "7116822f0952930200000111",
+            "up_votes": 1,
+            "down_votes": 0,
+            "game_type": "spirit_wear",
+            "is_active": true
+        }
+    ]
+}

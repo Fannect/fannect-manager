@@ -21,11 +21,13 @@ process.env.BATCH_SIZE = 1
 Team = require "../common/models/Team"
 Group = require "../common/models/Group"
 TeamProfile = require "../common/models/TeamProfile"
+Highlight = require "../common/models/Highlight"
 
 data_standard = require "./res/json/standard"
 data_postgame = require "./res/json/postgametest"
 data_bookie = require "./res/json/bookie-test"
 data_commissioner = require "./res/json/commissioner-test"
+data_judge = require "./res/json/judge-test"
 dbSetup = require "./utils/dbSetup"
 
 scheduler = require "../actions/scheduler"
@@ -33,6 +35,7 @@ previewer = require "../actions/previewer"
 postgame = require "../actions/postgame"
 bookie = require "../actions/bookie"
 commissioner = require "../actions/commissioner"
+judge = require "../actions/judge"
 
 prepMongo = (done) -> dbSetup.load data_standard, done
 emptyMongo = (done) -> dbSetup.unload data_standard, done
@@ -175,6 +178,130 @@ describe "Fannect Manager", () ->
 
       it "should queue team rank update", () ->
          @queued.meta.team_id.toString().should.equal("51084c08f71f55551a7b1ef6")
+
+   describe "Judge", () ->
+      before () ->
+         context = @
+         context.old_queue_fn = Job.prototype.queue
+         Job::queue = (cb = ->) ->
+            context.queued = @
+            process.nextTick(cb)
+      after (done) -> 
+         Job.prototype.queue = context.old_queue_fn
+         dbSetup.unload data_judge, done
+
+      describe "updateWinners", () ->
+         team_id = "7116822f0952930200000111"
+         before (done) -> 
+            async.series [
+               (done) -> dbSetup.unload data_judge, done
+               (done) -> dbSetup.load data_judge, done
+               (done) -> 
+                  Highlight.find {team_id: team_id, game_type: "gameday_pics", is_active: true}, (err, highlights) ->
+                     return done(err) if err
+                     judge.updateWinners(1, "gameday_pics", highlights, done)
+            ], done
+         after (done) -> dbSetup.unload data_judge, done
+
+         it "should update profiles to have correct points", (done) ->
+            TeamProfile.find {team_id: team_id}, (err, profiles) ->
+               return done(err) if err
+               profiles.length.should.equal(6)
+               for profile in profiles
+                  continue if profile._id.toString() == "6116822f0952930200000001"
+                  profile.points.passion.should.equal(11)
+                  profile.points.overall.should.equal(13)
+               done()
+
+         it "should mark all highlights processed as inactive", (done) ->
+            Highlight.find {team_id: team_id, game_type: "gameday_pics", is_active: true}, (err, highlights) ->
+               return done(err) if err
+               highlights.length.should.equal(0)
+               done()
+
+      describe "judgeTeam", () ->
+         team_id = "7116822f0952930200000111"
+         before (done) ->
+            context = @ 
+            async.series [
+               (done) -> dbSetup.unload data_judge, done
+               (done) -> dbSetup.load data_judge, done
+               (done) -> 
+                  judge.judgeTeam
+                     team_id: team_id
+                     game_type: "gameday_pics"
+                     level_count: 4
+                  , (err, ranked) ->
+                     return done(err) if err
+                     context.ranked = ranked
+                     done() 
+            ], done
+         after (done) -> dbSetup.unload data_judge, done
+
+         it "should rank highlights by up votes", () ->
+            @ranked[0][0].up_votes.should.equal(100)
+            
+         it "should break ties by down_votes", () ->
+            @ranked[1].length.should.equal(1)
+            @ranked[2].length.should.equal(1)
+            @ranked[1][0].up_votes.should.equal(90)
+            @ranked[2][0].up_votes.should.equal(90)
+            
+         it "should allow absolute ties", () ->
+            @ranked[3].length.should.equal(2)
+            @ranked[3][0].up_votes.should.equal(10)
+            @ranked[3][1].up_votes.should.equal(10)
+
+      describe "updateConsolationBatch", () ->
+         team_id = "7116822f0952930200000111"
+         before (done) ->
+            context = @ 
+            async.series [
+               (done) -> dbSetup.unload data_judge, done
+               (done) -> dbSetup.load data_judge, done
+               (done) -> 
+                  judge.updateConsolationBatch 
+                     team_id: team_id
+                     game_type: "gameday_pics"
+                     batch_size: 1
+                     exclude: [ "6116822f0952930200000001" ]
+                  , done
+            ], done
+         after (done) -> dbSetup.unload data_judge, done
+
+         it "should update consolation batch", (done) ->
+            Highlight.find {team_id: team_id, is_active: false}, (err, highlights) ->
+               highlights.length.should.equal(9)
+               done()
+
+      describe "processTeam", () ->
+         team_id = "7116822f0952930200000111"
+         before (done) ->
+            context = @ 
+            async.series [
+               (done) -> dbSetup.unload data_judge, done
+               (done) -> dbSetup.load data_judge, done
+               (done) -> 
+                  judge.processTeam team_id, done
+            ], done
+         after (done) -> dbSetup.unload data_judge, done
+
+         it "should queue teamRankUpdateJob", () ->
+            @queued.should.be.ok
+
+         it "should update all highlights to inactive", (done) ->
+            Highlight.find {team_id: team_id, is_active: true}, (err, highlights) ->
+               highlights.length.should.equal(0)
+               done()
+
+         it "should judge all game types", (done) ->
+            TeamProfile.find {team_id: team_id, "events.meta.rank": 1 }, (err, profiles) ->
+               profiles.length.should.equal(2)
+               for profile in profiles
+                  type = profile.events[0].type
+                  (type == "spirit_wear" or type == "gameday_pics").should.be.true
+               done()
+               
 
    describe.skip "Commissioner", () ->
       before (cb) -> 
