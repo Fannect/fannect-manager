@@ -1,5 +1,6 @@
 Highlight = require "../common/models/Highlight"
 TeamProfile = require "../common/models/TeamProfile"
+Config = require "../common/models/Config"
 request = require "request"
 async = require "async"
 log = require "../utils/Log"
@@ -26,7 +27,7 @@ judge = module.exports =
       , (err, results) ->
          if err
             log.error "#{red}Failed to find teams to judge: #{err.stack or err}#{reset}" 
-            return cb()
+            return log.sendErrors("Judge", cb)
 
          q = async.queue (team_id, callback) ->
             judge.processTeam team_id, (err) ->
@@ -37,12 +38,20 @@ judge = module.exports =
          
          if results.length == 0
             log.write "#{white}No judgements to be made.#{reset}" 
-            cb()
+            judge.nextPhotoChallenge () -> log.sendErrors("Judge", cb)
          else
             log.write "#{white}Found #{green}#{results.length}#{white} teams to judge...#{reset}"
 
          q.push(result._id) for result in results
-         q.drain = () -> log.sendErrors("Judge", cb)
+         q.drain = () -> 
+            judge.nextPhotoChallenge () -> log.sendErrors("Judge", cb)
+
+   nextPhotoChallenge: (cb) ->
+      log.write "#{white}Setting next photo challenge..#{reset}"
+      Config.nextPhotoChallenge (err) ->
+         if err
+            log.error "#{red}Failed to set next photo challenge: #{err.stack or err}#{reset}" 
+         cb()
 
    processTeam: (team_id, cb) ->
       game_types = photoProcessor.getTypes()

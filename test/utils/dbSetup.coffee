@@ -6,6 +6,7 @@ Group = require "../../common/models/Group"
 Highlight = require "../../common/models/Highlight"
 Huddle = require "../../common/models/Huddle"
 User = require "../../common/models/User"
+Config = require "../../common/models/Config"
 
 async = require "async"
 
@@ -35,6 +36,9 @@ module.exports =
       if obj.highlights
          creates.highlights = (done) -> Highlight.create(obj.highlights, done)
 
+      if obj.config
+         creates.config = (done) -> Highlight.create(obj.config, done)
+
       async.parallel(creates, cb)
 
    unload: (obj, cb) ->
@@ -59,6 +63,7 @@ module.exports =
          (done) -> Huddle.remove({team_id: { $in: team_ids }}, done)
          (done) -> Highlight.remove({_id: { $in: highlight_ids }}, done)
          (done) -> Highlight.remove({team_id: { $in: team_ids }}, done)
+         (done) -> Config.remove({}, done)
       ], cb
 
 

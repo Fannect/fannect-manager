@@ -144,5 +144,22 @@
             "game_type": "spirit_wear",
             "is_active": true
         }
-    ]
+    ],
+    "config": {
+        "games": {
+            "photo_challenge": {
+                "active_title": "First title",
+                "active_description": "First description",
+                "active_index": 0,
+                "queued_challenges": [
+                {
+                    "title": "First title",
+                    "description": "First description"
+                }, {
+                    "title": "Second title",
+                    "description": "Second description"
+                }]
+            }   
+        }
+    }
 }
