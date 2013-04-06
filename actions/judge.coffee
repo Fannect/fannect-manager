@@ -47,7 +47,7 @@ judge = module.exports =
             judge.nextPhotoChallenge () -> log.sendErrors("Judge", cb)
 
    nextPhotoChallenge: (cb) ->
-      log.write "#{white}Setting next photo challenge..#{reset}"
+      log.write "#{white}Setting next photo challenge...#{reset}"
       Config.nextPhotoChallenge (err) ->
          if err
             log.error "#{red}Failed to set next photo challenge: #{err.stack or err}#{reset}" 
