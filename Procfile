@@ -1,4 +1,4 @@
 previews: node manager.js previews
 postgame: node manager.js postgame -b
 list: node manager.js list
-basketball: node manager.js schedules -l l.ncaa.org.mbasket
+judge: node manager.js judge -d monday
