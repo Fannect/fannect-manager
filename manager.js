@@ -23,6 +23,8 @@ var commissioner = require("./actions/commissioner");
 var judge = require("./actions/judge");
 var notifier = require("./actions/notifier");
 
+var TeamRankUpdateJob = require("./common/jobs/TeamRankUpdateJob")
+
 program
 .command("schedules")
 .description("Updates the schedule for a league")
@@ -182,40 +184,28 @@ program
 
 program
 .command("rank")
-.description("Updates the schedule for a league")
-.option("-t, --team <team_key>", "team key to update rank")
+.description("Updates the rank of TeamProfiles")
+.option("-t, --team <team_id>", "team key to update rank")
 .action(function (cmd) {
    start = new Date() / 1;
 
    if (!cmd.team) {
-      console.log("team_key is required!");
+      console.log("team_id is required!");
       process.exit(1);
       return;
    }
 
-   Team.findOne({ team_key: cmd.team }, "schedule.postgame sport_key needs_processing is_processing points", function (err, team) {
+   job = new TeamRankUpdateJob({ team_id: cmd.team })
+   job.run(function (err) {
+      end = (((new Date() / 1) - start) / 1000.0)
       if (err) {
-         console.error("Completed (" + (((new Date() / 1) - start) / 1000.0) + ") with errors");
-         console.error(err.stack || err);
+         console.error("Completed (" + end + ") with errors");
+         console.error(err.stack);
          process.exit(1);
-         return;
+      } else {
+         console.log("Completed (" + end + "s)");
+         process.exit(0);
       }
-      else if (!team) {
-         console.error("Completed (" + (((new Date() / 1) - start) / 1000.0) + ") invalid team_key");
-         process.exit(1);
-         return;
-      }
-      bookie.rankTeam(team, function (err) {
-         end = (((new Date() / 1) - start) / 1000.0)
-         if (err) {
-            console.error("Completed (" + end + ") with errors");
-            console.error(err.stack);
-            process.exit(1);
-         } else {
-            console.log("Completed (" + end + "s)");
-            process.exit(0);
-         }
-      });
    });
 });
 
