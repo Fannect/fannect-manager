@@ -213,13 +213,26 @@ program
 .command("judge")
 .description("Judges fan highlights")
 .option("-t, --team <team_key>", "only judge for specified team")
+.option("-d, --day <day_of_the_week>", "day of the week to run on")
 .action(function (cmd) {
    start = new Date() / 1;
+
+   if (cmd.day) {
+      curr_day = new Date().getDay()
+      days = [ "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday" ]
+      wanted_day = days.indexOf(cmd.day.toLowerCase())
+      if (curr_day != wanted_day) {
+         console.log("Judge postponed, not '" + cmd.day + "'");
+         process.exit();
+         return;
+      }
+   }
+
    if (cmd.team) {
       judge.processTeam(cmd.team, function (err) {
          end = (((new Date() / 1) - start) / 1000.0)
          if (err) {
-            console.error("Completed (" + end + ") with errors:");
+            console.error("Completed (" + end + "s) with errors:");
             console.error(err.stack);
             process.exit(1);
          } else {
@@ -231,7 +244,7 @@ program
       judge.processAll(function (errs) {
          end = (((new Date() / 1) - start) / 1000.0)
          if (errs) {
-            console.error("Completed (" + end + ") with errors");
+            console.error("Completed (" + end + "s) with errors");
             for (var i = errs.length - 1; i >= 0; i--) {
                console.error(errs[i].stack);
             };
