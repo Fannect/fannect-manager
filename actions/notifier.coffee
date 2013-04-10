@@ -46,7 +46,7 @@ notifier = module.exports =
             parse.sendPushNotification 
                channels: ["team_#{team._id}"]
                data: 
-                  alert: "It's Gameday! Make sure to score your points for the #{team.full_name}."
+                  alert: "It's Gameday for #{team.full_name}!"
                   event: "gameday"
                   title: "Gameday"
                   teamId: team._id
