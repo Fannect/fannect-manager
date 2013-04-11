@@ -27,7 +27,8 @@
                     "meta": { 
                         "face_on": true,
                         "motivated_count":11
-                    }
+                    }, 
+                    "event_key": "some.event-key.1"
                 }, {
                     "_id": "51168b778f862a0560000021",
                     "type": "guess_the_score",
@@ -35,7 +36,8 @@
                         "picked": true,
                         "away_score": 99,
                         "home_score": 93
-                    }
+                    }, 
+                    "event_key": "some.event-key.1"
                 }, {
                     "_id": "51168b778f863a0200000104",
                     "type": "attendance_streak",
@@ -43,7 +45,8 @@
                         "checked_in": true,
                         "lat": 26,
                         "lng": 45
-                    }
+                    }, 
+                    "event_key": "some.event-key.1"
                 }
             ]
         }, {
@@ -59,7 +62,8 @@
                 {
                     "_id": "51168b6d8f862a0200033004",
                     "type": "game_face",
-                    "meta": { "face_on": true }
+                    "meta": { "face_on": true }, 
+                    "event_key": "some.event-key.1"
                 }, {
                     "_id": "51168b778f862a0200000023",
                     "type": "guess_the_score",
@@ -67,7 +71,8 @@
                         "picked": true,
                         "away_score": 88,
                         "home_score": 86
-                    }
+                    }, 
+                    "event_key": "some.event-key.1"
                 }
             ],
             "groups": [
@@ -96,7 +101,8 @@
                         "picked": true,
                         "away_score": 44,
                         "home_score": 22
-                    }
+                    }, 
+                    "event_key": "some.event-key.1"
                 }, {
                     "_id": "51168b778f862a0204300103",
                     "type": "attendance_streak",
@@ -104,8 +110,8 @@
                         "checked_in": true,
                         "lat": 26,
                         "lng": 45
-                    },
-                    "event_key": "something"
+                    }, 
+                    "event_key": "some.event-key.1"
                 }
             ],
             "groups": [
@@ -160,8 +166,8 @@
             "conference_name": "Eastern",
             "is_college": false,
             "schedule": {
-                "postgame": {
-                    "event_key": "something.com-1121",
+                "postgame": { 
+                    "event_key": "some.event-key.1",
                     "attendance": 16701,
                     "game_time": "2013-02-09T01:00:00Z",
                     "is_home": true,
