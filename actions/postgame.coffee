@@ -20,7 +20,7 @@ bookie = require "./bookie"
 postgame = module.exports =
 
    update: (runBookie, cb) ->
-      time = new Date(new Date() / 1 - 1000 * 60 * 120)
+      time = new Date(new Date() / 1 - 1000 * 60 * 90)
       log.empty()
       log.write "#{white}Starting postgame... #{green}#{new Date()}#{reset}"
 
@@ -37,6 +37,9 @@ postgame = module.exports =
          else
             log.write "#{white}Found #{green}#{teams.length}#{white} in progress..#{reset}"
          
+         getEvents team.
+
+
          # Get all the event keys for a single call
          event_keys = []
          for t in teams 
@@ -63,7 +66,7 @@ postgame = module.exports =
             q.drain = () -> log.sendErrors("Postgame", cb)
 
    updateTeam: (team, runBookie, cb) ->
-      return cb("No pregame..") unless team?.schedule?.pregame?.event_key
+      return cb("No pregame...") unless team?.schedule?.pregame?.event_key
       getEvents team.schedule.pregame.event_key, (err, events) ->
          event = _.find events.sportsEvents, (e) -> e.eventMeta.event_key == team.schedule.pregame.event_key
          gameUpdate(team, event, runBookie, cb)
@@ -166,8 +169,7 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
                # Run bookie if required
                if runBookie
                   log.write("#{white}Finished postgame, starting bookie: #{team.team_key}#{reset} (team_key)")
-                  job = new TeamRankUpdateJob({ team_id: team._id })
-                  job.queue()
+                  bookie.processTeam(team, cb)
                else
                   log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
                

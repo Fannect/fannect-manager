@@ -40,7 +40,7 @@ notifier = module.exports =
             log.write "#{white}No teams found to notify.#{reset}"
             return cb()
          else
-            log.write "#{white}Found #{green}#{teams.length}#{white} to notify..#{reset}"
+            log.write "#{white}Found #{green}#{teams.length}#{white} to notify...#{reset}"
          
          q = async.queue (team, callback) ->
             parse.sendPushNotification 
