@@ -169,7 +169,7 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
                # Run bookie if required
                if runBookie
                   log.write("#{white}Finished postgame, starting bookie: #{team.team_key}#{reset} (team_key)")
-                  bookie.processTeam(team, cb)
+                  return bookie.processTeam(team, cb)
                else
                   log.write("#{white}Finished: #{team.team_key}#{reset} (team_key)")
                

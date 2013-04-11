@@ -136,9 +136,9 @@ describe "Fannect Manager", () ->
    describe "Postgame", () ->
       before (done) ->
          context = @
-         context.old_queue_fn = Job.prototype.queue
-         Job::queue = (cb = ->) ->
-            context.queued = @
+         context.old_bookie = bookie.processTeam
+         bookie.processTeam = (team, cb) ->
+            context.processedTeam = team
             process.nextTick(cb)
          request.get = (options, done) -> 
             if options.url.indexOf("getEvents") != -1
@@ -166,6 +166,7 @@ describe "Fannect Manager", () ->
 
       after (done) -> 
          Job.prototype.queue = context.old_queue_fn
+         bookie.processTeam = context.old_bookie
          dbSetup.unload data_postgame, done
 
       it "should remove next game from season", () ->
@@ -176,8 +177,8 @@ describe "Fannect Manager", () ->
          @team.schedule.pregame.opponent_id.toString().should.equal("51084c08f71f44551a7b3ef7")
          @team.schedule.pregame.is_home.should.be.false
 
-      it "should queue team rank update", () ->
-         @queued.meta.team_id.toString().should.equal("51084c08f71f55551a7b1ef6")
+      it "should call bookie for team", () ->
+         @processedTeam._id.toString().should.equal("51084c08f71f55551a7b1ef6")
 
    describe "Judge", () ->
       before () ->
