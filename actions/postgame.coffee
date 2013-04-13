@@ -37,9 +37,6 @@ postgame = module.exports =
          else
             log.write "#{white}Found #{green}#{teams.length}#{white} in progress..#{reset}"
          
-         getEvents team.
-
-
          # Get all the event keys for a single call
          event_keys = []
          for t in teams 
@@ -79,20 +76,22 @@ getEvents = (event_keys, cb) ->
          "event-keys": event_keys
          "content-returned": "metadata"
       timeout: 120000
-   , (err, resp, body) ->   
+   , (err, resp, body) ->
       if err
-         log.error("#{red}Failed: XML Team event stats failed #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
+         log.error("#{red}Failed: XML Team event stats failed #{event_keys}#{reset} \nError:\n#{JSON.stringify(err)}")
          return cb(err) 
 
       sportsML.eventStats body, (err, eventStats) ->
          if err
-            log.error("#{red}Failed: couldn't parse event stats for #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
+            log.error("#{red}Failed: couldn't parse event stats for #{event_keys}#{reset} \nError:\n#{JSON.stringify(err)}")
             return cb(err) 
 
          cb(null, eventStats)
 
 gameUpdate = (team, eventStatsML, runBookie, cb) ->
-   return cb() if eventStatsML.eventMeta.isBefore() or not team?.schedule?.pregame?.event_key
+   if eventStatsML.eventMeta.isBefore() or not team?.schedule?.pregame?.event_key
+      log.write("#{white}In progress: #{team.team_key} #{reset}(team_key)")
+      return cb() 
 
    if eventStatsML.eventMeta.isPast()
 
@@ -181,5 +180,5 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
       scheduler.updateTeam(team, cb)
    else
       # game is still in progress (or XML Team hasn't published box scores)
-      log.write("In progress: #{team.team_key}")
+      log.write("#{white}In progress: #{team.team_key} #{reset}(team_key)")
       return cb()
