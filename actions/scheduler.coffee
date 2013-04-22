@@ -49,7 +49,7 @@ scheduler = module.exports =
             "revision-control": "latest-only"
             "content-returned": "all-content"
             # "earliest-date-time": "20130101T010000"
-            "date-window": 4800
+            "date-window": 200000
          timeout: 1800000
       , (err, resp, body) ->
          # console.log body
