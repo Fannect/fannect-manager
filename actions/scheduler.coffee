@@ -32,8 +32,7 @@ scheduler = module.exports =
             do (team = t) -> 
                teamsRunning++
                scheduler.updateTeam team, (err) ->
-                  teamErrors.push(err) if err
-
+                  console.log err if err
                   console.log "#{white}Finished: #{team.team_key} (#{green}#{teamsRunning - 1} left#{white})#{reset}"
                   if --teamsRunning <= 0 
                      cb() 
@@ -57,7 +56,6 @@ scheduler = module.exports =
          return cb(err) if err
          sportsML.schedule body, (err, schedule) ->
             return cb(err) if err
-
             unless schedule
                return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")      
             
@@ -106,7 +104,7 @@ scheduler = module.exports =
 
       # return if no games to run
       if gamesRunning == 0
-         cb("#{white}No future games to schedule.#{reset}")
+         cb("#{white}No future games to schedule for: #{team.team_key}#{reset}")
                
    addGame: (team, game, cb) ->
       async.parallel 
