@@ -75,6 +75,7 @@ getEvents = (event_keys, cb) ->
       qs:
          "event-keys": event_keys
          "content-returned": "metadata"
+         "revision-control": "latest-only"
       timeout: 120000
    , (err, resp, body) ->
       if err
@@ -84,7 +85,7 @@ getEvents = (event_keys, cb) ->
       sportsML.eventStats body, (err, eventStats) ->
          if err
             log.error("#{red}Failed: couldn't parse event stats for #{event_keys}#{reset} \nError:\n#{JSON.stringify(err)}")
-            return cb(err) 
+            return cb(err)    
 
          cb(null, eventStats)
 
@@ -113,7 +114,7 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
          sportsML.eventStats body, (err, boxscores) ->
             if err
                log.error("#{red}Failed: couldn't parse box score for #{team.team_key}#{reset} \nError:\n#{JSON.stringify(err)}")
-               return cb(err) 
+               return cb(err)
 
             unless boxscores
                return log.write("No box scores in document for #{team.team_key}")
@@ -162,7 +163,7 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
 
             team.save (err) ->
                if err
-                  log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)")
+                  log.error("#{red}Failed: couldn't update pregame/postgame for #{team.team_key}#{reset} (team_key)\nERROR:#{err?.toString()}")
                   return cb()
 
                # Run bookie if required
