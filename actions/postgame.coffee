@@ -159,8 +159,9 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
                team.schedule.postgame.won = outcome.away_team.won()
 
             # Handle pregame
-            team.set("schedule.pregame", nextgame)
-            team.schedule.season.remove(nextgame)
+            if (nextgame)
+               team.set("schedule.pregame", nextgame)
+               team.schedule.season.remove(nextgame)
             
             # Set the needs processing flag (only used if bookie is not immediately run)
             team.needs_processing = true
