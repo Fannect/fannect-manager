@@ -47,8 +47,8 @@ scheduler = module.exports =
             "fixture-keys": "schedule-single-team"
             "revision-control": "latest-only"
             "content-returned": "all-content"
-            # "earliest-date-time": "20130101T010000"
-            "date-window": 200000
+            "earliest-date-time": "20130901T010000"
+            # "date-window": 200000
          timeout: 1800000
       , (err, resp, body) ->
          # console.log body
@@ -131,7 +131,7 @@ scheduler = module.exports =
 
          if not results.stadium
             console.log "#{red}Unable to find stadium: #{game.eventMeta.stadium_key}#{reset} (stadium_key)"
-
+            
          team.schedule.season.push
             event_key: game.eventMeta.event_key
             game_time: game.eventMeta.start_date_time

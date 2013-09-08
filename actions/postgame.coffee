@@ -45,7 +45,6 @@ postgame = module.exports =
 
          # Get events
          getEvents event_keys.join(","), (err, events) ->
-
             results = []
             for t in teams 
                s = _.find events.sportsEvents, (e) -> e.eventMeta.event_key == t?.schedule.pregame?.event_key
@@ -90,6 +89,11 @@ getEvents = (event_keys, cb) ->
          cb(null, eventStats)
 
 gameUpdate = (team, eventStatsML, runBookie, cb) ->
+   # Manually added in games
+   if !eventStatsML
+      log.write("#{white}No event data for team: #{team.team_key} #{reset}(team_key)")
+      return cb()
+
    if eventStatsML.eventMeta.isBefore() or not team?.schedule?.pregame?.event_key
       log.write("#{white}In progress: #{team.team_key} #{reset}(team_key)")
       return cb() 
