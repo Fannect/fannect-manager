@@ -114,6 +114,11 @@ scheduler = module.exports =
             else
                Team.findOne { team_key: game.home_team.team_key }, "full_name", done
          stadium: (done) ->
+
+            # Hack get change the field from KU => NE because both have same key
+            if game.home_team.team_key == "l.ncaa.org.mfoot-t.553"
+               game.eventMeta.stadium_key = "Memorial_Stadium_NE"
+               
             Stadium.findOne
                $or: [
                   { stadium_key: game.eventMeta.stadium_key }
