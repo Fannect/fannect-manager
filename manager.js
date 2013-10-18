@@ -54,6 +54,12 @@ program
             process.exit(1);
             return;
          }
+         
+         if (!team) {
+            console.log("Team not found:", cmd.team)
+            process.exit(1);
+            return;
+         }
 
          done = function (err) {
             end = (((new Date() / 1) - start) / 1000.0)
