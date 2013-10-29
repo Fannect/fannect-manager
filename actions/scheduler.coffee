@@ -77,6 +77,8 @@ scheduler = module.exports =
    updateSchedule: (team, schedule, cb) ->
       games = schedule.sportsEvents
 
+      # console.log("SCHEDULE", schedule.sportsEvents)
+
       if not games
          return cb("#{red}No XML Team results for: #{team.team_key}#{reset}")  
 
