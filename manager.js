@@ -7,7 +7,7 @@ var mongoose = require("mongoose");
 var mongooseTypes = require("mongoose-types");
 mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk3R1ll967LO41FG1gL2Kil@linus.mongohq.com:10045/fannect-dev");
 // console.log("RUNNING IN PRODUCTION");
-// mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk3R1ll967LO41FG1gL2Kil@fannect-production.member0.mongolayer.com:27017/fannect-production");
+// mongoose.connect(process.env.MONGO_URL || "mongodb://halloffamer:krzj2blW7674QGk3R1ll967LO41FG1gL2Kil@mars.mongohq.com:10029/fannect-prod");
 mongooseTypes.loadTypes(mongoose);
 
 var redis = require("./common/utils/redis");

@@ -149,7 +149,7 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
             team.schedule.postgame.is_home = oldpregame.is_home
             team.schedule.postgame.attendance = outcome.eventMeta.attendance
 
-            if outcome.isHome(team.team_key)
+            if team.schedule.postgame.is_home
                team.schedule.postgame.score = outcome.home_team.score
                team.schedule.postgame.opponent_score = outcome.away_team.score
                team.schedule.postgame.won = outcome.home_team.won()

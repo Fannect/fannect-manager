@@ -47,7 +47,7 @@ scheduler = module.exports =
             "fixture-keys": "schedule-single-team"
             "revision-control": "latest-only"
             "content-returned": "all-content"
-            "earliest-date-time": "20131028T010000"
+            "earliest-date-time": "20130901T010000"
             # "date-window": 200000
          timeout: 1800000
       , (err, resp, body) ->
