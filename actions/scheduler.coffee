@@ -25,17 +25,18 @@ scheduler = module.exports =
          return cb(err) if err
          return cb(new Error("#{white}No teams found.#{reset}")) if teams?.length == 0
          
-         teamsRunning = 0
+         teamsRunning = teams.length
          teamErrors = []
 
-         for t in teams
-            do (team = t) -> 
-               teamsRunning++
+         q = async.queue (team, callback) ->
                scheduler.updateTeam team, (err) ->
                   console.log err if err
-                  console.log "#{white}Finished: #{team.team_key} (#{green}#{teamsRunning - 1} left#{white})#{reset}"
-                  if --teamsRunning <= 0 
-                     cb() 
+                  console.log "#{white}Finished: #{team.team_key} (#{green}#{teamsRunning--} left#{white})#{reset}"
+                  callback()
+            , 8
+
+         q.drain = cb;
+         q.push(t) for t in teams
 
    updateTeam: (team, cb) ->
       team.schedule = {} unless team.schedule
