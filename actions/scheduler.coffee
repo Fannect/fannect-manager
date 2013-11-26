@@ -31,7 +31,7 @@ scheduler = module.exports =
          q = async.queue (team, callback) ->
                scheduler.updateTeam team, (err) ->
                   console.log err if err
-                  console.log "#{white}Finished: #{team.team_key} (#{green}#{teamsRunning--} left#{white})#{reset}"
+                  console.log "#{white}Finished: #{team.team_key} (#{green}#{--teamsRunning} left#{white})#{reset}"
                   callback()
             , 8
 
@@ -53,7 +53,6 @@ scheduler = module.exports =
          timeout: 1800000
       , (err, resp, body) ->
          # console.log body
-         # console.log resp
          return cb(err) if err
          sportsML.schedule body, (err, schedule) ->
             return cb(err) if err
@@ -97,7 +96,6 @@ scheduler = module.exports =
                # sort games to be in correct order
                team.schedule.season = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))
                team.schedule.pregame = team.schedule.season.shift()
-
                team.save (err) ->
                   return cb(err) if err
                   return cb(gameErrors) if gameErrors.length > 0
@@ -133,7 +131,7 @@ scheduler = module.exports =
                console.log "#{red}Fail: #{game.home_team.team_key}, can't find opponent: #{game.away_team.team_key}#{reset}"
             else
                console.log "#{red}Fail: #{game.away_team.team_key}, can't find opponent: #{game.home_team.team_key}#{reset}"
-            cb()
+            return cb()
 
          if not results.stadium
             console.log "#{red}Unable to find stadium: #{game.eventMeta.stadium_key}#{reset} (stadium_key)"
@@ -149,11 +147,4 @@ scheduler = module.exports =
             stadium_coords: results.stadium?.coords or []
             coverage: game.eventMeta.coverage
             
-         cb(null)
-
-                         
-
-
-
-
-
+         cb()
