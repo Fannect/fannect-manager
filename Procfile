@@ -9,3 +9,4 @@ nfl: node manager.js schedules -l l.nfl.com
 nba: node manager.js schedules -l l.nba.com
 bncaa: node manager.js schedules -l l.ncaa.org.mbasket
 mlb: node manager.js schedules -l l.mlb.com
+mls: node manager.js schedules -l l.mlsnet.com
