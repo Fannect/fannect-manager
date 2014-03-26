@@ -43,7 +43,7 @@ postgame = module.exports =
          set_index = 0
          for t in teams 
             if (k = t.schedule.pregame.event_key) and not (k in all_event_keys)
-               if sets_of_keys[set_index].length >= 20
+               if sets_of_keys[set_index].length >= 10
                   sets_of_keys[++set_index] = []
                sets_of_keys[set_index].push(k)
                all_event_keys.push(k)
@@ -62,11 +62,11 @@ postgame = module.exports =
                   gameUpdate event.team, event.stats, runBookie, () ->
                      # errors are already logged so swallow at this point
                      callback()
-               , 20
+               , 10
 
                q.push(event) for event in results
                q.drain = done
-         , 5
+         , 2
 
          set_queue.push({ keys: set }) for set in sets_of_keys
          set_queue.drain = () -> log.sendErrors("Postgame", cb)
