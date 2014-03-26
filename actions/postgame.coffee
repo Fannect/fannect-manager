@@ -69,7 +69,7 @@ postgame = module.exports =
          , 5
 
          set_queue.push({ keys: set }) for set in sets_of_keys
-         set_queue.drain = () -> log.sendErrors("Postgame", done)
+         set_queue.drain = () -> log.sendErrors("Postgame", cb)
 
 
    updateTeam: (team, runBookie, cb) ->
@@ -79,7 +79,6 @@ postgame = module.exports =
          gameUpdate(team, event, runBookie, cb)
 
 getEvents = (event_keys, cb) ->
-   console.log "getEvents!"
    event_keys = event_keys.join(",") if typeof event_keys != "string" 
    request.get
       url: "#{url}/getEvents.php"            
@@ -89,8 +88,6 @@ getEvents = (event_keys, cb) ->
          "revision-control": "latest-only"
       timeout: 120000
    , (err, resp, body) ->
-      console.log "BODY", body
-
       if err
          log.error("#{red}Failed: XML Team event stats failed #{event_keys}#{reset} \nError:\n#{JSON.stringify(err)}")
          return cb(err) 
@@ -99,8 +96,6 @@ getEvents = (event_keys, cb) ->
          if err
             log.error("#{red}Failed: couldn't parse event stats for #{event_keys}#{reset} \nError:\n#{JSON.stringify(err)}")
             return cb(err)    
-
-         console.log "EVENTS", eventStats
 
          cb(null, eventStats)
 
