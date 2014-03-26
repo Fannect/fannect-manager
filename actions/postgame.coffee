@@ -37,29 +37,40 @@ postgame = module.exports =
          else
             log.write "#{white}Found #{green}#{teams.length}#{white} in progress..#{reset}"
          
-         # Get all the event keys for a single call
-         event_keys = []
+         # Get all the event keys
+         all_event_keys = []
+         sets_of_keys = [[],null]
+         set_index = 0
          for t in teams 
-            if (k = t.schedule.pregame.event_key) and not (k in event_keys)
-               event_keys.push(k)
+            if (k = t.schedule.pregame.event_key) and not (k in all_event_keys)
+               if sets_of_keys[set_index].length >= 20
+                  sets_of_keys[++set_index] = []
+               sets_of_keys[set_index].push(k)
+               all_event_keys.push(k)
 
-         # Get events
-         getEvents event_keys.join(","), (err, events) ->
-            results = []
-            for t in teams 
-               s = _.find events.sportsEvents, (e) -> e.eventMeta.event_key == t?.schedule.pregame?.event_key
-               results.push   
-                  team: t
-                  stats: s
+         set_queue = async.queue (key_set, done) ->
+            # Get events
+            getEvents key_set.keys.join(","), (err, events) ->
+               results = []
+               for t in teams 
+                  s = _.find events.sportsEvents, (e) -> e.eventMeta.event_key == t?.schedule.pregame?.event_key
+                  results.push   
+                     team: t
+                     stats: s
 
-            q = async.queue (event, callback) ->
-               gameUpdate event.team, event.stats, runBookie, () ->
-                  # errors are already logged so swallow at this point
-                  callback()
-            , 20
+               q = async.queue (event, callback) ->
+                  gameUpdate event.team, event.stats, runBookie, () ->
+                     # errors are already logged so swallow at this point
+                     callback()
+               , 20
 
-            q.push(event) for event in results
-            q.drain = () -> log.sendErrors("Postgame", cb)
+               q.push(event) for event in results
+               q.drain = done
+         , 5
+
+         set_queue.push({ keys: set }) for set in sets_of_keys
+         set_queue.drain = () -> log.sendErrors("Postgame", done)
+
 
    updateTeam: (team, runBookie, cb) ->
       return cb("No pregame...") unless team?.schedule?.pregame?.event_key
@@ -68,6 +79,7 @@ postgame = module.exports =
          gameUpdate(team, event, runBookie, cb)
 
 getEvents = (event_keys, cb) ->
+   console.log "getEvents!"
    event_keys = event_keys.join(",") if typeof event_keys != "string" 
    request.get
       url: "#{url}/getEvents.php"            
@@ -77,6 +89,8 @@ getEvents = (event_keys, cb) ->
          "revision-control": "latest-only"
       timeout: 120000
    , (err, resp, body) ->
+      console.log "BODY", body
+
       if err
          log.error("#{red}Failed: XML Team event stats failed #{event_keys}#{reset} \nError:\n#{JSON.stringify(err)}")
          return cb(err) 
@@ -85,6 +99,8 @@ getEvents = (event_keys, cb) ->
          if err
             log.error("#{red}Failed: couldn't parse event stats for #{event_keys}#{reset} \nError:\n#{JSON.stringify(err)}")
             return cb(err)    
+
+         console.log "EVENTS", eventStats
 
          cb(null, eventStats)
 
