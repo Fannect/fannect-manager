@@ -39,24 +39,30 @@ postgame = module.exports =
          
          # Get all the event keys
          all_event_keys = []
-         sets_of_keys = [[],null]
+         sets_of_keys = [[]]
          set_index = 0
          for t in teams 
             if (k = t.schedule.pregame.event_key) and not (k in all_event_keys)
                if sets_of_keys[set_index].length >= 10
+                  break
                   sets_of_keys[++set_index] = []
                sets_of_keys[set_index].push(k)
                all_event_keys.push(k)
 
          set_queue = async.queue (key_set, done) ->
-            # Get events
+            
+            # Exit if there are no keys in set
+            if (key_set.keys.length == 0) 
+               return done()
+            
             getEvents key_set.keys.join(","), (err, events) ->
                results = []
                for t in teams 
                   s = _.find events.sportsEvents, (e) -> e.eventMeta.event_key == t?.schedule.pregame?.event_key
-                  results.push   
-                     team: t
-                     stats: s
+                  if s 
+                     results.push   
+                        team: t
+                        stats: s
 
                q = async.queue (event, callback) ->
                   gameUpdate event.team, event.stats, runBookie, () ->
