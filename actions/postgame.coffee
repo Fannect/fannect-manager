@@ -44,7 +44,6 @@ postgame = module.exports =
          for t in teams 
             if (k = t.schedule.pregame.event_key) and not (k in all_event_keys)
                if sets_of_keys[set_index].length >= 10
-                  break
                   sets_of_keys[++set_index] = []
                sets_of_keys[set_index].push(k)
                all_event_keys.push(k)
@@ -181,7 +180,7 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
                team.set("schedule.pregame", nextgame)
                team.schedule.season.remove(nextgame)
             else
-               team.set("schedule.pregame", {})
+               team.schedule.pregame = undefined
             
             # Set the needs processing flag (only used if bookie is not immediately run)
             team.needs_processing = true
