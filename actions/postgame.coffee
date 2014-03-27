@@ -154,7 +154,7 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
                nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
 
             oldpregame = team.schedule.pregame
-            
+
             # Handle pregame move to postgame
             team.schedule.postgame.game_time = oldpregame.game_time
             team.schedule.postgame.event_key = oldpregame.event_key
@@ -175,10 +175,13 @@ gameUpdate = (team, eventStatsML, runBookie, cb) ->
                team.schedule.postgame.opponent_score = outcome.home_team.score
                team.schedule.postgame.won = outcome.away_team.won()
 
-            # Handle pregame
-            if (nextgame)
+            # Handle set next pregame if one exists
+            if team.schedule.season?.length > 0
+               nextgame = _.sortBy(team.schedule.season, (e) -> (e.game_time / 1))[0]
                team.set("schedule.pregame", nextgame)
                team.schedule.season.remove(nextgame)
+            else
+               team.set("schedule.pregame", {})
             
             # Set the needs processing flag (only used if bookie is not immediately run)
             team.needs_processing = true
